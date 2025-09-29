@@ -104,6 +104,13 @@
                 <?php endforeach; ?>
             </select>
         </div>
+        <div class="form-group">
+            <label for="Coordinador">Coordinador</label>
+            <select name="Coordinador" class="form-control">
+                <option value="0" selected>No</option>
+                <option value="1">Sí</option>
+            </select>
+        </div>
         <div class="form-group button-group">
             <button type="submit" class="btn">Guardar</button>
         </div>

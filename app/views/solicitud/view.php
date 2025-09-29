@@ -7,9 +7,12 @@
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         width: 100%;
         margin-top: 20px;
-        overflow-y: auto;      /* Habilita scroll vertical */
-        max-height: 420px;     /* Ajusta la altura máxima según tu preferencia */
-        overflow-x: hidden;    /* Opcional: oculta scroll horizontal */
+        overflow-y: auto;
+        /* Habilita scroll vertical */
+        max-height: 420px;
+        /* Ajusta la altura máxima según tu preferencia */
+        overflow-x: hidden;
+        /* Opcional: oculta scroll horizontal */
     }
 
     .titulos,
@@ -92,13 +95,13 @@
         color: #fff;
     }
 
- /*    .buttons a {
+    /*    .buttons a {
         margin: 0 1px;
         color: #fff;
         font-size: 0.92rem;
         padding: 1px 7px; */
-        /* Reduce el padding vertical (height) */
-      /*   border-radius: 18px;
+    /* Reduce el padding vertical (height) */
+    /*   border-radius: 18px;
         background: #04324D;
         display: inline-flex;
         align-items: center;
@@ -700,93 +703,98 @@
     }
 
     /* Botón de tres puntos */
-.action-dropdown {
-    position: relative; /* Esto hace que el menú se posicione relativo al botón */
-    display: inline-block;
-}
+    .action-dropdown {
+        position: relative;
+        /* Esto hace que el menú se posicione relativo al botón */
+        display: inline-block;
+    }
 
-.dropdown-toggle {
-    cursor: pointer;
-    padding: 6px 10px;
-    border: none;
-    background: transparent;
-    font-size: 18px;
-}
+    .dropdown-toggle {
+        cursor: pointer;
+        padding: 6px 10px;
+        border: none;
+        background: transparent;
+        font-size: 18px;
+    }
 
-.dropdown-menu {
-    display: none;
-    list-style: none;
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #e5e7eb;
-    min-width: 80px;           /* Más angosto para caber al lado derecho */
-    box-shadow: 0 8px 24px rgba(0,0,0,0.13);
-    z-index: 99999;
-    border-radius: 12px;
-    padding: 4px 0;
-    padding-left: 2px;         /* Menor padding lateral */
-    padding-right: 2px;
-    top: 100%;
-    left: unset;
-    right: 10px;                  /* Siempre pegado al lado derecho del contenedor */
-    overflow: hidden;
-}
+    .dropdown-menu {
+        display: none;
+        list-style: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #e5e7eb;
+        min-width: 80px;
+        /* Más angosto para caber al lado derecho */
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.13);
+        z-index: 99999;
+        border-radius: 12px;
+        padding: 4px 0;
+        padding-left: 2px;
+        /* Menor padding lateral */
+        padding-right: 2px;
+        top: 100%;
+        left: unset;
+        right: 10px;
+        /* Siempre pegado al lado derecho del contenedor */
+        overflow: hidden;
+    }
 
-.dropdown-menu li {
-    border-bottom: 1px solid #f0f0f0;
-}
+    .dropdown-menu li {
+        border-bottom: 1px solid #f0f0f0;
+    }
 
-.dropdown-menu li:last-child {
-    border-bottom: none;
-}
+    .dropdown-menu li:last-child {
+        border-bottom: none;
+    }
 
-.dropdown-menu a,
-.dropdown-menu li a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 8px;          /* Menos padding horizontal */
-    color: #222;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: background 0.18s, color 0.18s;
-    border-radius: 0;
-    justify-content: flex-start;
-}
+    .dropdown-menu a,
+    .dropdown-menu li a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 8px;
+        /* Menos padding horizontal */
+        color: #222;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: background 0.18s, color 0.18s;
+        border-radius: 0;
+        justify-content: flex-start;
+    }
 
-.dropdown-menu a i,
-.dropdown-menu li a i {
-    font-size: 1.08em;
-    color: #888;
-    min-width: 18px;
-    text-align: center;
-}
+    .dropdown-menu a i,
+    .dropdown-menu li a i {
+        font-size: 1.08em;
+        color: #888;
+        min-width: 18px;
+        text-align: center;
+    }
 
-.dropdown-menu a:hover,
-.dropdown-menu li a:hover {
-    background-color: #f5f7fa;
-    color: #09669C;
-}
+    .dropdown-menu a:hover,
+    .dropdown-menu li a:hover {
+        background-color: #f5f7fa;
+        color: #09669C;
+    }
 
-body.dark-mode .dropdown-menu {
-    background: #23272a;
-    border-color: #393e42;
-}
+    body.dark-mode .dropdown-menu {
+        background: #23272a;
+        border-color: #393e42;
+    }
 
-body.dark-mode .dropdown-menu li {
-    border-bottom: 1px solid #393e42;
-}
+    body.dark-mode .dropdown-menu li {
+        border-bottom: 1px solid #393e42;
+    }
 
-body.dark-mode .dropdown-menu a,
-body.dark-mode .dropdown-menu li a {
-    color: #e0e0e0;
-}
+    body.dark-mode .dropdown-menu a,
+    body.dark-mode .dropdown-menu li a {
+        color: #e0e0e0;
+    }
 
-body.dark-mode .dropdown-menu a:hover,
-body.dark-mode .dropdown-menu li a:hover {
-    background: #2d3238;
-    color: #4fc3f7;
-}
+    body.dark-mode .dropdown-menu a:hover,
+    body.dark-mode .dropdown-menu li a:hover {
+        background: #2d3238;
+        color: #4fc3f7;
+    }
 </style>
 
 
@@ -848,19 +856,28 @@ function adjustBrightness($hex, $steps)
 
 
 <?php
-// Detectar si estamos en la sección de archivadas
-$isArchivadas = (isset($_GET['archivadas']) && $_GET['archivadas'] == '1') ||
-    (isset($esArchivadas) && $esArchivadas) ||
+// Detectar si estamos en la sección de enviadas o archivadas
+$isArchivadas = (isset($esArchivadas) && $esArchivadas) || 
     (strpos($_SERVER['REQUEST_URI'], '/solicitud/archivadas') !== false);
+$isEnviadas = (isset($esEnviadas) && $esEnviadas) || 
+    (strpos($_SERVER['REQUEST_URI'], '/solicitud/enviadas') !== false);
 ?>
-<div style="display: flex; justify-content: flex-end; margin-bottom: 18px;">
+
+<div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 18px;">
     <?php if ($isArchivadas): ?>
+        <a href="/solicitud/view" class="archivados-btn">
+            <i class="fas fa-list"></i> Mis solicitudes
+        </a>
+    <?php elseif ($isEnviadas): ?>
         <a href="/solicitud/view" class="archivados-btn">
             <i class="fas fa-list"></i> Mis solicitudes
         </a>
     <?php else: ?>
         <a href="/solicitud/archivadas" class="archivados-btn">
             <i class="fas fa-archive"></i> Archivados
+        </a>
+        <a href="/solicitud/enviadas" class="archivados-btn">
+            <i class="fas fa-paper-plane"></i> Enviadas
         </a>
     <?php endif; ?>
 </div>
@@ -939,46 +956,43 @@ $isArchivadas = (isset($_GET['archivadas']) && $_GET['archivadas'] == '1') ||
                             <?php echo htmlspecialchars($solicitud->Servicio); ?>
                         </span>
                     </div>
-                 <div class="action-dropdown">
-    <button class="dropdown-toggle">
-        <i class="fas fa-ellipsis-h"></i>
-    </button>
-    <ul class="dropdown-menu">
-        <li>
-            <a href="/solicitud/view/<?php echo $solicitud->idSolicitud; ?>">
-                <i class="fas fa-eye" style="margin-right: 8px;"></i> Ver
-            </a>
-        </li>
-        <li>
-            <a href="/solicitud/edit/<?php echo $solicitud->idSolicitud; ?>">
-                <i class="fas fa-edit" style="margin-right: 8px;"></i> Editar
-            </a>
-        </li>
-        <?php if ($mostrarEliminar): ?>
-            <li>
-                <a href="/solicitud/delete/<?php echo $solicitud->idSolicitud; ?>" class="eliminar">
-                    <i class="fas fa-trash-alt" style="margin-right: 8px;"></i> Eliminar
-                </a>
-            </li>
-        <?php endif; ?>
-        <?php if ($isArchivadas): ?>
-            <li>
-                <a href="#" class="desarchivar" data-id="<?php echo $solicitud->idSolicitud; ?>">
-                    <i class="fas fa-box-open" style="margin-right: 8px;"></i> Desarchivar
-                </a>
-            </li>
-        <?php elseif ($mostrarArchivar): ?>
-            <li>
-                <a href="#" class="archivar" data-id="<?php echo $solicitud->idSolicitud; ?>">
-                    <i class="fas fa-archive" style="margin-right: 8px;"></i> Archivar
-                </a>
-            </li>
-        <?php endif; ?>
-    </ul>
-</div>
-
-
-
+                    <div class="action-dropdown">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/solicitud/view/<?php echo $solicitud->idSolicitud; ?>">
+                                    <i class="fas fa-eye" style="margin-right: 8px;"></i> Ver
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/solicitud/edit/<?php echo $solicitud->idSolicitud; ?>">
+                                    <i class="fas fa-edit" style="margin-right: 8px;"></i> Editar
+                                </a>
+                            </li>
+                            <?php if ($mostrarEliminar): ?>
+                                <li>
+                                    <a href="/solicitud/delete/<?php echo $solicitud->idSolicitud; ?>" class="eliminar">
+                                        <i class="fas fa-trash-alt" style="margin-right: 8px;"></i> Eliminar
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if ($isArchivadas): ?>
+                                <li>
+                                    <a href="#" class="desarchivar" data-id="<?php echo $solicitud->idSolicitud; ?>">
+                                        <i class="fas fa-box-open" style="margin-right: 8px;"></i> Desarchivar
+                                    </a>
+                                </li>
+                            <?php elseif ($mostrarArchivar): ?>
+                                <li>
+                                    <a href="#" class="archivar" data-id="<?php echo $solicitud->idSolicitud; ?>">
+                                        <i class="fas fa-archive" style="margin-right: 8px;"></i> Archivar
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -995,8 +1009,6 @@ $isArchivadas = (isset($_GET['archivadas']) && $_GET['archivadas'] == '1') ||
     </div>
 
     <script>
-
-
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('searchInput');
             const estadoSelect = document.getElementById('estado');
@@ -1149,8 +1161,8 @@ $isArchivadas = (isset($_GET['archivadas']) && $_GET['archivadas'] == '1') ||
             });
         });
         document.addEventListener('DOMContentLoaded', function() {
-    // --- MODAL DE ELIMINACIÓN (ya existente) ---
-    const deleteModalHTML = `
+            // --- MODAL DE ELIMINACIÓN (ya existente) ---
+            const deleteModalHTML = `
         <div id="deleteModal" class="delete-modal-overlay">
             <div class="delete-modal-content">
                 <div class="delete-modal-icon">
@@ -1194,118 +1206,124 @@ $isArchivadas = (isset($_GET['archivadas']) && $_GET['archivadas'] == '1') ||
             </div>
         </div>
     `;
-    document.body.insertAdjacentHTML('beforeend', deleteModalHTML);
+            document.body.insertAdjacentHTML('beforeend', deleteModalHTML);
 
-    // --- ELIMINAR ---
-    const deleteModal = document.getElementById('deleteModal');
-    const cancelBtn = document.getElementById('cancelDelete');
-    const confirmBtn = document.getElementById('confirmDelete');
-    const clientNameSpan = document.getElementById('clientName');
-    let deleteUrl = '';
-    let currentRow = null;
+            // --- ELIMINAR ---
+            const deleteModal = document.getElementById('deleteModal');
+            const cancelBtn = document.getElementById('cancelDelete');
+            const confirmBtn = document.getElementById('confirmDelete');
+            const clientNameSpan = document.getElementById('clientName');
+            let deleteUrl = '';
+            let currentRow = null;
 
-    function showDeleteModal(url, clientName, row) {
-        deleteUrl = url;
-        currentRow = row;
-        clientNameSpan.textContent = clientName;
-        deleteModal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    function hideDeleteModal() {
-        deleteModal.classList.remove('show');
-        document.body.style.overflow = '';
-        deleteUrl = '';
-        currentRow = null;
-    }
-    document.querySelectorAll('.eliminar').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const url = this.getAttribute('href');
-            const row = this.closest('.solicitud-row');
-            const clientName = row.children[1].textContent.trim();
-            showDeleteModal(url, clientName, row);
-        });
-    });
-    cancelBtn.addEventListener('click', hideDeleteModal);
-    confirmBtn.addEventListener('click', function() {
-        if (deleteUrl) {
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
-            this.disabled = true;
-            window.location.href = deleteUrl;
-        }
-    });
-    deleteModal.addEventListener('click', function(e) {
-        if (e.target === deleteModal) hideDeleteModal();
-    });
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && deleteModal.classList.contains('show')) hideDeleteModal();
-    });
+            function showDeleteModal(url, clientName, row) {
+                deleteUrl = url;
+                currentRow = row;
+                clientNameSpan.textContent = clientName;
+                deleteModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
 
-    // --- ARCHIVAR ---
-    const archiveModal = document.getElementById('archiveModal');
-    const cancelArchiveBtn = document.getElementById('cancelArchive');
-    const confirmArchiveBtn = document.getElementById('confirmArchive');
-    const archiveClientNameSpan = document.getElementById('archiveClientName');
-    let archiveId = '';
-    let archiveRow = null;
-
-    function showArchiveModal(id, clientName, row) {
-        archiveId = id;
-        archiveRow = row;
-        archiveClientNameSpan.textContent = clientName;
-        archiveModal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    function hideArchiveModal() {
-        archiveModal.classList.remove('show');
-        document.body.style.overflow = '';
-        archiveId = '';
-        archiveRow = null;
-    }
-    document.querySelectorAll('.archivar').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const id = this.getAttribute('data-id');
-            const row = this.closest('.solicitud-row');
-            const clientName = row.children[1].textContent.trim();
-            showArchiveModal(id, clientName, row);
-        });
-    });
-    cancelArchiveBtn.addEventListener('click', hideArchiveModal);
-    confirmArchiveBtn.addEventListener('click', function() {
-        if (archiveId) {
-            confirmArchiveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Archivando...';
-            confirmArchiveBtn.disabled = true;
-            fetch(`/solicitud/archivar/${archiveId}`, { method: 'POST' })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        if (archiveRow) archiveRow.style.display = 'none';
-                        hideArchiveModal();
-                    } else {
-                        confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
-                        confirmArchiveBtn.disabled = false;
-                    }
-                })
-                .catch(() => {
-                    confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
-                    confirmArchiveBtn.disabled = false;
+            function hideDeleteModal() {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+                deleteUrl = '';
+                currentRow = null;
+            }
+            document.querySelectorAll('.eliminar').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('href');
+                    const row = this.closest('.solicitud-row');
+                    const clientName = row.children[1].textContent.trim();
+                    showDeleteModal(url, clientName, row);
                 });
-        }
-    });
-    archiveModal.addEventListener('click', function(e) {
-        if (e.target === archiveModal) hideArchiveModal();
-    });
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && archiveModal.classList.contains('show')) hideArchiveModal();
-    });
-});
+            });
+            cancelBtn.addEventListener('click', hideDeleteModal);
+            confirmBtn.addEventListener('click', function() {
+                if (deleteUrl) {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
+                    this.disabled = true;
+                    window.location.href = deleteUrl;
+                }
+            });
+            deleteModal.addEventListener('click', function(e) {
+                if (e.target === deleteModal) hideDeleteModal();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && deleteModal.classList.contains('show')) hideDeleteModal();
+            });
+
+            // --- ARCHIVAR ---
+            const archiveModal = document.getElementById('archiveModal');
+            const cancelArchiveBtn = document.getElementById('cancelArchive');
+            const confirmArchiveBtn = document.getElementById('confirmArchive');
+            const archiveClientNameSpan = document.getElementById('archiveClientName');
+            let archiveId = '';
+            let archiveRow = null;
+
+            function showArchiveModal(id, clientName, row) {
+                archiveId = id;
+                archiveRow = row;
+                archiveClientNameSpan.textContent = clientName;
+                archiveModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function hideArchiveModal() {
+                archiveModal.classList.remove('show');
+                document.body.style.overflow = '';
+                archiveId = '';
+                archiveRow = null;
+            }
+            document.querySelectorAll('.archivar').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const id = this.getAttribute('data-id');
+                    const row = this.closest('.solicitud-row');
+                    const clientName = row.children[1].textContent.trim();
+                    showArchiveModal(id, clientName, row);
+                });
+            });
+            cancelArchiveBtn.addEventListener('click', hideArchiveModal);
+            confirmArchiveBtn.addEventListener('click', function() {
+                if (archiveId) {
+                    confirmArchiveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Archivando...';
+                    confirmArchiveBtn.disabled = true;
+                    fetch(`/solicitud/archivar/${archiveId}`, {
+                            method: 'POST'
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                if (archiveRow) archiveRow.style.display = 'none';
+                                hideArchiveModal();
+                            } else {
+                                confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
+                                confirmArchiveBtn.disabled = false;
+                            }
+                        })
+                        .catch(() => {
+                            confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
+                            confirmArchiveBtn.disabled = false;
+                        });
+                }
+            });
+            archiveModal.addEventListener('click', function(e) {
+                if (e.target === archiveModal) hideArchiveModal();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && archiveModal.classList.contains('show')) hideArchiveModal();
+            });
+        });
         document.querySelectorAll('.desarchivar').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const id = this.dataset.id;
-                fetch(`/solicitud/desarchivarSolicitud/${id}`, { method: 'POST' })
+                fetch(`/solicitud/desarchivarSolicitud/${id}`, {
+                        method: 'POST'
+                    })
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {

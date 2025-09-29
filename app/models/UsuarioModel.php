@@ -16,7 +16,8 @@ class UsuarioModel extends BaseModel
         ?string $CorreoUsuario = null,
         ?string $TelefonoUsuario = null,
         ?string $ContraseñaUsuario = null,
-        ?int $FKidRol = null
+        ?int $FKidRol = null,
+        ?bool $Coordinador = false
     ) {
         $this->table = "usuario";
         parent::__construct();
@@ -24,14 +25,14 @@ class UsuarioModel extends BaseModel
 
 
 
-    public function saveUsuario($DocumentoUsuario, $NombreUsuario, $CorreoUsuario, $TelefonoUsuario, $ContraseñaUsuario, $FKidRol)
+    public function saveUsuario($DocumentoUsuario, $NombreUsuario, $CorreoUsuario, $TelefonoUsuario, $ContraseñaUsuario, $FKidRol, $Coordinador = false)
     {
         try {
             $hashedPassword = password_hash($ContraseñaUsuario, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO usuario 
-                (DocumentoUsuario, NombreUsuario, CorreoUsuario, TelefonoUsuario, ContraseñaUsuario, FKidRol) 
-                VALUES (:doc, :nombre, :correo, :telefono, :pass, :rol)";
+                (DocumentoUsuario, NombreUsuario, CorreoUsuario, TelefonoUsuario, ContraseñaUsuario, FKidRol, Coordinador) 
+                VALUES (:doc, :nombre, :correo, :telefono, :pass, :rol, :coordinador)";
 
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(':doc', $DocumentoUsuario);
@@ -40,10 +41,12 @@ class UsuarioModel extends BaseModel
             $statement->bindParam(':telefono', $TelefonoUsuario);
             $statement->bindParam(':pass', $hashedPassword);
             $statement->bindParam(':rol', $FKidRol);
+            $statement->bindParam(':coordinador', $Coordinador, PDO::PARAM_BOOL);
 
             return $statement->execute();
         } catch (PDOException $ex) {
-            echo "Error al guardar el usuario: " . $ex->getMessage();
+            error_log("Error al guardar el usuario: " . $ex->getMessage());
+            return false;
         }
     }
 
@@ -65,72 +68,50 @@ class UsuarioModel extends BaseModel
         }
     }
 
-    public function editUsuario($id, $DocumentoUsuario, $NombreUsuario, $CorreoUsuario, $TelefonoUsuario, $ContrasenaUsuario = null, $FKidRol)
+    public function editUsuario($id, $DocumentoUsuario, $NombreUsuario, $CorreoUsuario, $TelefonoUsuario, $ContrasenaUsuario = null, $FKidRol, $Coordinador = false)
     {
         try {
-            error_log("=== MODELO editUsuario ===");
-            error_log("ID: $id");
-            error_log("Contraseña recibida: " . ($ContrasenaUsuario === null ? 'NULL' : "'$ContrasenaUsuario'"));
-
-            // Validar si se debe actualizar la contraseña
             $actualizarContrasena = ($ContrasenaUsuario !== null && !empty(trim($ContrasenaUsuario)));
-
-            error_log("¿Actualizar contraseña?: " . ($actualizarContrasena ? 'SÍ' : 'NO'));
-
+            
             if ($actualizarContrasena) {
-                // SQL con contraseña
                 $sql = "UPDATE $this->table 
                     SET DocumentoUsuario = :DocumentoUsuario, 
                         NombreUsuario = :NombreUsuario, 
                         CorreoUsuario = :CorreoUsuario, 
                         TelefonoUsuario = :TelefonoUsuario, 
                         ContraseñaUsuario = :ContrasenaUsuario, 
-                        FKidRol = :FKidRol 
+                        FKidRol = :FKidRol,
+                        Coordinador = :Coordinador 
                     WHERE idUsuario = :id";
             } else {
-                // SQL sin contraseña
                 $sql = "UPDATE $this->table 
                     SET DocumentoUsuario = :DocumentoUsuario, 
                         NombreUsuario = :NombreUsuario, 
                         CorreoUsuario = :CorreoUsuario, 
                         TelefonoUsuario = :TelefonoUsuario, 
-                        FKidRol = :FKidRol 
+                        FKidRol = :FKidRol,
+                        Coordinador = :Coordinador 
                     WHERE idUsuario = :id";
             }
 
-            error_log("SQL a ejecutar: " . $sql);
-
             $statement = $this->dbConnection->prepare($sql);
-
-            // Bind de parámetros comunes
+            
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
-            $statement->bindParam(":DocumentoUsuario", $DocumentoUsuario, PDO::PARAM_STR);
-            $statement->bindParam(":NombreUsuario", $NombreUsuario, PDO::PARAM_STR);
-            $statement->bindParam(":CorreoUsuario", $CorreoUsuario, PDO::PARAM_STR);
-            $statement->bindParam(":TelefonoUsuario", $TelefonoUsuario, PDO::PARAM_STR);
-            $statement->bindParam(":FKidRol", $FKidRol, PDO::PARAM_INT);
+            $statement->bindParam(":DocumentoUsuario", $DocumentoUsuario);
+            $statement->bindParam(":NombreUsuario", $NombreUsuario);
+            $statement->bindParam(":CorreoUsuario", $CorreoUsuario);
+            $statement->bindParam(":TelefonoUsuario", $TelefonoUsuario);
+            $statement->bindParam(":FKidRol", $FKidRol);
+            $statement->bindParam(":Coordinador", $Coordinador, PDO::PARAM_BOOL);
 
-            // Bind de contraseña solo si se va a actualizar
             if ($actualizarContrasena) {
                 $hashedPassword = password_hash($ContrasenaUsuario, PASSWORD_DEFAULT);
-                error_log("Hash generado: " . substr($hashedPassword, 0, 20) . "...");
-                $statement->bindParam(":ContrasenaUsuario", $hashedPassword, PDO::PARAM_STR);
+                $statement->bindParam(":ContrasenaUsuario", $hashedPassword);
             }
 
-            $resultado = $statement->execute();
-
-            if (!$resultado) {
-                $errorInfo = $statement->errorInfo();
-                error_log("Error SQL: " . print_r($errorInfo, true));
-            } else {
-                error_log("UPDATE ejecutado correctamente");
-                error_log("Filas afectadas: " . $statement->rowCount());
-            }
-
-            return $resultado;
+            return $statement->execute();
         } catch (PDOException $ex) {
-            error_log("Excepción PDO: " . $ex->getMessage());
-            echo "Error al editar usuario: " . $ex->getMessage();
+            error_log("Error al editar usuario: " . $ex->getMessage());
             return false;
         }
     }

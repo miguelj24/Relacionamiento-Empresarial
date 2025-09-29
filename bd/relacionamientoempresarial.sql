@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-09-2025 a las 14:32:36
+-- Tiempo de generación: 29-09-2025 a las 20:16:29
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -56,7 +56,29 @@ INSERT INTO `cliente` (`idCliente`, `DocumentoCliente`, `NombreCliente`, `Correo
 (34, '123132', 'm', '1@gmail.com', '312455'),
 (35, '123443', 'Miguel', 'm1@gmai.com', '331456'),
 (36, '1223221', 'Mario Agudelo', 'Maario@example.com', '8876545'),
-(37, '099000967', 'Fabian Alonso', 'fabi@example.com', '000994763');
+(37, '099000967', 'Fabian Alonso', 'fabi@example.com', '000994763'),
+(38, '12312332', 'Manolito', 'mano@gmail.com', '123231'),
+(39, '35454', 'Sierra', 'josemiguelsierra650@gmail.com', '243234'),
+(40, '345345', 'Jose', 'josemiguelsierra650@gmail.com', '32423423'),
+(41, '4564665', 'Alejandro', 'alejandro@gmail.com', '344332'),
+(42, '567657', 'Juan', 'juan@gmail.com', '121223'),
+(43, '12381283', 'Reyes', 'reyes@gmail.com', '5466546'),
+(44, '5454', 'Manito', 'm@gmail.com', '45644'),
+(45, '5655656', 'Jose miguel', 'jose@gmail.com', '5656'),
+(46, '7878', 'Yeferson', 'yef@gmail.com', '453354'),
+(47, '5465665', 'Yef', 'j@gmail.com', '46556465'),
+(48, '57676765', 'Juanilo', 'jaj@gmail.com', '5464'),
+(49, '787898', 'Juanillo', 'juana@gmail.com', '56567'),
+(50, '878978879', 'Manitooooo', 'manoo@gmail.com', '5655646'),
+(51, '565656', 'Reyes', 'r@gmail.com', '4565646'),
+(52, '567567', 'Zuluaga', 'z@gmail.com', '345435'),
+(53, '123234', 'asddas', 'sfjsj@gmail.com', '5465456'),
+(54, '132232', 'inge', 'inge@gmail.com', '34243234'),
+(55, '455443', 'Gordo', 'g@gmail.com', '1223312'),
+(56, '5665454', 'Profe', 'profe@gmail.com', '123213'),
+(57, '343455', 'Serna', 's@gmail.com', '435453'),
+(58, '645868', 'Inge', 'inge@gmail.com', '423224'),
+(59, '3293943', 'Julian', 'julian@gmail.com', '34753');
 
 -- --------------------------------------------------------
 
@@ -158,12 +180,15 @@ CREATE TABLE `solicitud` (
 --
 
 INSERT INTO `solicitud` (`idSolicitud`, `FechaEvento`, `FechaCreacion`, `Lugar`, `Municipio`, `Observaciones`, `Comentarios`, `MedioSolicitud`, `DescripcionNecesidad`, `FKusuario`, `FKtipoEvento`, `FKestado`, `FKcliente`, `FKtipoServicio`, `Asignacion`, `Archivado`) VALUES
-(52, '2025-06-11', '2025-06-19', 'Centro cultural', 'Manizales', '', '', 'Web', 'Tgo para 30 personas ', 9, 1, 7, 26, 31, 8, 0),
+(52, '2025-06-11', '2025-06-19', 'Centro cultural', 'Manizales', '', '', 'Web', 'Tgo para 30 personas ', 9, 1, 5, 26, 31, 8, 0),
 (60, '2025-07-02', '2025-07-02', 'hj', 'Aguadas', '', '', 'Web', 'ghgh', 7, 1, 4, 34, 46, 0, 1),
 (61, '2025-07-02', '2025-07-02', '123322', 'Aguadas', '', '', 'Web', 'hola', 7, 1, 4, 35, 60, 0, 1),
 (62, '2025-09-15', '2025-09-15', 'Barrio Buena vista', 'Chinchiná', '', '', 'Web', 'Curso para jovenes', 8, 1, 4, 36, 25, 9, 0),
-(63, '2025-09-11', '2025-09-15', 'asa del don', 'Belalcázar', '', '', 'Web', 'quiere estudiar desde la casa', 7, 1, 6, 37, 47, 8, 0),
-(64, '2025-09-13', '2025-09-15', 'asa del don', 'Belalcázar', NULL, NULL, 'Web', 'quiere que sea ya', 7, 1, 3, 37, 42, NULL, 0);
+(63, '2025-09-11', '2025-09-15', 'asa del don', 'Belalcázar', '', '', 'Web', 'quiere estudiar desde la casa', 7, 1, 5, 37, 47, 8, 0),
+(64, '2025-09-13', '2025-09-15', 'asa del don', 'Belalcázar', '', '', 'Web', 'quiere que sea ya', 7, 1, 7, 37, 42, 9, 0),
+(84, '2025-09-23', '2025-09-23', '', 'Salamina', '', '', 'Web', 'ashdhasd', 11, 1, 7, 57, 14, 0, 0),
+(85, '2025-09-23', '2025-09-23', '', 'Filadelfia', '', '', 'Web', 'ofgho', 11, 1, 7, 58, 28, 0, 0),
+(86, '2025-09-23', '2025-09-23', '', 'Palestina', '', '', 'Web', 'fggfg', 11, 1, 7, 59, 47, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -260,18 +285,20 @@ CREATE TABLE `usuario` (
   `CorreoUsuario` varchar(100) NOT NULL,
   `TelefonoUsuario` varchar(10) NOT NULL,
   `ContraseñaUsuario` varchar(255) NOT NULL,
-  `FKidRol` int(11) NOT NULL
+  `FKidRol` int(11) NOT NULL,
+  `Coordinador` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`idUsuario`, `DocumentoUsuario`, `NombreUsuario`, `CorreoUsuario`, `TelefonoUsuario`, `ContraseñaUsuario`, `FKidRol`) VALUES
-(7, '1058138879', 'jd', 'admin@example.com', '3127591649', '$2y$10$HlPNCJBJ0c.x50MGXYXTrONd6XP0U9rwEaUQ8TgyGxcMaPwZBBmba', 1),
-(8, '10575486', 'Sebitas Ocampo', 'instructor@example.com', '3127591647', '$2y$10$76yqpMz0nDV8pN.IkS7MDeI.X9i23o8cblPir3s2H1dzoKsmWdT/S', 4),
-(9, '1058138879', 'Esteban Reyes', 'funcionario@example.com', '35487962', '$2y$10$jkFDUtx5e27fWDHuQhOEaecKWu75HNjZa0Jvf1eO4eDptK0IPffTe', 3),
-(10, '147852369', 'Yerson Herrera', 'administrativo@example.com', '35487962', '$2y$10$ocXnM/eSmvsJLKr5c5eWxeUbpOU9LfuRXCeRszYD2YG94oFwoJ1lu', 2);
+INSERT INTO `usuario` (`idUsuario`, `DocumentoUsuario`, `NombreUsuario`, `CorreoUsuario`, `TelefonoUsuario`, `ContraseñaUsuario`, `FKidRol`, `Coordinador`) VALUES
+(7, '1058138879', 'jd', 'admin@example.com', '3127591649', '$2y$10$HlPNCJBJ0c.x50MGXYXTrONd6XP0U9rwEaUQ8TgyGxcMaPwZBBmba', 1, 0),
+(8, '10575486', 'Sebitas Ocampo', 'instructor@example.com', '3127591647', '$2y$10$76yqpMz0nDV8pN.IkS7MDeI.X9i23o8cblPir3s2H1dzoKsmWdT/S', 4, 0),
+(9, '1058138879', 'Esteban Reyes', 'funcionario@example.com', '35487962', '$2y$10$jkFDUtx5e27fWDHuQhOEaecKWu75HNjZa0Jvf1eO4eDptK0IPffTe', 3, 0),
+(10, '147852369', 'Yerson Herrera', 'administrativo@example.com', '35487962', '$2y$10$ocXnM/eSmvsJLKr5c5eWxeUbpOU9LfuRXCeRszYD2YG94oFwoJ1lu', 2, 0),
+(11, '12345634', 'Miguel', 'migue7u72019@gmail.com', '3117896523', '$2y$10$7om8uIyFNPMFEU8UukA..uBtMLHayqGUFG/PaBATHO81TGo8aNk8.', 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -340,7 +367,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT de la tabla `servicio`
@@ -352,7 +379,7 @@ ALTER TABLE `servicio`
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `idSolicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `idSolicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoevento`
@@ -370,7 +397,7 @@ ALTER TABLE `tiposervicio`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Restricciones para tablas volcadas
