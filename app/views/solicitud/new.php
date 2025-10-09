@@ -255,37 +255,9 @@ $estados = $estadoModel->getAll();
                 <div class="form-group">
                     <label for="municipality">Municipio *</label>
                     <select id="municipality" name="municipio" required>
-                        <option value="">Selecciona una opción</option>
-                        <option value="Aguadas">Aguadas</option>
-                        <option value="Anserma">Anserma</option>
-                        <option value="Aranzazu">Aranzazu</option>
-                        <option value="Belalcázar">Belalcázar</option>
-                        <option value="Chinchiná">Chinchiná</option>
-                        <option value="Filadelfia">Filadelfia</option>
-                        <option value="La Dorada">La Dorada</option>
-                        <option value="La Merced">La Merced</option>
-                        <option value="Manizales">Manizales</option>
-                        <option value="Manzanares">Manzanares</option>
-                        <option value="Marmato">Marmato</option>
-                        <option value="Marquetalia">Marquetalia</option>
-                        <option value="Marulanda">Marulanda</option>
-                        <option value="Neira">Neira</option>
-                        <option value="Norcasia">Norcasia</option>
-                        <option value="Pácora">Pácora</option>
-                        <option value="Palestina">Palestina</option>
-                        <option value="Pensilvania">Pensilvania</option>
-                        <option value="Riosucio">Riosucio</option>
-                        <option value="Risaralda">Risaralda</option>
-                        <option value="Salamina">Salamina</option>
-                        <option value="Samaná">Samaná</option>
-                        <option value="San José">San José</option>
-                        <option value="Supía">Supía</option>
-                        <option value="Victoria">Victoria</option>
-                        <option value="Villamaría">Villamaría</option>
-                        <option value="Viterbo">Viterbo</option>
+                        <option value="">Cargando municipios...</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="place">Lugar</label>
                     <input type="text" id="place" name="lugar">
@@ -296,8 +268,8 @@ $estados = $estadoModel->getAll();
                     <select id="service-to-request" name="servicio" required>
                         <option value="">Selecciona una opción</option>
                         <?php foreach ($servicios as $servicio): ?>
-                            <option value="<?php echo $servicio->idServicio; ?>">
-                                <?php echo htmlspecialchars($servicio->Servicio); ?>
+                            <option value="<?php echo $servicio->id; ?>">
+                                <?php echo htmlspecialchars($servicio->service); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -320,21 +292,21 @@ $estados = $estadoModel->getAll();
                     <select id="event-type" name="tipo_evento" required>
                         <option value="">Selecciona una opción</option>
                         <?php foreach ($tiposEvento as $tipoEvento): ?>
-                            <option value="<?php echo $tipoEvento->idTipoEvento; ?>">
-                                <?php echo htmlspecialchars($tipoEvento->TipoEvento); ?>
+                            <option value="<?php echo $tipoEvento->id; ?>">
+                                <?php echo htmlspecialchars($tipoEvento->eventType); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
 
                 <!-- Hidden field for estado (default to Pendiente) -->
-                <input type="hidden" name="estado" value="3">
+                <input type="hidden" name="estado" value="1">
 
                 <button type="submit" class="submit-btn">ENVIAR</button>
             </form>
         </div>
     </main>
-
+    <script src="/js/API-municipios.js"></script>
     <script>
         function showSecondForm(event) {
             event.preventDefault();
@@ -365,9 +337,9 @@ $estados = $estadoModel->getAll();
             if (servicioId) {
                 // Filtrar tipos de servicio según el servicio seleccionado
                 <?php foreach ($tiposServicio as $tipoServicio): ?>
-                    if ('<?php echo $tipoServicio->FKidServicio; ?>' === servicioId) {
-                        const option = new Option('<?php echo htmlspecialchars($tipoServicio->TipoServicio); ?>',
-                            '<?php echo $tipoServicio->idTipoServicio; ?>');
+                    if ('<?php echo $tipoServicio->FKservices; ?>' === servicioId) {
+                        const option = new Option('<?php echo htmlspecialchars($tipoServicio->serviceType); ?>',
+                            '<?php echo $tipoServicio->id; ?>');
                         tipoServicioSelect.add(option);
                     }
                 <?php endforeach; ?>

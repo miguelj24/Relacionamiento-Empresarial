@@ -14,15 +14,15 @@
         <div class="record">
             <div class="field">
                 <strong>ID:</strong>
-                <span><?php echo $tipoEvento->idTipoEvento ?></span>
+                <span><?php echo $tipoEvento->id ?></span>
             </div>
             <div class="field">
                 <strong>Tipo de Evento:</strong>
-                <span><?php echo $tipoEvento->TipoEvento ?></span>
+                <span><?php echo $tipoEvento->eventType ?></span>
             </div>
         </div>
         <div class="buttons">
-            <a href="/tipoEvento/edit/<?php echo $tipoEvento->idTipoEvento ?>" title="Editar"><i class="fas fa-pen"></i></a>
+            <a href="/tipoEvento/edit/<?php echo $tipoEvento->id ?>" title="Editar"><i class="fas fa-pen"></i></a>
             <a href="/tipoEvento/view" title="Volver"><i class="fas fa-arrow-left"></i></a>
         </div>
     <?php else: ?>

@@ -14,7 +14,7 @@ abstract class BaseModel {
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
             ];
-            $dsn = DRIVER.':host='.HOST.';dbname='.DATABASE;
+          $dsn = DRIVER . ':host=' . HOST . ';port=' . PORT . ';dbname=' . DATABASE . ';sslmode=require;options=\'--client_encoding=UTF8\'';
             $this->dbConnection = new PDO($dsn, USERNAME_DB, PASSWORD_DB, $options);
         } catch (PDOException $ex) {
             echo 'Error en la conexión: '.$ex->getMessage();
@@ -35,7 +35,7 @@ abstract class BaseModel {
 
     public function getById(int $id) {
         try {
-            $sql = 'SELECT * FROM '.$this->table.' WHERE id'.$this->table.' = :id';
+           $sql = 'SELECT * FROM '.$this->table.' WHERE id = :id';
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(':id', $id, PDO::PARAM_INT);
             $statement->execute();
@@ -66,7 +66,7 @@ abstract class BaseModel {
                 $fields .= $key.' = :'.$key.', ';
             }
             $fields = rtrim($fields, ', ');
-            $sql = 'UPDATE '.$this->table.' SET '.$fields.' WHERE id'.$this->table.' = :id';
+            $sql = 'UPDATE ' . $this->table . ' SET ' . $fields . ' WHERE id = :id';
             $statement = $this->dbConnection->prepare($sql);
             $data['id'] = $id;
             return $statement->execute($data);
@@ -78,7 +78,7 @@ abstract class BaseModel {
         //delete
     public function delete(int $id): bool {
         try {
-            $sql = 'DELETE FROM '.$this->table.' WHERE id'.$this->table.' = :id';
+           $sql = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(':id', $id, PDO::PARAM_INT);
             return $statement->execute();

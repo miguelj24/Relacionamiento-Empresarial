@@ -14,27 +14,27 @@
         <div class="record">
             <div class="field">
                 <strong>ID:</strong>
-                <span><?php echo $cliente->idCliente; ?></span>
+                <span><?php echo $cliente->id; ?></span>
             </div>
             <div class="field">
                 <strong>Documento:</strong>
-                <span><?php echo $cliente->DocumentoCliente; ?></span>
+                <span><?php echo $cliente->DocumentClient; ?></span>
             </div>
             <div class="field">
                 <strong>Nombre:</strong>
-                <span><?php echo $cliente->NombreCliente; ?></span>
+                <span><?php echo $cliente->NameClient; ?></span>
             </div>
             <div class="field">
                 <strong>Correo:</strong>
-                <span><?php echo $cliente->CorreoCliente; ?></span>
+                <span><?php echo $cliente->EmailClient; ?></span>
             </div>
             <div class="field">
                 <strong>Teléfono:</strong>
-                <span><?php echo $cliente->TelefonoCliente; ?></span>
+                <span><?php echo $cliente->TelephoneClient; ?></span>
             </div>
         </div>
         <div class="buttons">
-            <a href="/cliente/edit/<?php echo $cliente->idCliente; ?>" title="Editar"><i class="fas fa-pen"></i></a>
+            <a href="/cliente/edit/<?php echo $cliente->id; ?>" title="Editar"><i class="fas fa-pen"></i></a>
             <a href="/cliente/view" title="Volver"><i class="fas fa-arrow-left"></i></a>
         </div>
     <?php else: ?>

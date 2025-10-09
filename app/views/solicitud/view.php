@@ -832,8 +832,8 @@ function adjustBrightness($hex, $steps)
             <select id="estado" name="IdEstado" class="form-control">
                 <option value="">Seleccione un estado</option>
                 <?php foreach ($estados as $estado): ?>
-                    <option value="<?php echo $estado->idEstado; ?>">
-                        <?php echo $estado->Estado; ?>
+                    <option value="<?php echo $estado->id; ?>">
+                        <?php echo $estado->State; ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -845,8 +845,8 @@ function adjustBrightness($hex, $steps)
             <select id="servicio" name="IdServicio" class="form-control">
                 <option value="">Todos los servicios</option>
                 <?php foreach ($servicios as $servicio): ?>
-                    <option value="<?php echo $servicio->idServicio; ?>">
-                        <?php echo $servicio->Servicio; ?>
+                    <option value="<?php echo $servicio->id; ?>">
+                        <?php echo $servicio->service; ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -876,9 +876,9 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
         <a href="/solicitud/archivadas" class="archivados-btn">
             <i class="fas fa-archive"></i> Archivados
         </a>
-        <a href="/solicitud/enviadas" class="archivados-btn">
-            <i class="fas fa-paper-plane"></i> Enviadas
-        </a>
+            <a href="/solicitud/enviadas" class="archivados-btn">
+                <i class="fas fa-paper-plane"></i> Enviadas
+            </a>
     <?php endif; ?>
 </div>
 
@@ -907,7 +907,7 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
             <?php foreach ($solicitudes as $solicitud): ?>
                 <?php
                 // Semaforización: verde < 7 días, amarillo 7-15, rojo > 15
-                $dias = (new DateTime())->diff(new DateTime($solicitud->FechaCreacion))->days;
+                $dias = (new DateTime())->diff(new DateTime($solicitud->createdAt))->days;
                 if ($dias < 7) {
                     $statusClass = "status-recent"; // verde
                 } elseif ($dias <= 15) {
@@ -915,18 +915,18 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                 } else {
                     $statusClass = "status-old"; // rojo
                 }
-                // Mostrar botón archivar solo si estado es Resuelto (4) o Cerrado (8)
-                $mostrarArchivar = in_array($solicitud->FKestado ?? $solicitud->idEstado ?? null, [4, 8]);
+                // Mostrar botón archivar solo si estado es Resuelto (6) o Cerrado (7)
+                $mostrarArchivar = in_array($solicitud->FKstates ?? $solicitud->id ?? null, [6, 7]);
                 // Mostrar botón eliminar solo si es administrador (rol 1)
-                $mostrarEliminar = isset($_SESSION['rol']) && $_SESSION['rol'] == 1;
+                $mostrarEliminar = isset($_SESSION['rol']) && $_SESSION['rol'] == 4;
 
                 // Colores para servicio
-                $colorOriginalServicio = $solicitud->Color;
+                $colorOriginalServicio = $solicitud->service_color;
                 $colorFondoServicio = adjustBrightness($colorOriginalServicio, 80);   // Más claro
                 $colorBordeYTextoServicio = adjustBrightness($colorOriginalServicio, -60); // Más oscuro
 
                 // Colores para estado
-                $colorOriginalEstado = $solicitud->ColorEstado ?? '#cccccc';
+                $colorOriginalEstado = $solicitud->state_color ?? '#cccccc';
                 $colorFondoEstado = adjustBrightness($colorOriginalEstado, 80);
                 $colorBordeYTextoEstado = adjustBrightness($colorOriginalEstado, -60);
                 ?>
@@ -934,8 +934,11 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                     <div>
                         <span class="status-indicator <?php echo $statusClass; ?>"></span>
                     </div>
-                    <div><?php echo htmlspecialchars($solicitud->NombreCliente); ?></div>
-                    <div><?php echo htmlspecialchars($solicitud->FechaCreacion); ?></div>
+                    <div><?php echo htmlspecialchars($solicitud->NameClient); ?></div>
+                    <div>
+                    <?php echo htmlspecialchars(date('d/m/Y', strtotime($solicitud->createdAt))); ?>
+                    </div>
+
                     <div>
                         <span class="service-badge"
                             style="
@@ -943,7 +946,7 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                                 color: <?php echo $colorBordeYTextoEstado; ?>;
                                 border: 1.5px solid <?php echo $colorBordeYTextoEstado; ?>;
                             ">
-                            <?php echo htmlspecialchars($solicitud->Estado); ?>
+                            <?php echo htmlspecialchars($solicitud->State); ?>
                         </span>
                     </div>
                     <div>
@@ -953,7 +956,7 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                                 color: <?php echo $colorBordeYTextoServicio; ?>;
                                 border: 1.5px solid <?php echo $colorBordeYTextoServicio; ?>;
                             ">
-                            <?php echo htmlspecialchars($solicitud->Servicio); ?>
+                            <?php echo htmlspecialchars($solicitud->service); ?>
                         </span>
                     </div>
                     <div class="action-dropdown">
@@ -962,31 +965,31 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                         </button>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="/solicitud/view/<?php echo $solicitud->idSolicitud; ?>">
+                                <a href="/solicitud/view/<?php echo $solicitud->id; ?>">
                                     <i class="fas fa-eye" style="margin-right: 8px;"></i> Ver
                                 </a>
                             </li>
                             <li>
-                                <a href="/solicitud/edit/<?php echo $solicitud->idSolicitud; ?>">
+                                <a href="/solicitud/edit/<?php echo $solicitud->id; ?>">
                                     <i class="fas fa-edit" style="margin-right: 8px;"></i> Editar
                                 </a>
                             </li>
                             <?php if ($mostrarEliminar): ?>
                                 <li>
-                                    <a href="/solicitud/delete/<?php echo $solicitud->idSolicitud; ?>" class="eliminar">
+                                    <a href="/solicitud/delete/<?php echo $solicitud->id; ?>" class="eliminar">
                                         <i class="fas fa-trash-alt" style="margin-right: 8px;"></i> Eliminar
                                     </a>
                                 </li>
                             <?php endif; ?>
                             <?php if ($isArchivadas): ?>
                                 <li>
-                                    <a href="#" class="desarchivar" data-id="<?php echo $solicitud->idSolicitud; ?>">
+                                    <a href="#" class="desarchivar" data-id="<?php echo $solicitud->id; ?>">
                                         <i class="fas fa-box-open" style="margin-right: 8px;"></i> Desarchivar
                                     </a>
                                 </li>
                             <?php elseif ($mostrarArchivar): ?>
                                 <li>
-                                    <a href="#" class="archivar" data-id="<?php echo $solicitud->idSolicitud; ?>">
+                                    <a href="#" class="archivar" data-id="<?php echo $solicitud->id; ?>">
                                         <i class="fas fa-archive" style="margin-right: 8px;"></i> Archivar
                                     </a>
                                 </li>
@@ -998,344 +1001,209 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
         <?php endif; ?>
     </div>
 
-    <!-- Contenedor del Modal -->
-    <div id="modal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="modal-body">
-                <!-- Aquí se cargará el contenido del archivo modal -->
-            </div>
-        </div>
-    </div>
+   
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('searchInput');
-            const estadoSelect = document.getElementById('estado');
-            const servicioSelect = document.getElementById('servicio');
-            const solicitudRows = document.querySelectorAll('.solicitud-row');
-            const noResults = document.getElementById('noResults');
+document.addEventListener('DOMContentLoaded', () => {
 
-            function filterSolicitudes() {
-                const searchTerm = searchInput.value.toLowerCase();
-                const estadoSelected = estadoSelect.value;
-                const servicioSelected = servicioSelect.value;
-                let visibleRows = 0;
+    // =======================
+    // FILTRO DE SOLICITUDES
+    // =======================
+    const searchInput = document.getElementById('searchInput');
+    const estadoSelect = document.getElementById('estado');
+    const servicioSelect = document.getElementById('servicio');
+    const solicitudRows = document.querySelectorAll('.solicitud-row');
+    const noResults = document.getElementById('noResults');
 
-                solicitudRows.forEach(row => {
-                    const nombreCliente = row.children[1].textContent.toLowerCase();
-                    const estado = row.children[3].textContent;
-                    const servicio = row.children[4].textContent.trim();
+    function filterSolicitudes() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const estadoSelected = estadoSelect.value;
+        const servicioSelected = servicioSelect.value;
+        let visibleRows = 0;
 
-                    const matchesSearch = nombreCliente.includes(searchTerm);
-                    const matchesEstado = estadoSelected === '' || estado === estadoSelect.options[estadoSelect.selectedIndex].text;
-                    const matchesServicio = servicioSelected === '' || servicio === servicioSelect.options[servicioSelect.selectedIndex].text;
+        solicitudRows.forEach(row => {
+            const nombreCliente = row.children[1].textContent.toLowerCase();
+            const estado = row.children[3].textContent.trim().toLowerCase();
+            const servicio = row.children[4].textContent.trim().toLowerCase();
 
-                    // Si todas las condiciones son verdaderas mostrara alguna opcion existente
-                    if (matchesSearch && matchesEstado && matchesServicio) {
-                        row.style.display = '';
-                        visibleRows++;
-                        // Si alguna es falsa entonces no mostrará ninguna
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
+            const matchesSearch = nombreCliente.includes(searchTerm);
+            const matchesEstado = !estadoSelected || estado === estadoSelect.options[estadoSelect.selectedIndex].text.toLowerCase();
+            const matchesServicio = !servicioSelected || servicio === servicioSelect.options[servicioSelect.selectedIndex].text.toLowerCase();
 
-                // Mostrar mensaje de "No se encontraron resultados" si no hay coincidencias
-                noResults.style.display = visibleRows === 0 ? 'block' : 'none';
+            if (matchesSearch && matchesEstado && matchesServicio) {
+                row.style.display = '';
+                visibleRows++;
+            } else {
+                row.style.display = 'none';
             }
+        });
 
-            // Eventos para los filtros, esto permite que funcionen en tiempo real
-            searchInput.addEventListener('input', filterSolicitudes);
-            estadoSelect.addEventListener('change', filterSolicitudes);
-            servicioSelect.addEventListener('change', filterSolicitudes);
-        });
-        // JS para archivar solicitudes
-        document.querySelectorAll('.archivar').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const id = this.getAttribute('data-id');
-                const row = this.closest('.solicitud-row');
-                const clientName = row.children[1].textContent.trim();
-                showArchiveModal(id, clientName, row);
-            });
-        });
-        // MODAL DE CONFIRMACIÓN DE ELIMINACIÓN
-        document.addEventListener('DOMContentLoaded', function() {
-            // Crear el modal dinámicamente
-            const deleteModalHTML = `
+        noResults.style.display = visibleRows === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', filterSolicitudes);
+    estadoSelect.addEventListener('change', filterSolicitudes);
+    servicioSelect.addEventListener('change', filterSolicitudes);
+
+    // =======================
+    // MODALES DE ELIMINAR Y ARCHIVAR
+    // =======================
+    const modalHTML = `
+        <!-- MODAL ELIMINAR -->
         <div id="deleteModal" class="delete-modal-overlay">
             <div class="delete-modal-content">
-                <div class="delete-modal-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
+                <div class="delete-modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
                 <h3 class="delete-modal-title">¿Confirmar eliminación?</h3>
                 <p class="delete-modal-message">
                     Esta acción eliminará permanentemente la solicitud de 
-                    <span class="delete-modal-client-name" id="clientName"></span>.
-                    <br><br>
+                    <span id="clientName"></span>.<br><br>
                     <strong>Esta acción no se puede deshacer.</strong>
                 </p>
                 <div class="delete-modal-buttons">
-                    <button type="button" class="delete-modal-btn delete-modal-btn-cancel" id="cancelDelete">
-                        <i class="fas fa-times"></i> Cancelar
-                    </button>
-                    <button type="button" class="delete-modal-btn delete-modal-btn-confirm" id="confirmDelete">
-                        <i class="fas fa-trash-alt"></i> Eliminar
-                    </button>
+                    <button type="button" class="delete-modal-btn" id="cancelDelete"><i class="fas fa-times"></i> Cancelar</button>
+                    <button type="button" class="delete-modal-btn" id="confirmDelete"><i class="fas fa-trash-alt"></i> Eliminar</button>
                 </div>
             </div>
         </div>
-    `;
 
-            // Insertar el modal en el DOM
-            document.body.insertAdjacentHTML('beforeend', deleteModalHTML);
-
-            // Referencias a elementos del modal
-            const deleteModal = document.getElementById('deleteModal');
-            const cancelBtn = document.getElementById('cancelDelete');
-            const confirmBtn = document.getElementById('confirmDelete');
-            const clientNameSpan = document.getElementById('clientName');
-
-            let deleteUrl = '';
-            let currentRow = null;
-
-            // Función para mostrar el modal
-            function showDeleteModal(url, clientName, row) {
-                deleteUrl = url;
-                currentRow = row;
-                clientNameSpan.textContent = clientName;
-                deleteModal.classList.add('show');
-                document.body.style.overflow = 'hidden'; // Evitar scroll del body
-            }
-
-            // Función para ocultar el modal
-            function hideDeleteModal() {
-                deleteModal.classList.remove('show');
-                document.body.style.overflow = ''; // Restaurar scroll del body
-                deleteUrl = '';
-                currentRow = null;
-            }
-
-            // Event listeners para todos los botones de eliminar
-            document.querySelectorAll('.eliminar').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    const url = this.getAttribute('href');
-                    const row = this.closest('.solicitud-row');
-                    const clientName = row.children[1].textContent.trim();
-
-                    showDeleteModal(url, clientName, row);
-                });
-            });
-
-            // Cancelar eliminación
-            cancelBtn.addEventListener('click', hideDeleteModal);
-
-            // Confirmar eliminación
-            confirmBtn.addEventListener('click', function() {
-                if (deleteUrl) {
-                    // Mostrar estado de carga en el botón
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
-                    this.disabled = true;
-
-                    // Hacer la petición de eliminación
-                    window.location.href = deleteUrl;
-                }
-            });
-
-            // Cerrar modal al hacer clic fuera del contenido
-            deleteModal.addEventListener('click', function(e) {
-                if (e.target === deleteModal) {
-                    hideDeleteModal();
-                }
-            });
-
-            // Cerrar modal con la tecla Escape
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && deleteModal.classList.contains('show')) {
-                    hideDeleteModal();
-                }
-            });
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- MODAL DE ELIMINACIÓN (ya existente) ---
-            const deleteModalHTML = `
-        <div id="deleteModal" class="delete-modal-overlay">
-            <div class="delete-modal-content">
-                <div class="delete-modal-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <h3 class="delete-modal-title">¿Confirmar eliminación?</h3>
-                <p class="delete-modal-message">
-                    Esta acción eliminará permanentemente la solicitud de 
-                    <span class="delete-modal-client-name" id="clientName"></span>.<br><br>
-                    <strong>Esta acción no se puede deshacer.</strong>
-                </p>
-                <div class="delete-modal-buttons">
-                    <button type="button" class="delete-modal-btn delete-modal-btn-cancel" id="cancelDelete">
-                        <i class="fas fa-times"></i> Cancelar
-                    </button>
-                    <button type="button" class="delete-modal-btn delete-modal-btn-confirm" id="confirmDelete">
-                        <i class="fas fa-trash-alt"></i> Eliminar
-                    </button>
-                </div>
-            </div>
-        </div>
+        <!-- MODAL ARCHIVAR -->
         <div id="archiveModal" class="delete-modal-overlay">
             <div class="delete-modal-content">
-                <div class="delete-modal-icon">
-                    <i class="fas fa-archive"></i>
-                </div>
+                <div class="delete-modal-icon"><i class="fas fa-archive"></i></div>
                 <h3 class="delete-modal-title">¿Archivar solicitud?</h3>
                 <p class="delete-modal-message">
                     Esta acción archivará la solicitud de 
-                    <span class="delete-modal-client-name" id="archiveClientName"></span>.<br><br>
+                    <span id="archiveClientName"></span>.<br><br>
                     Podrás consultarla en la sección de archivados.
                 </p>
                 <div class="delete-modal-buttons">
-                    <button type="button" class="delete-modal-btn delete-modal-btn-cancel" id="cancelArchive">
-                        <i class="fas fa-times"></i> Cancelar
-                    </button>
-                    <button type="button" class="delete-modal-btn delete-modal-btn-confirm" id="confirmArchive">
-                        <i class="fas fa-archive"></i> Archivar
-                    </button>
+                    <button type="button" class="delete-modal-btn" id="cancelArchive"><i class="fas fa-times"></i> Cancelar</button>
+                    <button type="button" class="delete-modal-btn" id="confirmArchive"><i class="fas fa-archive"></i> Archivar</button>
                 </div>
             </div>
         </div>
     `;
-            document.body.insertAdjacentHTML('beforeend', deleteModalHTML);
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-            // --- ELIMINAR ---
-            const deleteModal = document.getElementById('deleteModal');
-            const cancelBtn = document.getElementById('cancelDelete');
-            const confirmBtn = document.getElementById('confirmDelete');
-            const clientNameSpan = document.getElementById('clientName');
-            let deleteUrl = '';
-            let currentRow = null;
+    // ===== ELIMINAR =====
+    const deleteModal = document.getElementById('deleteModal');
+    const cancelDeleteBtn = document.getElementById('cancelDelete');
+    const confirmDeleteBtn = document.getElementById('confirmDelete');
+    const clientNameSpan = document.getElementById('clientName');
+    let deleteUrl = '';
+    let currentRow = null;
 
-            function showDeleteModal(url, clientName, row) {
-                deleteUrl = url;
-                currentRow = row;
-                clientNameSpan.textContent = clientName;
-                deleteModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-            }
+    function showDeleteModal(url, clientName, row) {
+        deleteUrl = url;
+        currentRow = row;
+        clientNameSpan.textContent = clientName;
+        deleteModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
 
-            function hideDeleteModal() {
-                deleteModal.classList.remove('show');
-                document.body.style.overflow = '';
-                deleteUrl = '';
-                currentRow = null;
-            }
-            document.querySelectorAll('.eliminar').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const url = this.getAttribute('href');
-                    const row = this.closest('.solicitud-row');
-                    const clientName = row.children[1].textContent.trim();
-                    showDeleteModal(url, clientName, row);
-                });
-            });
-            cancelBtn.addEventListener('click', hideDeleteModal);
-            confirmBtn.addEventListener('click', function() {
-                if (deleteUrl) {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
-                    this.disabled = true;
-                    window.location.href = deleteUrl;
-                }
-            });
-            deleteModal.addEventListener('click', function(e) {
-                if (e.target === deleteModal) hideDeleteModal();
-            });
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && deleteModal.classList.contains('show')) hideDeleteModal();
-            });
+    function hideDeleteModal() {
+        deleteModal.classList.remove('show');
+        document.body.style.overflow = '';
+        deleteUrl = '';
+        currentRow = null;
+    }
 
-            // --- ARCHIVAR ---
-            const archiveModal = document.getElementById('archiveModal');
-            const cancelArchiveBtn = document.getElementById('cancelArchive');
-            const confirmArchiveBtn = document.getElementById('confirmArchive');
-            const archiveClientNameSpan = document.getElementById('archiveClientName');
-            let archiveId = '';
-            let archiveRow = null;
-
-            function showArchiveModal(id, clientName, row) {
-                archiveId = id;
-                archiveRow = row;
-                archiveClientNameSpan.textContent = clientName;
-                archiveModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function hideArchiveModal() {
-                archiveModal.classList.remove('show');
-                document.body.style.overflow = '';
-                archiveId = '';
-                archiveRow = null;
-            }
-            document.querySelectorAll('.archivar').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const id = this.getAttribute('data-id');
-                    const row = this.closest('.solicitud-row');
-                    const clientName = row.children[1].textContent.trim();
-                    showArchiveModal(id, clientName, row);
-                });
-            });
-            cancelArchiveBtn.addEventListener('click', hideArchiveModal);
-            confirmArchiveBtn.addEventListener('click', function() {
-                if (archiveId) {
-                    confirmArchiveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Archivando...';
-                    confirmArchiveBtn.disabled = true;
-                    fetch(`/solicitud/archivar/${archiveId}`, {
-                            method: 'POST'
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                if (archiveRow) archiveRow.style.display = 'none';
-                                hideArchiveModal();
-                            } else {
-                                confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
-                                confirmArchiveBtn.disabled = false;
-                            }
-                        })
-                        .catch(() => {
-                            confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
-                            confirmArchiveBtn.disabled = false;
-                        });
-                }
-            });
-            archiveModal.addEventListener('click', function(e) {
-                if (e.target === archiveModal) hideArchiveModal();
-            });
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && archiveModal.classList.contains('show')) hideArchiveModal();
-            });
+    document.querySelectorAll('.eliminar').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const url = btn.getAttribute('href');
+            const row = btn.closest('.solicitud-row');
+            const clientName = row.children[1].textContent.trim();
+            showDeleteModal(url, clientName, row);
         });
-        document.querySelectorAll('.desarchivar').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const id = this.dataset.id;
-                fetch(`/solicitud/desarchivarSolicitud/${id}`, {
-                        method: 'POST'
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Quita la fila o recarga la página
-                            this.closest('.solicitud-row').remove();
-                        } else {
-                            alert('No se pudo desarchivar');
-                        }
-                    });
-            });
+    });
+
+    cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+    confirmDeleteBtn.addEventListener('click', () => {
+        if (deleteUrl) {
+            confirmDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
+            confirmDeleteBtn.disabled = true;
+            window.location.href = deleteUrl;
+        }
+    });
+
+    deleteModal.addEventListener('click', e => { if (e.target === deleteModal) hideDeleteModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && deleteModal.classList.contains('show')) hideDeleteModal(); });
+
+    // ===== ARCHIVAR =====
+    const archiveModal = document.getElementById('archiveModal');
+    const cancelArchiveBtn = document.getElementById('cancelArchive');
+    const confirmArchiveBtn = document.getElementById('confirmArchive');
+    const archiveClientNameSpan = document.getElementById('archiveClientName');
+    let archiveId = '';
+    let archiveRow = null;
+
+    function showArchiveModal(id, clientName, row) {
+        archiveId = id;
+        archiveRow = row;
+        archiveClientNameSpan.textContent = clientName;
+        archiveModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideArchiveModal() {
+        archiveModal.classList.remove('show');
+        document.body.style.overflow = '';
+        archiveId = '';
+        archiveRow = null;
+    }
+
+    document.querySelectorAll('.archivar').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const id = btn.getAttribute('data-id');
+            const row = btn.closest('.solicitud-row');
+            const clientName = row.children[1].textContent.trim();
+            showArchiveModal(id, clientName, row);
         });
-    </script>
+    });
+
+    cancelArchiveBtn.addEventListener('click', hideArchiveModal);
+    confirmArchiveBtn.addEventListener('click', () => {
+        if (!archiveId) return;
+        confirmArchiveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Archivando...';
+        confirmArchiveBtn.disabled = true;
+
+        fetch(`/solicitud/archivar/${archiveId}`, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && archiveRow) archiveRow.style.display = 'none';
+                hideArchiveModal();
+                confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
+                confirmArchiveBtn.disabled = false;
+            })
+            .catch(() => {
+                confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
+                confirmArchiveBtn.disabled = false;
+            });
+    });
+
+    archiveModal.addEventListener('click', e => { if (e.target === archiveModal) hideArchiveModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && archiveModal.classList.contains('show')) hideArchiveModal(); });
+
+    // ===== DESARCHIVAR =====
+    document.querySelectorAll('.desarchivar').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const id = btn.dataset.id;
+            fetch(`/solicitud/desarchivarSolicitud/${id}`, { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) btn.closest('.solicitud-row').remove();
+                    else alert('No se pudo desarchivar');
+                });
+        });
+    });
+
+});
+
+</script>
+
     <script src="/js/ActionsRequest.js"></script>
 
 

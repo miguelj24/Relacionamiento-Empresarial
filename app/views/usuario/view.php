@@ -10,11 +10,11 @@
     } else {
         foreach ($usuarios as $usuario) {
             echo "<div class='record'>
-                <span>ID: {$usuario->idUsuario} - {$usuario->DocumentoUsuario} - {$usuario->NombreUsuario} - {$usuario->CorreoUsuario} - {$usuario->TelefonoUsuario} - {$usuario->FKidRol}</span>
+                <span>ID: {$usuario->id} - {$usuario->documentUser} - {$usuario->nameUser} - {$usuario->emailUser} - {$usuario->telephoneUser} - {$usuario->FKroles}</span>
                 <div class='buttons'>
-                    <a href='/usuario/view/{$usuario->idUsuario}'><i class='fas fa-eye'></i></a>
-                    <a href='/usuario/edit/{$usuario->idUsuario}'><i class='fas fa-pen'></i></a>
-                    <a href='/usuario/delete/{$usuario->idUsuario}'><i class='fas fa-trash'></i></a>
+                    <a href='/usuario/view/{$usuario->id}'><i class='fas fa-eye'></i></a>
+                    <a href='/usuario/edit/{$usuario->id}'><i class='fas fa-pen'></i></a>
+                    <a href='/usuario/delete/{$usuario->id}'><i class='fas fa-trash'></i></a>
                 </div>
             </div>";
         }

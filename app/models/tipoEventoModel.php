@@ -10,7 +10,7 @@ class TipoEventoModel extends BaseModel {
         ?int $idTipoEvento = null,
         ?string $TipoEvento = null
     ) {
-        $this->table = "tipoevento";
+        $this->table = "eventtypes";
         parent::__construct();
     }
 
@@ -26,7 +26,8 @@ class TipoEventoModel extends BaseModel {
 
     public function saveTipoEvento($TipoEvento) {
         try {
-            $sql = "INSERT INTO $this->table (TipoEvento) VALUES (:tipo)";
+            $sql = "INSERT INTO $this->table  (\"eventType\", \"createdAt\", \"updatedAt\") 
+                    VALUES (:tipo, NOW(), NOW())";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":tipo", $TipoEvento, PDO::PARAM_STR);
             return $statement->execute();
@@ -37,7 +38,7 @@ class TipoEventoModel extends BaseModel {
 
     public function getTipoEvento($id) {
         try {
-            $sql = "SELECT * FROM $this->table WHERE idTipoEvento = :id";
+            $sql = "SELECT * FROM $this->table WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
@@ -49,7 +50,7 @@ class TipoEventoModel extends BaseModel {
 
     public function editTipoEvento($id, $TipoEvento) {
         try {
-            $sql = "UPDATE $this->table SET TipoEvento = :tipo WHERE idTipoEvento = :id";
+            $sql = "UPDATE $this->table SET \"eventType\" = :tipo WHERE id= :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->bindParam(":tipo", $TipoEvento, PDO::PARAM_STR);
@@ -61,7 +62,7 @@ class TipoEventoModel extends BaseModel {
 
     public function deleteTipoEvento($id) {
         try {
-            $sql = "DELETE FROM $this->table WHERE idTipoEvento = :id";
+            $sql = "DELETE FROM $this->table WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             return $statement->execute();

@@ -11,6 +11,7 @@ class ClienteController extends BaseController{
         $this->layout = "admin_layout";
         //Llamamos al contructor del padre
         parent::__construct();
+        
     }
     
     public function index(){

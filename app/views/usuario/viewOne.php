@@ -46,31 +46,31 @@
         <div class="record record-column">
             <div class="field">
                 <strong>ID:</strong>
-                <span><?php echo $usuario->idUsuario ?></span>
+                <span><?php echo $usuario->id ?></span>
             </div>
             <div class="field">
                 <strong>Documento:</strong>
-                <span><?php echo $usuario->DocumentoUsuario ?></span>
+                <span><?php echo $usuario->documentUser ?></span>
             </div>
             <div class="field">
                 <strong>Nombre:</strong>
-                <span><?php echo $usuario->NombreUsuario ?></span>
+                <span><?php echo $usuario->nameUser ?></span>
             </div>
             <div class="field">
                 <strong>Correo:</strong>
-                <span><?php echo $usuario->CorreoUsuario ?></span>
+                <span><?php echo $usuario->emailUser ?></span>
             </div>
             <div class="field">
                 <strong>Teléfono:</strong>
-                <span><?php echo $usuario->TelefonoUsuario ?></span>
+                <span><?php echo $usuario->telephoneUser ?></span>
             </div>
             <div class="field">
                 <strong>Rol:</strong>
-                <span><?php echo $usuario->NombreRol ?></span>
+                <span><?php echo $usuario->NombreRol?></span>
             </div>
         </div>
         <div class="buttons">
-            <a href="/usuario/edit/<?php echo $usuario->idUsuario ?>" class="btn btn-primary" title="Editar"><i class="fas fa-pen"></i></a>
+            <a href="/usuario/edit/<?php echo $usuario->id ?>" class="btn btn-primary" title="Editar"><i class="fas fa-pen"></i></a>
             <a href="/usuario/view" class="btn btn-secondary" title="Volver"><i class="fas fa-arrow-left"></i></a>
         </div>
     <?php else: ?>

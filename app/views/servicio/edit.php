@@ -93,10 +93,10 @@
 <div class="data-container">
     <form action="/servicio/update" method="post">
         <h2 class="form-title">Editar Servicio</h2>
-        <input type="hidden" name="idServicio" value="<?php echo $servicio->idServicio ?>">
+        <input type="hidden" name="idServicio" value="<?php echo $servicio->id ?>">
         <div class="form-group">
             <label for="Servicio">Nombre del Servicio</label>
-            <input type="text" name="Servicio" id="Servicio" value="<?php echo $servicio->Servicio ?>" 
+            <input type="text" name="Servicio" id="Servicio" value="<?php echo $servicio->service ?>" 
                    required maxlength="100" class="form-control" 
                    placeholder="Ingrese el nombre del servicio">
         </div>
@@ -106,7 +106,7 @@
             <label for="Color">Color del Servicio</label>
             <input type="color" name="Color" id="Color" required 
                    class="form-control color-picker" 
-                   value="<?php echo isset($servicio->Color) ? $servicio->Color : '#4361ee' ?>">
+                   value="<?php echo isset($servicio->service_color) ? $servicio->service_color : '#4361ee' ?>">
         </div>
         
         <div class="button-group">

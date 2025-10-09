@@ -100,7 +100,7 @@
             <label for="FKidRol">Rol</label>
             <select name="FKidRol" required class="form-control">
                 <?php foreach($roles as $rol): ?>
-                    <option value="<?php echo $rol->idRol ?>"><?php echo $rol->Rol ?></option>
+                    <option value="<?php echo $rol->id ?>"><?php echo $rol->Role ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

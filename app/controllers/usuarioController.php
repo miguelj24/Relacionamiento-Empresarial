@@ -39,6 +39,8 @@ class UsuarioController extends BaseController
         $totalSolicitudesPendientes = $solicitudObj->getSolicitudesPendientes();
         $totalSolicitudesResueltas = $solicitudObj->getSolicitudesResueltas();
         $totalSolicitudesEnProceso = $solicitudObj->getSolicitudesEnProceso();
+        $solicitudesPorMes = $solicitudObj->getSolicitudesPorMes();
+
 
         // Últimos movimientos
         $ultimosMovimientos = $solicitudObj->getUltimosMovimientos();
@@ -51,6 +53,31 @@ class UsuarioController extends BaseController
             "totalSolicitudesEnProceso" => $totalSolicitudesEnProceso,
             "ultimosMovimientos" => $ultimosMovimientos
         ]);
+
+        $solicitudesPorMes = $solicitudObj->getSolicitudesPorMes();
+
+        $labels = [];
+        $valores = [];
+
+        foreach ($solicitudesPorMes as $fila) {
+            $labels[] = trim($fila['mes']) . ' ' . $fila['anio'];
+            $valores[] = (int)$fila['cantidad'];
+        }
+
+        $labelsJSON = json_encode($labels, JSON_UNESCAPED_UNICODE);
+        $valoresJSON = json_encode($valores);
+
+        $this->render('usuario/indexAdministrativo.php', [
+            "titulo" => "Estadísticas",
+            "labelsJSON" => $labelsJSON,
+            "valoresJSON" => $valoresJSON,
+            "totalUsuarios" => $totalUsuarios,
+            "totalSolicitudesPendientes" => $totalSolicitudesPendientes,
+            "totalSolicitudesResueltas" => $totalSolicitudesResueltas,
+            "totalSolicitudesEnProceso" => $totalSolicitudesEnProceso,
+            "ultimosMovimientos" => $ultimosMovimientos
+        ]);
+
     }
 
     public function view()
@@ -185,4 +212,40 @@ class UsuarioController extends BaseController
 
         $this->render('usuario/usuarioPerfil.php', $data);
     }
+
+   public function index()
+{
+    // Inicia la sesión si aún no está activa
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // Verifica si el usuario tiene un rol asignado
+    if (isset($_SESSION['rol'])) {
+        switch ($_SESSION['rol']) {
+            case 4: // Administrador
+                $this->redirectTo("usuario/indexAdministrador");
+                break;
+
+            case 1: // Administrativo
+                $this->redirectTo("usuario/indexAdministrativo");
+                break;
+
+            case 5: // Instructor
+            case 6: // Funcionario
+                $this->redirectTo("usuario/indexBienvenida");
+                break;
+
+            default:
+                // Si el rol no es válido, vuelve al login
+                $this->redirectTo("login/initLogin");
+                break;
+        }
+    } else {
+        // Si no hay sesión, redirige al login
+        $this->redirectTo("login/initLogin");
+    }
+}
+
+
 }

@@ -10,11 +10,11 @@
     } else {
         foreach ($roles as $rol) {
             echo "<div class='record'>
-                <span>ID: {$rol->idRol} - {$rol->Rol}</span>
+                <span>ID: {$rol->id} - {$rol->Role}</span>
                 <div class='buttons'>
-                    <a href='/rol/view/{$rol->idRol}'><i class='fas fa-eye'></i></a>
-                    <a href='/rol/edit/{$rol->idRol}'><i class='fas fa-pen'></i></a>
-                    <a href='/rol/delete/{$rol->idRol}'><i class='fas fa-trash'></i></a>
+                    <a href='/rol/view/{$rol->id}'><i class='fas fa-eye'></i></a>
+                    <a href='/rol/edit/{$rol->id}'><i class='fas fa-pen'></i></a>
+                    <a href='/rol/delete/{$rol->id}'><i class='fas fa-trash'></i></a>
                 </div>
             </div>";
         }

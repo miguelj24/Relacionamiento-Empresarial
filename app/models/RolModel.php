@@ -10,13 +10,14 @@ class RolModel extends BaseModel {
         ?int $idRol = null,
         ?string $Rol = null
     ) {
-        $this->table = "rol";
+        $this->table = "roles";
         parent::__construct();
     }
 
     public function saveRol($Rol) {
         try {
-            $sql = "INSERT INTO $this->table (Rol) VALUES (:Rol)";
+            $sql = 'INSERT INTO ' . $this->table . ' ("Role", "createdAt", "updatedAt") 
+                VALUES (:Rol, NOW(), NOW())';
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":Rol", $Rol, PDO::PARAM_STR);
             $statement->execute();
@@ -27,7 +28,8 @@ class RolModel extends BaseModel {
 
     public function getRol($id) {
         try {
-            $sql = "SELECT * FROM $this->table WHERE idRol = :id";
+            $sql = "SELECT * FROM $this->table 
+                    WHERE \"id\"  = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
@@ -40,7 +42,12 @@ class RolModel extends BaseModel {
 
     public function editRol($id, $Rol) {
         try {
-            $sql = "UPDATE {$this->table} SET Rol=:Rol WHERE idRol=:id";
+            $sql = 'UPDATE "' . $this->table . '" 
+            SET "Role" = :Rol,
+                "updatedAt" = NOW()
+            WHERE "id" = :id';
+
+
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->bindParam(":Rol", $Rol, PDO::PARAM_STR);
@@ -52,7 +59,7 @@ class RolModel extends BaseModel {
 
     public function deleteRol($id){
         try {
-            $sql = "DELETE FROM {$this->table} WHERE idRol=:id";
+            $sql = "DELETE FROM {$this->table} WHERE id=:id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();

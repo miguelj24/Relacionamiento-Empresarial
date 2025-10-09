@@ -73,22 +73,22 @@
 <div class="data-container">
     <form action="/usuario/update" method="post">
         <h2 class="form-title">Editar Usuario</h2>
-        <input type="hidden" name="idUsuario" value="<?php echo $usuario->idUsuario ?>">
+        <input type="hidden" name="idUsuario" value="<?php echo $usuario->id ?>">
         <div class="form-group">
             <label for="DocumentoUsuario">Documento</label>
-            <input type="text" name="DocumentoUsuario" value="<?php echo $usuario->DocumentoUsuario ?>" required maxlength="20" class="form-control">
+            <input type="text" name="DocumentoUsuario" value="<?php echo $usuario->documentUser ?>" required maxlength="20" class="form-control">
         </div>
         <div class="form-group">
             <label for="NombreUsuario">Nombre</label>
-            <input type="text" name="NombreUsuario" value="<?php echo $usuario->NombreUsuario ?>" required maxlength="100" class="form-control">
+            <input type="text" name="NombreUsuario" value="<?php echo $usuario->nameUser ?>" required maxlength="100" class="form-control">
         </div>
         <div class="form-group">
             <label for="CorreoUsuario">Correo</label>
-            <input type="email" name="CorreoUsuario" value="<?php echo $usuario->CorreoUsuario ?>" required maxlength="100" class="form-control">
+            <input type="email" name="CorreoUsuario" value="<?php echo $usuario->emailUser ?>" required maxlength="100" class="form-control">
         </div>
         <div class="form-group">
             <label for="TelefonoUsuario">Teléfono</label>
-            <input type="tel" name="TelefonoUsuario" value="<?php echo $usuario->TelefonoUsuario ?>" required maxlength="10" class="form-control">
+            <input type="tel" name="TelefonoUsuario" value="<?php echo $usuario->telephoneUser ?>" required maxlength="10" class="form-control">
         </div>
         <div class="form-group">
             <label for="ContrasenaUsuario">Contraseña (dejar vacío para mantener la actual)</label>
@@ -98,8 +98,8 @@
             <label for="FKidRol">Rol</label>
             <select name="FKidRol" required class="form-control">
                 <?php foreach($roles as $rol): ?>
-                    <option value="<?php echo $rol->idRol ?>" <?php echo ($rol->idRol == $usuario->FKidRol) ? 'selected' : '' ?>>
-                        <?php echo $rol->Rol ?>
+                    <option value="<?php echo $rol->id ?>" <?php echo ($rol->id == $usuario->FKroles) ? 'selected' : '' ?>>
+                        <?php echo $rol->Role ?>
                     </option>
                 <?php endforeach; ?>
             </select>

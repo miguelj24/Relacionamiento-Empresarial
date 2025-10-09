@@ -33,6 +33,7 @@ class BaseController
         } else {
             $_SESSION['timeOut'] = time();
         }
+        
     }
 
     public function render(string $view, array $arrayData = null)
@@ -68,16 +69,25 @@ class BaseController
     protected function dbConnect()
     {
         try {
-            $dsn = "mysql:host=localhost;dbname=relacionamientoempresarial;charset=utf8mb4";
-            $username = "root";
-            $password = "";
-            $options = [
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
-            ];
-            return new \PDO($dsn, $username, $password, $options);
+        $host = "dpg-d35m9hndiees738e619g-a"; // Host de Render
+        $port = "5432"; // Puerto de Postgres
+        $dbname = "db_sisrel"; // Nombre de la base
+        $username = "miguelj24"; // Usuario
+        $password = "H1TODjBvvochExvzhMGYM6d4kdnz0TIV"; // Contraseña
+
+        // El DSN de Postgres cambia (pgsql en vez de mysql)
+        $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require";
+
+        $options = [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
+        ];
+
+        return new \PDO($dsn, $username, $password, $options);
+
+
         } catch (\PDOException $e) {
-            die("Error de conexión a la base de datos: " . $e->getMessage());
+            die("❌ Error de conexión a la base de datos en Render: " . $e->getMessage());
         }
     }
 

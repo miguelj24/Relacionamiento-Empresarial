@@ -111,48 +111,48 @@
                 <div class='record-details'>
                 <div class='detail-group'>
                     <label>ID de la solicitud</label>
-                    <span>{$solicitud->idSolicitud}</span>
+                    <span>{$solicitud->id}</span>
                 </div>
                 <div class='detail-group'>
                     <label>Descripción</label>
-                    <span>{$solicitud->DescripcionNecesidad}</span>
+                    <span>{$solicitud->needDescription}</span>
                 </div>
                 <div class='detail-group'>
                     <label>Fecha de la solicitud</label>
-                    <span>{$solicitud->FechaEvento}</span>
+                    <span>{$solicitud->eventDate}</span>
                 </div>
                 <div class='detail-group'>
                     <label>Fecha de creación</label>
-                    <span>{$solicitud->FechaCreacion}</span>
+                    <span>{$solicitud->createdAt}</span>
                 </div>
                 <div class='detail-group'>
                     <label>Cliente</label>
-                    <span><a href='#' onclick='mostrarClienteModal({$solicitud->idCliente}); return false;' style='color:#000;text-decoration:none;cursor:pointer'>{$solicitud->NombreCliente}</a></span>
+                    <span><a href='#' onclick='mostrarClienteModal({$solicitud->FKclients}); return false;' style='color:#000;text-decoration:none;cursor:pointer'>{$solicitud->NameClient}</a></span>
                 </div>
                 
                 <div class='detail-group'>
                     <label>Servicio</label>
-                    <span>{$solicitud->Servicio}</span>
+                    <span>{$solicitud->service}</span>
                 </div>
                 <div class='detail-group'>
                     <label>Tipo de Servicio</label>
-                    <span>" . htmlspecialchars($solicitud->TipoServicio) . "</span>
+                    <span>" . htmlspecialchars($solicitud->serviceType) . "</span>
                 </div>
                 <div class='detail-group'>
                     <label>Estado</label>
-                    <span>{$solicitud->Estado} - {$solicitud->EstadoDescripcion}</span>
+                    <span>{$solicitud->State} - {$solicitud->EstadoDescripcion}</span>
                 </div>
                 <div class='detail-group'>
                     <label>Usuario que realizó la solicitud</label>
-                    <span><a href='/usuario/view/{$solicitud->FKusuario}' style='color:#000;text-decoration:none;cursor:pointer'>" . htmlspecialchars($solicitud->NombreUsuario) . "</a></span>
+                    <span><a href='/usuario/view/{$solicitud->FKusers}' style='color:#000;text-decoration:none;cursor:pointer'>" . htmlspecialchars($solicitud->UsuarioCreador) . "</a></span>
                 </div>
                 
                 <div class='detail-group'>
                     <label>Responsable Asignado</label>
                     ";
 
-                    if (!empty($solicitud->Asignacion) && !empty($solicitud->NombreUsuarioAsignado)) {
-                        echo "<a href='/usuario/view/{$solicitud->Asignacion}' style='color:#000;text-decoration:none;cursor:pointer'>" . htmlspecialchars($solicitud->NombreUsuarioAsignado) . "</a>";
+                    if (!empty($solicitud->assignment) && !empty($solicitud->UsuarioAsignado)) {
+                        echo "<a href='/usuario/view/{$solicitud->assignment}' style='color:#000;text-decoration:none;cursor:pointer'>" . htmlspecialchars($solicitud->UsuarioAsignado) . "</a>";
                     } else {
                         echo "<span>No asignado</span>";
                     }
@@ -161,19 +161,19 @@
                 </div>
                 <div class='detail-group'>
                     <label>Lugar</label>
-                    <span>" . htmlspecialchars($solicitud->Lugar ?? '') . "</span>
+                    <span>" . htmlspecialchars($solicitud->location ?? '') . "</span>
                 </div>
                 <div class='detail-group'>
                     <label>Municipio</label>
-                    <span>" . htmlspecialchars($solicitud->Municipio ?? '') . "</span>
+                    <span>" . htmlspecialchars($solicitud->municipality ?? '') . "</span>
                 </div>
                 <div class='detail-group'>
                     <label>Comentarios</label>
-                    <span>" . htmlspecialchars($solicitud->Comentarios ?? '') . "</span>
+                    <span>" . htmlspecialchars($solicitud->comments ?? '') . "</span>
                 </div>
                 <div class='detail-group'>
                     <label>Observaciones</label>
-                    <span>" . htmlspecialchars($solicitud->Observaciones ?? '') . "</span>
+                    <span>" . htmlspecialchars($solicitud->observations ?? '') . "</span>
                 </div>
               </div>";
     }

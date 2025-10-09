@@ -42,7 +42,7 @@ class RolController extends BaseController{
         $rolInfo = $rolObj->getRol($id);
         $data = [
             "rol" => $rolInfo,
-            "titulo" => "Ver Rol: ".$rolInfo->Rol
+            "titulo" => "Ver Rol: ".$rolInfo->Role
         ];
         $this->render("rol/viewOne.php", $data);
     }

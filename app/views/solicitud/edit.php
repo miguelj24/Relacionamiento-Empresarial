@@ -111,42 +111,42 @@
         
         <div class="form-group">
             <label for="idSolicitud">ID de la solicitud</label>
-            <input readonly value="<?php echo $solicitud->idSolicitud ?>" type="number" id="idSolicitud" name="idSolicitud" class="form-control">
+            <input readonly value="<?php echo $solicitud->id ?>" type="number" id="idSolicitud" name="idSolicitud" class="form-control">
         </div>
      
         
         <div class="form-group">
             <label for="descripcion">Descripción</label>
-            <input type="text" value="<?php echo $solicitud->DescripcionNecesidad ?>" id="descripcion" name="Descripcion" class="form-control" maxlength="255">
+            <input type="text" value="<?php echo $solicitud->needDescription ?>" id="descripcion" name="Descripcion" class="form-control" maxlength="255">
         </div>
         <div class="form-group">
             <label for="fecha">Fecha de la solicitud</label>
-            <input value="<?php echo $solicitud->FechaEvento ?>" type="date" id="fecha" name="FechaSolicitud" class="form-control">
+            <input value="<?php echo $solicitud->eventDate ?>" type="date" id="fecha" name="FechaSolicitud" class="form-control">
         </div>
         <div class="form-group">
             <label for="cliente">Cliente</label>
-            <input type="text" value="<?php echo $solicitud->NombreCliente; ?>" id="cliente" name="NombreCliente" class="form-control" maxlength="255">
+            <input type="text" value="<?php echo $solicitud->NameClient; ?>" id="cliente" name="NombreCliente" class="form-control" maxlength="255">
         </div>
         <div class="form-group">
             <label for="servicio">Servicio</label>
             <select id="servicio" name="IdServicio" class="form-control">
                 <option value="">Seleccione un servicio</option>
                 <?php foreach ($servicios as $servicio): ?>
-                    <option value="<?php echo $servicio->idServicio; ?>" 
-                        <?php echo ($solicitud->FKtipoServicio == $servicio->idServicio) ? 'selected' : ''; ?>>
-                        <?php echo $servicio->Servicio; ?>
+                    <option value="<?php echo $servicio->id; ?>" 
+                        <?php echo ($solicitud->Fkservice == $servicio->id) ? 'selected' : ''; ?>>
+                        <?php echo $servicio->service; ?>
                     </option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="form-group">
             <label for="tipoServicio">Tipo de Servicio</label>
-            <select id="tipoServicio" name="IdTipoServicio" class="form-control">
+            <select id="tipoServicio" name="IdTipoServicio" class="form-control" data-selected="<?php echo $solicitud->FKservicetypes; ?>">
                 <option value="">Seleccione un tipo de servicio</option>
                 <?php foreach ($tiposServicio as $tipoServicio): ?>
-                    <option value="<?php echo $tipoServicio->idTipoServicio; ?>" 
-                        <?php echo ($solicitud->FKtipoServicio == $tipoServicio->idTipoServicio) ? 'selected' : ''; ?>>
-                        <?php echo $tipoServicio->TipoServicio; ?>
+                    <option value="<?php echo $tipoServicio->id; ?>" 
+                        <?php echo ($solicitud->FKservicetypes == $tipoServicio->id) ? 'selected' : ''; ?>>
+                        <?php echo $tipoServicio->serviceType; ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -155,25 +155,24 @@
             <label for="estado">Estado</label>
             <?php
             // Mapeo de estados permitidos según el estado actual
-            $estadoActual = $solicitud->FKestado;
+            $estadoActual = $solicitud->FKstates;
             $estadosPermitidos = [];
 
             switch ($estadoActual) {
-                case 3: // Pendiente
-                    $estadosPermitidos = [7]; // Asignado
+                case 1: // Pendiente
+                    $estadosPermitidos = [3]; // Asignado
                     break;
-                case 7: // Asignado
-                    $estadosPermitidos = [5]; // En proceso
+                case 3: // Asignado
+                    $estadosPermitidos = [4]; // En proceso
                     break;
-                case 5: // En proceso
-                    $estadosPermitidos = [6]; // Ejecutado
+                case 4: // En proceso
+                    $estadosPermitidos = [5]; // Ejecutado
                     break;
-                case 6: // Ejecutado
-                    $estadosPermitidos = [4, 8]; // Resuelto y Cerrado
+                case 5: // Ejecutado
+                    $estadosPermitidos = [6, 7]; // Resuelto y Cerrado
                     break;
-                case 4: // Resuelto
-                case 8: // Cerrado
-                    $estadosPermitidos = [2]; // Archivado
+                case 6: // Resuelto
+                case 7: // Cerrado
                     break;
                 default:
                     $estadosPermitidos = [$estadoActual]; // Solo el actual, por seguridad
@@ -184,11 +183,11 @@
                 <?php foreach ($estados as $estado): ?>
                     <?php
                     // Mostrar si es permitido avanzar o si es el estado actual
-                    $mostrar = in_array($estado->idEstado, $estadosPermitidos) || $solicitud->FKestado == $estado->idEstado;
+                    $mostrar = in_array($estado->id, $estadosPermitidos) || $solicitud->FKstates== $estado->id;
                     ?>
                     <?php if ($mostrar): ?>
-                        <option value="<?php echo $estado->idEstado; ?>" <?php echo ($solicitud->FKestado == $estado->idEstado) ? 'selected' : ''; ?>>
-                            <?php echo $estado->Estado; ?>
+                        <option value="<?php echo $estado->id; ?>" <?php echo ($solicitud->FKstates == $estado->id) ? 'selected' : ''; ?>>
+                            <?php echo $estado->State; ?>
                         </option>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -200,16 +199,17 @@
             <label for="asignacion">Asignar solicitud</label>
             <?php
             $roles = [
-                3 => 'Funcionario',
-                4 => 'Instructor'
+                5 => 'Instructor',
+                6 => 'Funcionario'
+                
             ];
             ?>
             <select id="asignacion" name="Asignacion" class="form-control">
                 <option value="">Seleccione un usuario</option>
                 <?php foreach ($usuariosAsignables as $usuario): ?>
-                    <option value="<?php echo $usuario->idUsuario; ?>"
-                        <?php echo ($solicitud->Asignacion == $usuario->idUsuario) ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($usuario->NombreUsuario); ?> (<?php echo $roles[$usuario->FKidRol]; ?>)
+                    <option value="<?php echo $usuario->id; ?>"
+                        <?php echo ($solicitud->assignment == $usuario->id) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($usuario->nameUser); ?> (<?php echo $roles[$usuario->FKroles]; ?>)
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -217,19 +217,19 @@
         <?php endif; ?>
         <div class="form-group">
             <label for="lugar">Lugar</label>
-            <input type="text" value="<?php echo htmlspecialchars($solicitud->Lugar ?? ''); ?>" id="lugar" name="Lugar" class="form-control">
+            <input type="text" value="<?php echo htmlspecialchars($solicitud->location ?? ''); ?>" id="lugar" name="Lugar" class="form-control">
         </div>
         <div class="form-group">
             <label for="municipio">Municipio</label>
-            <input type="text" value="<?php echo htmlspecialchars($solicitud->Municipio ?? ''); ?>" id="municipio" name="Municipio" class="form-control">
+            <input type="text" value="<?php echo htmlspecialchars($solicitud->municipality ?? ''); ?>" id="municipio" name="Municipio" class="form-control">
         </div>
         <div class="form-group">
             <label for="comentarios">Comentarios</label>
-            <textarea id="comentarios" name="Comentarios" class="form-control"><?php echo htmlspecialchars($solicitud->Comentarios ?? ''); ?></textarea>
+            <textarea id="comentarios" name="Comentarios" class="form-control"><?php echo htmlspecialchars($solicitud->comments ?? ''); ?></textarea>
         </div>
         <div class="form-group">
             <label for="observaciones">Observaciones</label>
-            <textarea id="observaciones" name="Observaciones" class="form-control"><?php echo htmlspecialchars($solicitud->Observaciones ?? ''); ?></textarea>
+            <textarea id="observaciones" name="Observaciones" class="form-control"><?php echo htmlspecialchars($solicitud->observations ?? ''); ?></textarea>
         </div>
         
         <div class="button-group">
@@ -267,10 +267,14 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch(`/tipoServicio/getTiposServicioByServicio/${servicioId}`);
                 const tiposServicio = await response.json();
+                const selectedTipoServicio = tipoServicioSelect.getAttribute('data-selected');
                 tiposServicio.forEach(tipo => {
                     const option = document.createElement('option');
-                    option.value = tipo.idTipoServicio;
-                    option.textContent = tipo.TipoServicio;
+                    option.value = tipo.id;
+                    option.textContent = tipo.serviceType;
+                    if (selectedTipoServicio && selectedTipoServicio == tipo.id) {
+                        option.selected = true;
+                    }
                     tipoServicioSelect.appendChild(option);
                 });
             } catch (error) {

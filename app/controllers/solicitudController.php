@@ -41,15 +41,15 @@ class SolicitudController extends BaseController
     public function view()
     {
         if (session_status() === PHP_SESSION_NONE) session_start();
-        $rol = $_SESSION['rol'] ?? null; // 1 = admin, 3 = funcionario, 4 = instructor
+        $rol = $_SESSION['rol'] ?? null; // 4 = admin, 6 = funcionario, 5 = instructor
         $idUsuario = $_SESSION['idUsuario'] ?? null;
 
         $solicitudObj = new SolicitudModel();
 
-        if ($rol == 1) {
+        if ($rol == 4) {
             // Administrador: ver todas las solicitudes
             $solicitudes = $solicitudObj->getAll();
-        } elseif ($rol == 3 || $rol == 4) {
+        } elseif ($rol == 5 || $rol == 6) {
             // Funcionario o Instructor: solo las asignadas a él
             $solicitudes = $solicitudObj->getByAsignacion($idUsuario);
         } else {
@@ -110,7 +110,7 @@ class SolicitudController extends BaseController
             if (!$cliente) {
                 $idCliente = $clienteObj->saveCliente($documento, $nombre, $correo, $telefono);
             } else {
-                $idCliente = $cliente->idCliente;
+                $idCliente = $cliente->id;
             }
 
             // Obtener el idUsuario de la sesión
@@ -122,7 +122,7 @@ class SolicitudController extends BaseController
             $fechaEvento = $_POST['fecha_evento'];
             $idServicio = $_POST['servicio'];
             $idTipoServicio = $_POST['tipo_servicio']; // Nuevo campo
-            $estado = $_POST['estado']; // Viene como 3 (Pendiente) por defecto
+            $estado = $_POST['estado']; // Viene como 1 (Pendiente) por defecto
             $lugar = $_POST['lugar'] ?? null;
             $municipio = $_POST['municipio'] ?? null;
 
@@ -175,9 +175,9 @@ class SolicitudController extends BaseController
         $usuarioObj = new \App\Models\UsuarioModel();
         $usuarios = $usuarioObj->getAll();
 
-        // Filtrar solo usuarios con FKidRol 3 (Funcionario) o 4 (Instructor)
+        // Filtrar solo usuarios con FKidRol  (Funcionario) o  (Instructor)
         $usuariosAsignables = array_filter($usuarios, function ($usuario) {
-            return in_array($usuario->FKidRol, [3, 4]);
+            return in_array($usuario->FKroles, [5, 6]);
         });
 
         $data = [
@@ -216,28 +216,24 @@ class SolicitudController extends BaseController
                 }
 
                 // Log para debugging
-                error_log("Estado anterior: " . $solicitudAnterior->FKestado . ", Estado nuevo: " . $idEstado);
+                error_log("Estado anterior: " . $solicitudAnterior->FKstates . ", Estado nuevo: " . $idEstado);
 
                 // Actualizar cliente
                 $clienteObj = new ClienteModel();
                 $clienteObj->editCliente(
-                    $solicitudAnterior->FKcliente,
-                    $solicitudAnterior->DocumentoCliente,
+                    $solicitudAnterior->FKclients,
+                    $solicitudAnterior->DocumentClient,
                     $nombreCliente,
-                    $solicitudAnterior->CorreoCliente,
-                    $solicitudAnterior->TelefonoCliente
+                    $solicitudAnterior->EmailClient,
+                    $solicitudAnterior->TelephoneClient
                 );
-
-                if ($asignacion) {
-                    $idEstado = 7;
-                }
 
                 // Actualizar solicitud
                 $resultado = $solicitudObj->editSolicitud(
                     $id,
                     $descripcion,
                     $fechaSolicitud,
-                    $solicitudAnterior->FKcliente,
+                    $solicitudAnterior->FKclients,
                     $idTipoServicio,
                     $idEstado,
                     $lugar,
@@ -261,14 +257,14 @@ class SolicitudController extends BaseController
                     $nuevoEstado = $estadoObj->getEstado($idEstado);
 
                     // Obtener usuario creador de la solicitud
-                    $usuarioCreador = $usuarioObj->getUsuario($solicitudAnterior->FKusuario);
+                    $usuarioCreador = $usuarioObj->getUsuario($solicitudAnterior->FKusers);
 
-                    error_log("Usuario creador: " . ($usuarioCreador ? $usuarioCreador->NombreUsuario : 'No encontrado'));
-                    error_log("Es coordinador: " . ($usuarioCreador && $usuarioCreador->Coordinador ? 'Si' : 'No'));
+                    error_log("Usuario creador: " . ($usuarioCreador ? $usuarioCreador->nameUser : 'No encontrado'));
+                    error_log("Es coordinador: " . ($usuarioCreador && $usuarioCreador->Coordinator ? 'Si' : 'No'));
 
                     // Si el usuario es coordinador, enviar correo
-                    if ($usuarioCreador && $usuarioCreador->Coordinador) {
-                        error_log("Intentando enviar correo a: " . $usuarioCreador->CorreoUsuario);
+                    if ($usuarioCreador && $usuarioCreador->Coordinator) {
+                        error_log("Intentando enviar correo a: " . $usuarioCreador->EmailUser);
 
                         $mailer = new \App\Utils\Mailer();
 
@@ -558,7 +554,7 @@ class SolicitudController extends BaseController
         
         <div class="content">
             <div class="greeting">
-                Estimado(a) <span class="user-name">' . htmlspecialchars($usuarioCreador->NombreUsuario) . '</span>,
+                Estimado(a) <span class="user-name">' . htmlspecialchars($usuarioCreador->nameUser) . '</span>,
             </div>
             
             <p>Nos complace informarle que hemos procesado una actualización en su solicitud. A continuación, encontrará los detalles del cambio realizado:</p>
@@ -570,12 +566,12 @@ class SolicitudController extends BaseController
             <div class="status-card">
                 <div class="status-row">
                     <div class="status-label">Estado Anterior:</div>
-                    <div class="status-value previous">' . htmlspecialchars($solicitudAnterior->Estado) . '</div>
+                    <div class="status-value previous">' . htmlspecialchars($solicitudAnterior->State) . '</div>
                 </div>
                 
                 <div class="status-row">
                     <div class="status-label">Nuevo Estado:</div>
-                    <div class="status-value">' . htmlspecialchars($nuevoEstado->Estado) . '</div>
+                    <div class="status-value">' . htmlspecialchars($nuevoEstado->State) . '</div>
                 </div>
                 
                 <div class="status-row">
@@ -656,10 +652,10 @@ class SolicitudController extends BaseController
 
         $solicitudModel = new \App\Models\SolicitudModel();
 
-        if ($rol == 1) {
+        if ($rol == 4) {
             // Administrador: ver todas las archivadas
             $solicitudes = $solicitudModel->getArchivadas();
-        } elseif ($rol == 3 || $rol == 4) {
+        } elseif ($rol == 5 || $rol == 6) {
             // Instructor o Funcionario: solo las archivadas asignadas a él
             $solicitudes = $solicitudModel->getArchivadasByAsignacion($idUsuario);
         } else {

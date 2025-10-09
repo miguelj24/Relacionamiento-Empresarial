@@ -10,11 +10,11 @@
     } else {
         foreach ($servicios as $servicio) {
             echo "<div class='record'>
-                <span>ID: {$servicio->idServicio} - {$servicio->Servicio}</span>
+                <span>ID: {$servicio->id} - {$servicio->service}</span>
                 <div class='buttons'>
-                    <a href='/servicio/view/{$servicio->idServicio}'><i class='fas fa-eye'></i></a>
-                    <a href='/servicio/edit/{$servicio->idServicio}'><i class='fas fa-pen'></i></a>
-                    <a href='/servicio/delete/{$servicio->idServicio}'><i class='fas fa-trash'></i></a>
+                    <a href='/servicio/view/{$servicio->id}'><i class='fas fa-eye'></i></a>
+                    <a href='/servicio/edit/{$servicio->id}'><i class='fas fa-pen'></i></a>
+                    <a href='/servicio/delete/{$servicio->id}'><i class='fas fa-trash'></i></a>
                 </div>
             </div>";
         }

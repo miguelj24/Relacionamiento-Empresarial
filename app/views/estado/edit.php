@@ -79,21 +79,21 @@
 <div class="data-container">
     <form action="/estado/update" method="post">
         <h2 class="form-title">Editar Estado</h2>
-        <input type="hidden" name="idEstado" value="<?php echo $estado->idEstado ?>">
+        <input type="hidden" name="idEstado" value="<?php echo $estado->id ?>">
         <div class="form-group">
             <label for="Estado">Nombre del estado</label>
-            <input type="text" name="Estado" id="Estado" class="form-control" maxlength="45" required value="<?php echo $estado->Estado ?>">
+            <input type="text" name="Estado" id="Estado" class="form-control" maxlength="45" required value="<?php echo $estado->State ?>">
         </div>
         <div class="form-group">
             <label for="Descripcion">Descripción del estado</label>
-            <input type="text" name="Descripcion" id="Descripcion" class="form-control" maxlength="100" required value="<?php echo $estado->Descripcion ?>">
+            <input type="text" name="Descripcion" id="Descripcion" class="form-control" maxlength="100" required value="<?php echo $estado->Description ?>">
         </div>
         <!-- Nuevo campo de color -->
         <div class="form-group">
             <label for="Color">Color del Estado</label>
             <input type="color" name="Color" id="Color" required 
                    class="form-control color-picker" 
-                   value="<?php echo isset($estado->Color) ? $estado->Color : '#4361ee' ?>">
+                   value="<?php echo isset($estado->state_color) ? $estado->state_color : '#4361ee' ?>">
         </div>
         <div class="form-group button-group">
             <button type="submit" class="btn btn-primary">Actualizar</button>

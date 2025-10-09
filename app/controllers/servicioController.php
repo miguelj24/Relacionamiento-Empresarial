@@ -43,7 +43,7 @@ class ServicioController extends BaseController {
         $servicioInfo = $servicioObj->getServicio($id);
         $data = [
             "servicio" => $servicioInfo,
-            "titulo" => "Ver Servicio: ".$servicioInfo->Servicio
+            "titulo" => "Ver Servicio: ".$servicioInfo->service
         ];
         $this->render("servicio/viewOne.php", $data);
     }

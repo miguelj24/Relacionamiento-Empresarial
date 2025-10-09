@@ -49,7 +49,7 @@ class TipoServicioController extends BaseController {
         $tipoServicioInfo = $tipoServicioObj->getTipoServicio($id);
         $data = [
             "tipoServicio" => $tipoServicioInfo,
-            "titulo" => "Ver Tipo de Servicio: ".$tipoServicioInfo->TipoServicio
+            "titulo" => "Ver Tipo de Servicio: ".$tipoServicioInfo->serviceType
         ];
         $this->render("tipoServicio/viewOne.php", $data);
     }

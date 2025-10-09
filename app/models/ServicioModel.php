@@ -10,7 +10,7 @@ class ServicioModel extends BaseModel {
         ?int $idServicio = null,
         ?string $Servicio = null
     ) {
-        $this->table = "servicio";
+        $this->table = "services";
         parent::__construct();
     }
 
@@ -25,7 +25,8 @@ class ServicioModel extends BaseModel {
 
     public function saveServicio($Servicio, $Color) {
         try {
-            $sql = "INSERT INTO $this->table (Servicio, Color) VALUES (:servicio, :color)";
+            $sql = "INSERT INTO $this->table (service, color, \"createdAt\", \"updatedAt\") 
+                    VALUES (:servicio, :color, NOW(), NOW())";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":servicio", $Servicio, PDO::PARAM_STR);
             $statement->bindParam(":color", $Color, PDO::PARAM_STR);
@@ -37,7 +38,7 @@ class ServicioModel extends BaseModel {
 
     public function getServicio($id) {
         try {
-            $sql = "SELECT * FROM $this->table WHERE idServicio = :id";
+            $sql = "SELECT * FROM $this->table WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
@@ -49,7 +50,9 @@ class ServicioModel extends BaseModel {
 
     public function editServicio($id, $Servicio, $Color) {
         try {
-            $sql = "UPDATE $this->table SET Servicio = :servicio, Color = :color WHERE idServicio = :id";
+           $sql = "UPDATE $this->table 
+                    SET service = :servicio, color = :color, \"updatedAt\" = NOW() 
+                    WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->bindParam(":servicio", $Servicio, PDO::PARAM_STR);
@@ -62,7 +65,7 @@ class ServicioModel extends BaseModel {
 
     public function deleteServicio($id) {
         try {
-            $sql = "DELETE FROM $this->table WHERE idServicio = :id";
+            $sql = "DELETE FROM $this->table WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             return $statement->execute();

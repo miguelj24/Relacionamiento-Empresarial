@@ -74,10 +74,10 @@
     <form action="/rol/update" method="post">
         
         <h2 class="form-title">Editar Rol</h2>
-        <input type="hidden" name="idRol" value="<?php echo $rol->idRol ?>">
+        <input type="hidden" name="idRol" value="<?php echo $rol->id ?>">
         <div class="form-group">
             <label for="Rol">Nombre del Rol</label>
-            <input type="text" name="Rol" value="<?php echo $rol->Rol ?>" required maxlength="45" class="form-control">
+            <input type="text" name="Rol" value="<?php echo $rol->Role ?>" required maxlength="45" class="form-control">
         </div>
         <div class="form-group button-group">
             <button type="submit" class="btn btn-primary">Actualizar</button>

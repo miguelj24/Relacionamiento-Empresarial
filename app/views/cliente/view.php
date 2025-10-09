@@ -6,11 +6,11 @@
     } else {
         foreach ($clientes as $key => $value) {
             echo "<div class='record'>
-                <span>ID: $value->idCliente - $value->DocumentoCliente - $value->NombreCliente - $value->CorreoCliente - $value->TelefonoCliente</span>
+                <span>ID: $value->id - $value->DocumentClient - $value->NameClient - $value->EmailClient - $value->TelephoneClient</span>
                 <div class='buttons'>
-                    <a href='/cliente/view/".$value->idCliente."'>Consultar</a>
-                    <a href='/cliente/edit/".$value->idCliente."'>Editar</a>
-                    <a href='/cliente/delete/".$value->idCliente."'>Eliminar</a>
+                    <a href='/cliente/view/".$value->id."'>Consultar</a>
+                    <a href='/cliente/edit/".$value->id."'>Editar</a>
+                    <a href='/cliente/delete/".$value->id."'>Eliminar</a>
                 </div>
             </div>";
         }

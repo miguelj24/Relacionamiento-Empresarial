@@ -3,19 +3,19 @@
         <div class="record">
             <div class="field">
                 <strong>ID:</strong>
-                <span><?php echo $estado->idEstado ?></span>
+                <span><?php echo $estado->id?></span>
             </div>
             <div class="field">
                 <strong>Estado:</strong>
-                <span><?php echo $estado->Estado ?></span>
+                <span><?php echo $estado->State ?></span>
             </div>
             <div class="field">
                 <strong>Descripción:</strong>
-                <span><?php echo $estado->Descripcion ?></span>
+                <span><?php echo $estado->Description ?></span>
             </div>
         </div>
         <div class="buttons">
-            <a href="/estado/edit/<?php echo $estado->idEstado ?>" title="Editar"><i class="fas fa-pen"></i></a>
+            <a href="/estado/edit/<?php echo $estado->id ?>" title="Editar"><i class="fas fa-pen"></i></a>
             <a href="/estado/view" title="Volver"><i class="fas fa-arrow-left"></i></a>
         </div>
     <?php else: ?>

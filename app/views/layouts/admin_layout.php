@@ -172,18 +172,19 @@
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <a href="<?php
-                    switch ($_SESSION['rol']) {
-                        case 1:
+                     switch ($_SESSION['rol']) {
+                        case 4:
                             echo '/usuario/indexAdministrador';
                             break;
-                        case 2:
+                        case 1:
                             echo '/usuario/indexAdministrativo';
                             break;
-                        case 3:
+                        case 5:
+                        case 6:
                             echo '/usuario/indexBienvenida';
                             break;
                         default:
-                            echo '/usuario/indexBienvenida';
+                            echo '#';
                     }
                     ?>" class="sidebar-item <?php if ($titulo == "Home" || $titulo == "Home Admin") {
                                                 echo "selected";
@@ -354,6 +355,11 @@
                 logoutModal.classList.remove('show');
             }
         });
+    </script>
+    
+    <script>
+        const labelsData = <?php echo $labelsJSON; ?>;
+        const valuesData = <?php echo $valoresJSON; ?>;
     </script>
     <script src="/js/estadisticas.js"> </script>
     <script src="/js/session-timeout.js"></script>

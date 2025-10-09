@@ -14,11 +14,11 @@
         <div class="record">
             <div class="field">
                 <strong>ID:</strong>
-                <span><?php echo $tipoServicio->idTipoServicio ?></span>
+                <span><?php echo $tipoServicio->id ?></span>
             </div>
             <div class="field">
                 <strong>Tipo de Servicio:</strong>
-                <span><?php echo $tipoServicio->TipoServicio ?></span>
+                <span><?php echo $tipoServicio->serviceType ?></span>
             </div>
             <div class="field">
                 <strong>Servicio:</strong>
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="buttons">
-            <a href="/tipoServicio/edit/<?php echo $tipoServicio->idTipoServicio ?>" title="Editar"><i class="fas fa-pen"></i></a>
+            <a href="/tipoServicio/edit/<?php echo $tipoServicio->id ?>" title="Editar"><i class="fas fa-pen"></i></a>
             <a href="/tipoServicio/view" title="Volver"><i class="fas fa-arrow-left"></i></a>
         </div>
     <?php else: ?>

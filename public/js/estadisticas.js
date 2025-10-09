@@ -3,43 +3,49 @@
 /* EJEMPLO  # SOLICITUD POR MES*/
 var canvas = document.getElementById('myChart');
 // Solo crea la gráfica si el canvas existe en la página
-if (canvas) {
-    var ctx = canvas.getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
-            datasets: [{
-                label: '# de Solicitudes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54,162,235,1)',
-                    'rgba(255,206,86,1)',
-                    'rgba(75,192,192,1)',
-                    'rgba(153,102,255,1)',
-                    'rgba(255,159,64,1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const canvas = document.getElementById('myChart');
+  if (!canvas) {
+    console.error('No se encontró el canvas con id="myChart"');
+    return;
+  }
+
+  const ctx = canvas.getContext('2d');
+
+  if (window.myChart instanceof Chart) {
+    window.myChart.destroy();
+  }
+
+  window.myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labelsData,    // vienen desde PHP
+      datasets: [{
+        label: 'Solicitudes',
+        data: valuesData,     // vienen desde PHP
+        backgroundColor: 'rgba(57,169,0,0.35)',
+        borderColor: 'rgba(57,169,0,1)',
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { beginAtZero: true }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: 'index', intersect: false }
+      }
+    }
+  });
+});
+
+
+
 
 /* SOLICITUDES EN PROCESO /EJECUTADAS */
 

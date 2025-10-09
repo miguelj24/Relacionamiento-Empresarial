@@ -10,11 +10,11 @@
     } else {
         foreach ($estados as $key => $value) {
             echo "<div class='record'>
-                <span>ID: $value->idEstado - $value->Estado - $value->Descripcion</span>
+                <span>ID: $value->id- $value->State - $value->Description</span>
                 <div class='buttons'>
-                    <a href='/estado/view/".$value->idEstado."'><i class='fas fa-eye'></i></a>
-                    <a href='/estado/edit/".$value->idEstado."'><i class='fas fa-pen'></i></a>
-                    <a href='/estado/delete/".$value->idEstado."'><i class='fas fa-trash'></i></a>
+                    <a href='/estado/view/".$value->id."'><i class='fas fa-eye'></i></a>
+                    <a href='/estado/edit/".$value->id."'><i class='fas fa-pen'></i></a>
+                    <a href='/estado/delete/".$value->id."'><i class='fas fa-trash'></i></a>
                 </div>
             </div>";
         }

@@ -17,20 +17,21 @@ class SolicitudModel extends BaseModel
         ?int $IdServicio = null,
         ?int $IdEstado = null
     ) {
-        $this->table = "solicitud";
+        $this->table = "requests";
         parent::__construct();
     }
 
     public function getAll(): array
     {
         try {
-            $sql = "SELECT s.*, c.NombreCliente, sv.Servicio, sv.Color, e.Estado, e.Color AS ColorEstado
-                    FROM solicitud s
-                    JOIN cliente c ON s.FKcliente = c.idCliente
-                    JOIN tiposervicio ts ON s.FKtipoServicio = ts.idTipoServicio
-                    JOIN servicio sv ON ts.FKidServicio = sv.idServicio
-                    JOIN estado e ON s.FKestado = e.idEstado
-                    WHERE s.Archivado = 0"; // Solo NO archivadas
+            $sql = 'SELECT s.*, c."NameClient", sv."service", sv."color" AS "service_color", e."State", e."color" AS "state_color"
+                FROM "requests" s
+                JOIN "clients" c ON s."FKclients" = c."id"
+                JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
+                JOIN "services" sv ON ts."FKservices" = sv."id"
+                JOIN "states" e ON s."FKstates" = e."id"
+                WHERE s."archive_status" = 0';
+        ; // Solo NO archivadas
             $stmt = $this->dbConnection->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_OBJ);
@@ -42,10 +43,8 @@ class SolicitudModel extends BaseModel
     public function saveSolicitud($Descripcion, $FechaSolicitud, $IdCliente, $IdServicio, $IdEstado, $IdUsuario, $Lugar, $Municipio)
     {
         try {
-            $sql = "INSERT INTO {$this->table} 
-                    (DescripcionNecesidad, FechaEvento, FechaCreacion, FKcliente, FKtipoServicio, FKestado, FKtipoEvento, FKusuario, MedioSolicitud, Lugar, Municipio) 
-                    VALUES 
-                    (:Descripcion, :FechaSolicitud, CURDATE(), :IdCliente, :IdServicio, :IdEstado, 1, :IdUsuario, 'Web', :Lugar, :Municipio)";
+           $sql = 'INSERT INTO "requests" ("needDescription", "eventDate", "createdAt", "FKclients", "FKservicetypes", "FKstates", "FKeventtypes", "FKusers", "requestMethod", "location", "municipality", "updatedAt") 
+                   VALUES (:Descripcion, :FechaSolicitud, NOW(), :IdCliente, :IdServicio, :IdEstado, 1, :IdUsuario, \'Web\', :Lugar, :Municipio, NOW())';
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":Descripcion", $Descripcion, PDO::PARAM_STR);
             $statement->bindParam(":FechaSolicitud", $FechaSolicitud, PDO::PARAM_STR);
@@ -61,55 +60,71 @@ class SolicitudModel extends BaseModel
         }
     }
 
-    public function getSolicitud($id)
-    {
-        try {
-            $sql = "SELECT s.*, 
-                       c.idCliente,
-                       c.NombreCliente, 
-                       c.CorreoCliente, 
-                       c.TelefonoCliente,
-                       c.DocumentoCliente,
-                       ts.TipoServicio, 
-                       sv.Servicio, 
-                       e.Estado, 
-                       e.Descripcion as EstadoDescripcion, 
-                       u.NombreUsuario,
-                       ua.NombreUsuario AS NombreUsuarioAsignado  -- Agrega esta línea
-                FROM {$this->table} s
-                JOIN cliente c ON s.FKcliente = c.idCliente
-                JOIN tiposervicio ts ON s.FKtipoServicio = ts.idTipoServicio
-                JOIN servicio sv ON ts.FKidServicio = sv.idServicio
-                JOIN estado e ON s.FKestado = e.idEstado
-                JOIN usuario u ON s.FKusuario = u.idUsuario
-                LEFT JOIN usuario ua ON s.Asignacion = ua.idUsuario  -- Agrega esta línea
-                WHERE s.idSolicitud = :id";
-            $statement = $this->dbConnection->prepare($sql);
-            $statement->bindParam(":id", $id, PDO::PARAM_INT);
-            $statement->execute();
-            return $statement->fetch(PDO::FETCH_OBJ);
-        } catch (PDOException $ex) {
-            throw new PDOException("Error al obtener la solicitud: " . $ex->getMessage());
+   public function getSolicitud($id)
+{
+    try {
+        $sql = 'SELECT s.*, 
+            c."id" AS "IdCliente",
+            c."NameClient", 
+            c."EmailClient", 
+            c."TelephoneClient",
+            c."DocumentClient",
+            ts."serviceType", 
+            ts."FKservices" AS "Fkservice",
+            sv."service", 
+            e."State", 
+            e."Description" AS "EstadoDescripcion", 
+            u."nameUser" AS "UsuarioCreador",
+            ua."nameUser" AS "UsuarioAsignado"
+        FROM "' . $this->table . '" s
+        JOIN "clients" c ON s."FKclients" = c."id"
+        JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
+        JOIN "services" sv ON ts."FKservices" = sv."id"
+        JOIN "states" e ON s."FKstates" = e."id"
+        JOIN "users" u ON s."FKusers" = u."id"
+        LEFT JOIN "users" ua ON s."assignment" = ua."id"::text
+        WHERE s.id = :id';
+
+        $statement = $this->dbConnection->prepare($sql);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        if (!$result) {
+            throw new PDOException("No se encontró la solicitud con id = $id");
         }
+
+        return $result;
+
+    } catch (PDOException $ex) {
+        throw new PDOException("Error al obtener la solicitud: " . $ex->getMessage());
     }
+}
+
+
+
+
+
 
     public function editSolicitud($id, $Descripcion, $FechaSolicitud, $IdCliente, $IdTipoServicio, $IdEstado, $Lugar, $Municipio, $Comentarios, $Observaciones, $Asignacion = null)
     {
         try {
-            $sql = "UPDATE {$this->table} 
-                    SET DescripcionNecesidad = :Descripcion, 
-                        FechaEvento = :FechaSolicitud, 
-                        FKcliente = :IdCliente, 
-                        FKtipoServicio = :IdTipoServicio, 
-                        FKestado = :IdEstado,
-                        Lugar = :Lugar,
-                        Municipio = :Municipio,
-                        Comentarios = :Comentarios,
-                        Observaciones = :Observaciones";
+            $sql = 'UPDATE "' . $this->table . '" 
+                    SET "needDescription" = :Descripcion, 
+                        "eventDate" = :FechaSolicitud, 
+                        "FKclients" = :IdCliente, 
+                        "FKservicetypes" = :IdTipoServicio, 
+                        "FKstates" = :IdEstado,
+                        "location" = :Lugar,
+                        "municipality" = :Municipio,
+                        "comments" = :Comentarios,
+                        "observations" = :Observaciones';
             if ($Asignacion !== null) {
-                $sql .= ", Asignacion = :Asignacion";
+                $sql .= ', "assignment" = :Asignacion';
             }
-            $sql .= " WHERE idSolicitud = :id";
+            $sql .= ' WHERE "id" = :id';
+
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->bindParam(":Descripcion", $Descripcion, PDO::PARAM_STR);
@@ -133,7 +148,7 @@ class SolicitudModel extends BaseModel
     public function deleteSolicitud($id)
     {
         try {
-            $sql = "DELETE FROM {$this->table} WHERE idSolicitud = :id";
+            $sql = "DELETE FROM {$this->table} WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             return $statement->execute();
@@ -144,13 +159,13 @@ class SolicitudModel extends BaseModel
 
     public function getByAsignacion($idUsuario)
     {
-        $sql = "SELECT s.*, c.NombreCliente, sv.Servicio, sv.Color, e.Estado, e.Color AS ColorEstado
-                FROM solicitud s
-                JOIN cliente c ON s.FKcliente = c.idCliente
-                JOIN tiposervicio ts ON s.FKtipoServicio = ts.idTipoServicio
-                JOIN servicio sv ON ts.FKidServicio = sv.idServicio
-                JOIN estado e ON s.FKestado = e.idEstado
-                WHERE s.Asignacion = :idUsuario AND s.FKestado != 2";
+       $sql = 'SELECT s.*, c."NameClient", sv."service", sv."color" AS "service_color", e."State", e."color" AS "state_color"
+        FROM "requests" s
+        JOIN "clients" c ON s."FKclients" = c."id"
+        JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
+        JOIN "services" sv ON ts."FKservices" = sv."id"
+        JOIN "states" e ON s."FKstates" = e."id"
+        WHERE s."assignment" = :idUsuario AND s."FKstates" != 2';
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->bindParam(':idUsuario', $idUsuario, \PDO::PARAM_INT);
         $stmt->execute();
@@ -160,19 +175,20 @@ class SolicitudModel extends BaseModel
     public function getByUsuarioCreador($idUsuario)
 {
     try {
-        $sql = "SELECT s.*, 
-                       c.NombreCliente, 
-                       sv.Servicio, 
-                       sv.Color, 
-                       e.Estado, 
-                       e.Color AS ColorEstado
-                FROM solicitud s
-                JOIN cliente c ON s.FKcliente = c.idCliente
-                JOIN tiposervicio ts ON s.FKtipoServicio = ts.idTipoServicio
-                JOIN servicio sv ON ts.FKidServicio = sv.idServicio
-                JOIN estado e ON s.FKestado = e.idEstado
-                WHERE s.FKusuario = :idUsuario
-                ORDER BY s.FechaCreacion DESC";
+       $sql = 'SELECT s.*, 
+               c."NameClient", 
+               sv."service", 
+               sv."color" AS service_color, 
+               e."State", 
+               e."color" AS "state_color"
+        FROM "requests" s
+        JOIN "clients" c ON s."FKclients" = c."id"
+        JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
+        JOIN "services" sv ON ts."FKservices" = sv."id"
+        JOIN "states" e ON s."FKstates" = e."id"
+        WHERE s."FKusers" = :idUsuario
+        ORDER BY s."createdAt" DESC';
+
         
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->bindParam(':idUsuario', $idUsuario, \PDO::PARAM_INT);
@@ -187,8 +203,9 @@ class SolicitudModel extends BaseModel
     public function getSolicitudesPendientes()
     {
         try {
-            // Asumiendo que el estado "Pendiente" tiene idEstado = 3
-            $sql = "SELECT COUNT(*) as total FROM {$this->table} WHERE FKestado = 3";
+            // Asumiendo que el estado "Pendiente" tiene idEstado = 1
+            $sql = 'SELECT COUNT(*) AS total FROM "' . $this->table . '" WHERE "FKstates" = 1';
+
             $result = $this->dbConnection->query($sql)->fetch(PDO::FETCH_OBJ);
             return $result->total;
         } catch (PDOException $e) {
@@ -201,7 +218,7 @@ class SolicitudModel extends BaseModel
         try {
             // Necesitas verificar qué idEstado corresponde a "Resuelto/Finalizado" en tu BD
             // Asumiendo que podría ser idEstado = 6 o similar
-            $sql = "SELECT COUNT(*) as total FROM {$this->table} WHERE FKestado = 4";
+            $sql = 'SELECT COUNT(*) AS total FROM "' . $this->table . '" WHERE "FKstates" = 6';
             $result = $this->dbConnection->query($sql)->fetch(PDO::FETCH_OBJ);
             return $result->total;
         } catch (PDOException $e) {
@@ -212,8 +229,8 @@ class SolicitudModel extends BaseModel
     public function getSolicitudesEnProceso()
     {
         try {
-            $sql = "SELECT COUNT(*) as total FROM {$this->table} 
-                WHERE FKestado IN (5)";
+            $sql = 'SELECT COUNT(*) AS total FROM "' . $this->table . '" WHERE "FKstates" IN (4)';
+
             $result = $this->dbConnection->query($sql)->fetch(PDO::FETCH_OBJ);
             return $result->total;
         } catch (PDOException $e) {
@@ -223,13 +240,20 @@ class SolicitudModel extends BaseModel
 
     public function getArchivadas()
     {
-        $sql = "SELECT s.*, c.NombreCliente, sv.Servicio, sv.Color, e.Estado, e.Color AS ColorEstado
-                FROM solicitud s
-                JOIN cliente c ON s.FKcliente = c.idCliente
-                JOIN tiposervicio ts ON s.FKtipoServicio = ts.idTipoServicio
-                JOIN servicio sv ON ts.FKidServicio = sv.idServicio
-                JOIN estado e ON s.FKestado = e.idEstado
-                WHERE s.Archivado = 1"; // Solo archivadas
+        $sql = 'SELECT s.*, 
+               c."NameClient", 
+               sv."service", 
+               sv."color" AS "service_color", 
+               e."State", 
+               e."color" AS "state_color"
+        FROM "requests" s
+        JOIN "clients" c ON s."FKclients" = c."id"
+        JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
+        JOIN "services" sv ON ts."FKservices" = sv."id"
+        JOIN "states" e ON s."FKstates" = e."id"
+        WHERE s."archive_status" = 1';
+
+
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
@@ -237,22 +261,23 @@ class SolicitudModel extends BaseModel
 
     public function getArchivadasByAsignacion($idUsuario)
     {
-        $sql = "SELECT s.*, c.NombreCliente, sv.Servicio, sv.Color, e.Estado, e.Color AS ColorEstado
-                FROM solicitud s
-                JOIN cliente c ON s.FKcliente = c.idCliente
-                JOIN tiposervicio ts ON s.FKtipoServicio = ts.idTipoServicio
-                JOIN servicio sv ON ts.FKidServicio = sv.idServicio
-                JOIN estado e ON s.FKestado = e.idEstado
-                WHERE s.FKestado = 2 AND s.Asignacion = :idUsuario";
+       $sql = 'SELECT s.*, c."NameClient", sv."service", sv."color", e."State", e."color" AS state_color
+                FROM "requests" s
+                JOIN "clients" c ON s."FKclients" = c."id"
+                JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
+                JOIN "services" sv ON ts."FKservices" = sv."id"
+                JOIN "states" e ON s."FKstates" = e."id"
+                WHERE s."archive_status" = 1 AND s."assignment" = :id';
+
         $stmt = $this->dbConnection->prepare($sql);
-        $stmt->bindParam(':idUsuario', $idUsuario, \PDO::PARAM_INT);
+        $stmt->bindParam(':id', $idUsuario, \PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
     public function archivar($idSolicitud)
     {
-        $sql = "UPDATE solicitud SET Archivado = 1 WHERE idSolicitud = :idSolicitud";
+        $sql = 'UPDATE "requests" SET "archive_status" = 1 WHERE "id" = :idsolicitud';
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->bindParam(':idSolicitud', $idSolicitud, \PDO::PARAM_INT);
         return $stmt->execute();
@@ -260,7 +285,7 @@ class SolicitudModel extends BaseModel
 
     public function desarchivar($idSolicitud)
     {
-        $sql = "UPDATE solicitud SET Archivado = 0 WHERE idSolicitud = :idSolicitud";
+        $sql = 'UPDATE "requests" SET "archive_status" = 0 WHERE "id" = :idSolicitud';
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->bindParam(':idSolicitud', $idSolicitud, \PDO::PARAM_INT);
         return $stmt->execute();
@@ -269,10 +294,10 @@ class SolicitudModel extends BaseModel
 
     public function getSolicitudesPorEstado()
     {
-        $sql = "SELECT e.Estado, COUNT(*) as cantidad, e.Color
-                FROM solicitud s
-                JOIN estado e ON s.FKestado = e.idEstado
-                GROUP BY s.FKestado";
+        $sql = 'SELECT "e"."State", COUNT(*) AS "cantidad", "e"."color"
+        FROM "requests" AS "s"
+        JOIN "State" AS "e" ON "s"."FKstates" = "e"."id"
+        GROUP BY "s"."FKstates", "e"."State", "e"."color"';
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -281,13 +306,14 @@ class SolicitudModel extends BaseModel
     public function getServiciosMasSolicitados()
     {
         try {
-            $sql = "SELECT sv.Servicio, COUNT(*) as cantidad, sv.Color
-                    FROM solicitud s
-                    JOIN tiposervicio ts ON s.FKtipoServicio = ts.idTipoServicio
-                    JOIN servicio sv ON ts.FKidServicio = sv.idServicio
-                    GROUP BY sv.idServicio, sv.Servicio, sv.Color
-                    ORDER BY cantidad DESC
-                    LIMIT 5";
+            $sql = 'SELECT "sv"."service", COUNT(*) AS "cantidad", "sv"."color"
+                    FROM "requests" AS "s"
+                    JOIN "servicetypes" AS "ts" ON "s"."FKservicetypes" = "ts"."id"
+                    JOIN "service" AS "sv" ON "ts"."FKservice" = "sv"."id"
+                    GROUP BY "sv"."id", "sv"."service", "sv"."color"
+                    ORDER BY "cantidad" DESC
+                    LIMIT 5';
+
             $stmt = $this->dbConnection->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -297,34 +323,36 @@ class SolicitudModel extends BaseModel
     }
 
     public function getSolicitudesPorMes()
-    {
-        try {
-            $sql = "SELECT 
-                MONTH(FechaCreacion) as mes,
-                SUM(CASE WHEN FKestado = 5 THEN 1 ELSE 0 END) as en_proceso,
-                SUM(CASE WHEN FKestado = 6 THEN 1 ELSE 0 END) as ejecutadas
-                FROM solicitud
-                WHERE FechaCreacion >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-                GROUP BY MONTH(FechaCreacion)
-                ORDER BY FechaCreacion ASC";
-            $stmt = $this->dbConnection->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            throw new PDOException("Error al obtener solicitudes por mes: " . $e->getMessage());
-        }
+{
+    try {
+        $sql = 'SELECT 
+            TO_CHAR("createdAt", \'YYYY-MM\') AS "periodo",
+            TO_CHAR("createdAt", \'TMMonth\') AS "mes",
+            EXTRACT(YEAR FROM "createdAt") AS "anio",
+            COUNT(*) AS "cantidad"
+        FROM "requests"
+        GROUP BY TO_CHAR("createdAt", \'YYYY-MM\'), TO_CHAR("createdAt", \'TMMonth\'), EXTRACT(YEAR FROM "createdAt")
+        ORDER BY MIN("createdAt") ASC';
+
+        $stmt = $this->dbConnection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        throw new PDOException("Error al obtener solicitudes por mes: " . $e->getMessage());
     }
+}
+
 
     public function getMunicipiosMasSolicitudes()
     {
         try {
-            $sql = "SELECT 
-                COALESCE(Municipio, 'Sin Especificar') as Municipio,
-                COUNT(*) as cantidad
-                FROM solicitud
-                WHERE Municipio IS NOT NULL AND Municipio != ''
-                GROUP BY Municipio
-                ORDER BY cantidad DESC";
+           $sql = 'SELECT 
+            COALESCE("municipality", \'Sin Especificar\') AS "Municipio",
+            COUNT(*) AS "cantidad"
+        FROM "requests"
+        WHERE "municipality" IS NOT NULL AND "municipality" <> \'\'
+        GROUP BY "municipality"
+        ORDER BY "cantidad" DESC';
 
             $stmt = $this->dbConnection->prepare($sql);
             $stmt->execute();
@@ -337,15 +365,16 @@ class SolicitudModel extends BaseModel
     public function getUltimosMovimientos($limit = 5)
     {
         try {
-            $sql = "SELECT 
-                    s.idSolicitud,
-                    u.NombreUsuario,
-                    'Nueva Solicitud' as accion,
-                    s.FechaCreacion as fecha
-                    FROM solicitud s
-                    JOIN usuario u ON s.FKusuario = u.idUsuario
-                    ORDER BY s.FechaCreacion DESC
-                    LIMIT :limit";
+           $sql = 'SELECT 
+            s."id",
+            u."nameUser",
+            \'Nueva Solicitud\' AS "accion",
+            s."createdAt" AS "fecha"
+            FROM "requests" s
+            JOIN "users" u ON s."FKusers" = u."id"
+            ORDER BY s."createdAt" DESC
+            LIMIT :limit';
+
 
             $stmt = $this->dbConnection->prepare($sql);
             $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);

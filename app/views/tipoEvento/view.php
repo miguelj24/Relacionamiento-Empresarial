@@ -10,11 +10,11 @@
     } else {
         foreach ($tiposEvento as $tipo) {
             echo "<div class='record'>
-                <span>ID: {$tipo->idTipoEvento} - {$tipo->TipoEvento}</span>
+                <span>ID: {$tipo->id} - {$tipo->eventType}</span>
                 <div class='buttons'>
-                    <a href='/tipoEvento/view/{$tipo->idTipoEvento}'><i class='fas fa-eye'></i></a>
-                    <a href='/tipoEvento/edit/{$tipo->idTipoEvento}'><i class='fas fa-pen'></i></a>
-                    <a href='/tipoEvento/delete/{$tipo->idTipoEvento}'><i class='fas fa-trash'></i></a>
+                    <a href='/tipoEvento/view/{$tipo->id}'><i class='fas fa-eye'></i></a>
+                    <a href='/tipoEvento/edit/{$tipo->id}'><i class='fas fa-pen'></i></a>
+                    <a href='/tipoEvento/delete/{$tipo->id}'><i class='fas fa-trash'></i></a>
                 </div>
             </div>";
         }

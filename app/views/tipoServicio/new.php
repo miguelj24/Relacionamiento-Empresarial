@@ -85,7 +85,7 @@
             <select name="FKidServicio" required class="form-control">
                 <option value="">Seleccione un servicio</option>
                 <?php foreach($servicios as $servicio): ?>
-                    <option value="<?php echo $servicio->idServicio ?>"><?php echo $servicio->Servicio ?></option>
+                    <option value="<?php echo $servicio->id ?>"><?php echo $servicio->service ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

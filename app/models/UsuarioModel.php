@@ -19,7 +19,7 @@ class UsuarioModel extends BaseModel
         ?int $FKidRol = null,
         ?bool $Coordinador = false
     ) {
-        $this->table = "usuario";
+        $this->table = "users";
         parent::__construct();
     }
 
@@ -30,9 +30,8 @@ class UsuarioModel extends BaseModel
         try {
             $hashedPassword = password_hash($ContraseñaUsuario, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO usuario 
-                (DocumentoUsuario, NombreUsuario, CorreoUsuario, TelefonoUsuario, ContraseñaUsuario, FKidRol, Coordinador) 
-                VALUES (:doc, :nombre, :correo, :telefono, :pass, :rol, :coordinador)";
+            $sql = 'INSERT INTO "users" ("documentUser", "nameUser", "emailUser", "telephoneUser", "passwordUser", "FKroles", "coordinator", "createdAt", "updatedAt")
+            VALUES (:doc, :nombre, :correo, :telefono, :pass, :rol, :coordinador, NOW(), NOW())';
 
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(':doc', $DocumentoUsuario);
@@ -54,10 +53,11 @@ class UsuarioModel extends BaseModel
     public function getUsuario($id)
     {
         try {
-            $sql = "SELECT u.*, r.Rol as NombreRol 
-                    FROM $this->table u 
-                    LEFT JOIN rol r ON u.FKidRol = r.idRol 
-                    WHERE u.idUsuario = :id";
+            $sql = 'SELECT u."id", u."documentUser", u."nameUser", u."emailUser", u."telephoneUser", u."passwordUser", u."FKroles", u."coordinator", u."createdAt", u."updatedAt",r."Role" AS "NombreRol"
+                FROM "' . $this->table . '" u
+                LEFT JOIN "roles" r ON u."FKroles" = r."id"
+                WHERE u."id" = :id';
+
 
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
@@ -74,24 +74,27 @@ class UsuarioModel extends BaseModel
             $actualizarContrasena = ($ContrasenaUsuario !== null && !empty(trim($ContrasenaUsuario)));
             
             if ($actualizarContrasena) {
-                $sql = "UPDATE $this->table 
-                    SET DocumentoUsuario = :DocumentoUsuario, 
-                        NombreUsuario = :NombreUsuario, 
-                        CorreoUsuario = :CorreoUsuario, 
-                        TelefonoUsuario = :TelefonoUsuario, 
-                        ContraseñaUsuario = :ContrasenaUsuario, 
-                        FKidRol = :FKidRol,
-                        Coordinador = :Coordinador 
-                    WHERE idUsuario = :id";
+                $sql = 'UPDATE "' . $this->table . '" 
+                        SET "documentUser" = :DocumentoUsuario, 
+                            "nameUser" = :NombreUsuario, 
+                            "emailUser" = :CorreoUsuario, 
+                            "telephoneUser" = :TelefonoUsuario, 
+                            "passwordUser" = :ContrasenaUsuario, 
+                            "FKroles" = :FKidRol,
+                            "coordinator" = :Coordinador,
+                            "updatedAt" = NOW()
+                        WHERE "id" = :id';
+
             } else {
-                $sql = "UPDATE $this->table 
-                    SET DocumentoUsuario = :DocumentoUsuario, 
-                        NombreUsuario = :NombreUsuario, 
-                        CorreoUsuario = :CorreoUsuario, 
-                        TelefonoUsuario = :TelefonoUsuario, 
-                        FKidRol = :FKidRol,
-                        Coordinador = :Coordinador 
-                    WHERE idUsuario = :id";
+                $sql = 'UPDATE "' . $this->table . '" 
+                        SET "documentUser" = :DocumentoUsuario, 
+                            "nameUser" = :NombreUsuario, 
+                            "emailUser" = :CorreoUsuario, 
+                            "telephoneUser" = :TelefonoUsuario,
+                            "FKroles" = :FKidRol,
+                            "coordinator" = :Coordinador,
+                            "updatedAt" = NOW()
+                        WHERE "id" = :id';
             }
 
             $statement = $this->dbConnection->prepare($sql);
@@ -120,7 +123,7 @@ class UsuarioModel extends BaseModel
     public function deleteUsuario($id)
     {
         try {
-            $sql = "DELETE FROM $this->table WHERE idUsuario = :id";
+            $sql = "DELETE FROM $this->table WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             return $statement->execute();
@@ -129,32 +132,40 @@ class UsuarioModel extends BaseModel
         }
     }
     public function validarLogin($CorreoUsuario, $ContraseñaUsuario)
-    { //Contraseña que llega del formulario
-        $sql = "SELECT * FROM $this->table WHERE CorreoUsuario=:CorreoUsuario";
+{
+    try {
+        // Preparar la consulta usando nombres exactos de columnas y tabla
+        $sql = 'SELECT * FROM "users" WHERE "emailUser" = :CorreoUsuario';
         $statement = $this->dbConnection->prepare($sql);
-        $statement->bindParam(":CorreoUsuario", $CorreoUsuario);
+        $statement->bindParam(":CorreoUsuario", $CorreoUsuario, PDO::PARAM_STR);
         $statement->execute();
-        $resultSet = [];
-        while ($row = $statement->fetch(PDO::FETCH_OBJ)) {
-            $resultSet[] = $row;
-        }
-        if (count($resultSet) > 0) {
-            $hash = $resultSet[0]->ContraseñaUsuario; // hash guardado en la base de datos
+
+        // Obtener el resultado
+        $usuario = $statement->fetch(PDO::FETCH_OBJ);
+
+        if ($usuario) {
+            $hash = $usuario->passwordUser; // usar el nombre correcto de la columna
             if (password_verify($ContraseñaUsuario, $hash)) {
-                // La contraseña ingresada es correcta
-                $_SESSION["idUsuario"] = $resultSet[0]->idUsuario;
-                $_SESSION["nombre"] = $resultSet[0]->NombreUsuario;
-                $_SESSION["documento"] = $resultSet[0]->DocumentoUsuario;
-                $_SESSION["telefono"] = $resultSet[0]->TelefonoUsuario;
-                $_SESSION["correo"] = $resultSet[0]->CorreoUsuario;
-                $_SESSION["rol"] = $resultSet[0]->FKidRol;
+                // Contraseña correcta, inicializar sesión
+                $_SESSION["idUsuario"] = $usuario->id;
+                $_SESSION["nombre"] = $usuario->nameUser;
+                $_SESSION["documento"] = $usuario->documentUser;
+                $_SESSION["telefono"] = $usuario->telephoneUser;
+                $_SESSION["correo"] = $usuario->emailUser;
+                $_SESSION["rol"] = $usuario->FKroles;
                 $_SESSION["timeOut"] = time();
                 session_regenerate_id();
-                return $resultSet[0];
+                return $usuario;
             }
         }
+
+        return false; // Si no encuentra usuario o contraseña incorrecta
+    } catch (PDOException $ex) {
+        error_log("Error en validarLogin: " . $ex->getMessage());
         return false;
     }
+}
+
 
     public function countUsuarios()
     {

@@ -51,7 +51,7 @@ class EstadoController extends BaseController {
         $estadoInfo = $estadoObj->getEstado($id);
         $data = [
             "estado" => $estadoInfo,
-            "titulo" => "Ver estado: " . $estadoInfo->Estado
+            "titulo" => "Ver estado: " . $estadoInfo->State
         ];
         $this->render("estado/viewOne.php", $data);
     }

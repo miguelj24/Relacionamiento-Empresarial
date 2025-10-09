@@ -11,13 +11,14 @@ class tipoServicioModel extends BaseModel {
         ?string $TipoServicio = null,
         ?int $FKidServicio = null
     ) {
-        $this->table = "tiposervicio";
+        $this->table = "servicetypes";
         parent::__construct();
     }
 
     public function saveTipoServicio($TipoServicio, $FKidServicio) {
         try {
-            $sql = "INSERT INTO $this->table (TipoServicio, FKidServicio) VALUES (:tipo, :servicio)";
+            $sql = "INSERT INTO $this->table (\"serviceType\", \"FKservices\", \"createdAt\", \"updatedAt\") 
+                    VALUES (:tipo, :servicio, NOW(), NOW())";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":tipo", $TipoServicio, PDO::PARAM_STR);
             $statement->bindParam(":servicio", $FKidServicio, PDO::PARAM_INT);
@@ -28,10 +29,10 @@ class tipoServicioModel extends BaseModel {
 
     public function getTipoServicio($id) {
         try {
-            $sql = "SELECT t.*, s.Servicio as NombreServicio 
-                    FROM $this->table t 
-                    LEFT JOIN servicio s ON t.FKidServicio = s.idServicio 
-                    WHERE t.idTipoServicio = :id";
+              $sql = "SELECT t.*, s.\"service\" AS \"NombreServicio\" 
+                FROM $this->table t 
+                LEFT JOIN services s ON t.\"FKservices\" = s.id 
+                WHERE t.\"id\" = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
@@ -43,9 +44,9 @@ class tipoServicioModel extends BaseModel {
 
     public function getAll(): array {
         try {
-            $sql = "SELECT t.*, s.Servicio as NombreServicio 
-                    FROM $this->table t 
-                    LEFT JOIN servicio s ON t.FKidServicio = s.idServicio";
+           $sql = "SELECT t.*, s.\"service\" AS \"NombreServicio\" 
+                FROM $this->table t 
+                LEFT JOIN services s ON t.\"FKservices\" = s.id";
             return $this->dbConnection->query($sql)->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
             // throw lanza una excepcion cuando ocurre un error, osea si falla genera PDOException
@@ -55,7 +56,7 @@ class tipoServicioModel extends BaseModel {
 
     public function getByServicio($idServicio): array {
         try {
-            $sql = "SELECT * FROM tiposervicio WHERE FKidServicio = :idServicio";
+             $sql = "SELECT * FROM servicetypes WHERE \"FKservices\" = :idServicio";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":idServicio", $idServicio, PDO::PARAM_INT);
             $statement->execute();
@@ -67,9 +68,9 @@ class tipoServicioModel extends BaseModel {
 
     public function editTipoServicio($id, $TipoServicio, $FKidServicio) {
         try {
-            $sql = "UPDATE $this->table 
-                    SET TipoServicio = :tipo, FKidServicio = :servicio 
-                    WHERE idTipoServicio = :id";
+            $sql = 'UPDATE "servicetypes"
+                    SET "serviceType" = :tipo, "FKservices" = :servicio, "updatedAt" = NOW()
+                    WHERE "id" = :id';
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->bindParam(":tipo", $TipoServicio, PDO::PARAM_STR);
@@ -82,7 +83,7 @@ class tipoServicioModel extends BaseModel {
 
     public function deleteTipoServicio($id) {
         try {
-            $sql = "DELETE FROM $this->table WHERE idTipoServicio = :id";
+            $sql = "DELETE FROM $this->table WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             return $statement->execute();

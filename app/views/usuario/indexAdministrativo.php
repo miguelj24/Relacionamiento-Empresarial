@@ -1,3 +1,24 @@
+<?php
+// --- Obtener los datos desde el controlador o el modelo ---
+$solicitudModel = new \App\Models\SolicitudModel();
+$solicitudesPorMes = $solicitudModel->getSolicitudesPorMes(); 
+// Esta función debe devolver filas con los campos: mes, cantidad (o como los hayas llamado)
+
+// --- Preparar arrays para el gráfico ---
+$labels = [];
+$valores = [];
+
+foreach ($solicitudesPorMes as $fila) {
+    $labels[] = $fila['mes']; // ajusta si el campo se llama diferente
+    $valores[] = (int)$fila['cantidad']; // ajusta si el campo se llama diferente
+}
+
+// --- Convertir a JSON para pasar al JS ---
+$labelsJSON = json_encode($labels, JSON_UNESCAPED_UNICODE);
+$valoresJSON = json_encode($valores);
+?>
+
+
 <style>
     h1 {
       font-size: 28px;
@@ -179,8 +200,8 @@
     <?php if (!empty($ultimosMovimientos)): ?>
         <?php foreach ($ultimosMovimientos as $movimiento): ?>
             <div class="movimiento">
-                <div><?php echo htmlspecialchars($movimiento['idSolicitud']); ?></div>
-                <div><?php echo htmlspecialchars($movimiento['NombreUsuario']); ?></div>
+                <div><?php echo htmlspecialchars($movimiento['id']); ?></div>
+                <div><?php echo htmlspecialchars($movimiento['nameUser']); ?></div>
                 <div><?php echo htmlspecialchars($movimiento['accion']); ?></div>
                 <div><?php echo date('Y-m-d', strtotime($movimiento['fecha'])); ?></div>
             </div>

@@ -16,6 +16,8 @@ class LoginController extends BaseController
 
     public function initLogin()
     {
+        
+
         if (isset($_POST["txtUser"]) && isset($_POST["txtPassword"])) {
             $user = trim($_POST["txtUser"]) ?? null;
             $password = trim($_POST["txtPassword"]) ?? null;
@@ -29,17 +31,18 @@ class LoginController extends BaseController
 
                     // Role-based redirection
                     switch ($userRole) {
-                        case 1: //Administrador
+                        case 4: //Administrador
                             $this->redirectTo("usuario/indexAdministrador");
                             break;
-                        case 2: //Administrativo
+                        case 1: //Administrativo
                             $this->redirectTo("usuario/indexAdministrativo");
                             break;
-                        case 3: //Funcionario
+                        case 6: //Funcionario
                             $this->redirectTo("usuario/indexBienvenida");
                             break;
-                        default: //Instructor
+                        case 5: //Instructor
                             $this->redirectTo("usuario/indexBienvenida");
+                            break; 
                     }
                     exit();
                 } else {

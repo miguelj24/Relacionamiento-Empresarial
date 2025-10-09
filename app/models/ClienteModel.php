@@ -14,15 +14,15 @@ class ClienteModel extends BaseModel{
         ?string $TelefonoCliente = null
     )
     {
-        $this->table = "cliente";
+        $this->table = "clients";
         //Se llama a el contructor de el padre
         parent::__construct();
     }
 
     public function saveCliente($documento, $nombre, $correo, $telefono) {
         try {
-            $sql = "INSERT INTO cliente (DocumentoCliente, NombreCliente, CorreoCliente, TelefonoCliente) 
-                    VALUES (:documento, :nombre, :correo, :telefono)";
+            $sql = 'INSERT INTO clients ("DocumentClient", "NameClient", "EmailClient", "TelephoneClient", "createdAt", "updatedAt") 
+                    VALUES (:documento, :nombre, :correo, :telefono, NOW(), NOW())';
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":documento", $documento, PDO::PARAM_STR);
             $statement->bindParam(":nombre", $nombre, PDO::PARAM_STR);
@@ -37,7 +37,8 @@ class ClienteModel extends BaseModel{
 
     public function saveClienteByName($nombre) {
         try {
-            $sql = "INSERT INTO cliente (NombreCliente) VALUES (:nombre)";
+            $sql = "INSERT INTO clients (NameClients) 
+                    VALUES (:nombre)";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":nombre", $nombre, PDO::PARAM_STR);
             $statement->execute();
@@ -49,7 +50,8 @@ class ClienteModel extends BaseModel{
 
     public function getCliente($id){
         try {
-            $sql = "SELECT * FROM $this->table WHERE idCliente = :id";
+            $sql = "SELECT * FROM $this->table 
+                    WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
@@ -62,7 +64,10 @@ class ClienteModel extends BaseModel{
 
     public function getClienteByDocumento($documento) {
         try {
-            $sql = "SELECT * FROM cliente WHERE DocumentoCliente = :documento LIMIT 1";
+            $sql = 'SELECT * FROM "clients" 
+                    WHERE "DocumentClient" = :documento 
+                    LIMIT 1';
+
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":documento", $documento, PDO::PARAM_STR);
             $statement->execute();
@@ -74,7 +79,10 @@ class ClienteModel extends BaseModel{
 
     public function getClienteByName($nombre) {
         try {
-            $sql = "SELECT * FROM cliente WHERE NombreCliente = :nombre LIMIT 1";
+            $sql = "SELECT * FROM `clients` 
+                    WHERE `NameClient` = :nombre 
+                    LIMIT 1";
+
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":nombre", $nombre, PDO::PARAM_STR);
             $statement->execute();
@@ -86,7 +94,9 @@ class ClienteModel extends BaseModel{
 
     public function editCliente($id, $DocumentoCliente, $NombreCliente, $CorreoCliente, $TelefonoCliente){
         try {
-            $sql = "UPDATE {$this->table} SET DocumentoCliente=:DocumentoCliente, NombreCliente=:NombreCliente, CorreoCliente=:CorreoCliente, TelefonoCliente=:TelefonoCliente WHERE idCliente=:id";
+            $sql = "UPDATE {$this->table} 
+                    SET \"DocumentClient\"=:DocumentoCliente,\"NameClient\"=:NombreCliente, \"EmailClient\"=:CorreoCliente, \"TelephoneClient\"=:TelefonoCliente, \"updatedAt\"= NOW()
+                    WHERE id=:id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->bindParam(":DocumentoCliente", $DocumentoCliente, PDO::PARAM_STR);
@@ -96,18 +106,19 @@ class ClienteModel extends BaseModel{
             $result = $statement->execute();
             return $result;
         } catch (PDOException $ex) {
-            echo "No se pudo editar el cliente";
+            echo "No se pudo editar el cliente" . $ex->getMessage();
         }
     }
 
     public function deleteCliente($id){
-        try {
-            $sql = "DELETE FROM {$this->table} WHERE idCliente=:id";
-            $statement = $this->dbConnection->prepare($sql);
-            $statement->bindParam(":id", $id, PDO::PARAM_INT);
-            $statement->execute();
-        } catch (PDOException $ex) {
-            echo "No se pudo eliminar el cliente";
-        }
+    try {
+        $sql = 'DELETE FROM "clients" WHERE id = :id';
+        $statement = $this->dbConnection->prepare($sql);
+        $statement->bindParam(":id", $id, PDO::PARAM_INT);
+        return $statement->execute();
+    } catch (PDOException $ex) {
+        // Retorna el mensaje de error en vez de solo imprimirlo
+        return "Error: " . $ex->getMessage();
     }
+}
 }

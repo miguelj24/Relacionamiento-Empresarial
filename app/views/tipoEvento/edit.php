@@ -77,10 +77,10 @@
 <div class="data-container">
     <form action="/tipoEvento/update" method="post">
         <h2 class="form-title">Editar Tipo de Evento</h2>
-        <input type="hidden" name="idTipoEvento" value="<?php echo $tipoEvento->idTipoEvento ?>">
+        <input type="hidden" name="idTipoEvento" value="<?php echo $tipoEvento->id ?>">
         <div class="form-group">
             <label for="TipoEvento">Nombre del Tipo de Evento</label>
-            <input type="text" name="TipoEvento" value="<?php echo $tipoEvento->TipoEvento ?>" required maxlength="50" class="form-control">
+            <input type="text" name="TipoEvento" value="<?php echo $tipoEvento->eventType ?>" required maxlength="50" class="form-control">
         </div>
         <div class="form-group button-group">
             <button type="submit" class="btn btn-primary">Actualizar</button>

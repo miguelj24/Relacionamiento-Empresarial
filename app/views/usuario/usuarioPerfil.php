@@ -111,22 +111,22 @@
 
         <div class="info-item">
             <i class="fas fa-user"></i>
-            <strong>Nombre:</strong> <span><?php echo $usuario->NombreUsuario; ?></span>
+            <strong>Nombre:</strong> <span><?php echo $usuario->nameUser; ?></span>
         </div>
 
         <div class="info-item">
             <i class="fas fa-id-card"></i>
-            <strong>Documento:</strong> <span><?php echo $usuario->DocumentoUsuario; ?></span>
+            <strong>Documento:</strong> <span><?php echo $usuario->documentUser; ?></span>
         </div>
 
         <div class="info-item">
             <i class="fas fa-envelope"></i>
-            <strong>Correo:</strong> <span><?php echo $usuario->CorreoUsuario; ?></span>
+            <strong>Correo:</strong> <span><?php echo $usuario->emailUser; ?></span>
         </div>
 
         <div class="info-item">
             <i class="fas fa-phone"></i>
-            <strong>Teléfono:</strong> <span><?php echo $usuario->TelefonoUsuario; ?></span>
+            <strong>Teléfono:</strong> <span><?php echo $usuario->telephoneUser; ?></span>
         </div>
 
         <div class="info-item">
@@ -135,7 +135,7 @@
         </div>
 
         <!-- Botón Modificar -->
-        <a href="/usuario/edit/<?php echo $usuario->idUsuario; ?>" class="btn-modificar">
+        <a href="/usuario/edit/<?php echo $usuario->id; ?>" class="btn-modificar">
             <i class="fas fa-edit"></i> Modificar
         </a>
     </div>

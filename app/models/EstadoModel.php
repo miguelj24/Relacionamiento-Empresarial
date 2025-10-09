@@ -12,17 +12,19 @@ class EstadoModel extends BaseModel{
         ?string $Descripcion = null
     )
     {
-        $this->table = "estado";
+        $this->table = "states";
         //Se llama al constructor del padre
         parent::__construct();
     }
 
     public function saveEstado($Estado, $Descripcion){
         try {
-            $sql = "INSERT INTO $this->table (Estado, Descripcion) VALUES (:Estado, :Descripcion)";
+            $sql = "INSERT INTO $this->table (\"State\", \"Description\", \"color\", \"createdAt\", \"updatedAt\") 
+                    VALUES (:Estado, :Descripcion, :color, NOW(), NOW())";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":Estado", $Estado, PDO::PARAM_STR);
             $statement->bindParam(":Descripcion", $Descripcion, PDO::PARAM_STR);
+            $statement->bindParam(":color", $Color, PDO::PARAM_STR);
             $statement->execute();
         } catch (PDOException $ex) {
             echo "Error al guardar el estado: ".$ex->getMessage();
@@ -31,7 +33,7 @@ class EstadoModel extends BaseModel{
 
     public function getEstado($id){
         try {
-            $sql = "SELECT * FROM $this->table WHERE idEstado = :id";
+            $sql = "SELECT * FROM $this->table WHERE id = :id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
@@ -44,7 +46,8 @@ class EstadoModel extends BaseModel{
 
     public function editEstado($id, $Estado, $Descripcion, $Color){
         try {
-            $sql = "UPDATE {$this->table} SET Estado=:Estado, Descripcion=:Descripcion, Color=:Color WHERE idEstado=:id";
+            $sql = "UPDATE {$this->table} SET \"State\"=:Estado, \"Description\"=:Descripcion, color=:Color, \"updatedAt\"=NOW()
+                    WHERE id=:id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->bindParam(":Estado", $Estado, PDO::PARAM_STR);
@@ -59,10 +62,11 @@ class EstadoModel extends BaseModel{
 
     public function deleteEstado($id){
         try {
-            $sql = "DELETE FROM {$this->table} WHERE idEstado=:id";
+            $sql = "DELETE FROM {$this->table} WHERE id=:id";
             $statement = $this->dbConnection->prepare($sql);
             $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute();
+            return $statement->execute();   
         } catch (PDOException $ex) {
             echo "No se pudo eliminar el estado: ".$ex->getMessage();
         }
