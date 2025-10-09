@@ -168,7 +168,11 @@ class UsuarioController extends BaseController
             $usuarioObj = new UsuarioModel();
             
             $nuevaContrasena = !empty($_POST['ContrasenaUsuario']) ? $_POST['ContrasenaUsuario'] : null;
-            $coordinador = isset($_POST['Coordinador']) && $_POST['Coordinador'] == '1';
+            $coordinador = false;
+            if(isset($_POST['Coordinador'])) {
+                $coordinador = $_POST['Coordinador'] == '1';
+            }
+           // $coordinador = isset($_POST['Coordinador']) && $_POST['Coordinador'] == '1';
             
             $resultado = $usuarioObj->editUsuario(
                 $_POST['idUsuario'],
@@ -186,8 +190,15 @@ class UsuarioController extends BaseController
             } else {
                 $_SESSION['error'] = 'Error al actualizar usuario';
             }
+
+
             
-            $this->redirectTo("usuario/perfil");
+            // Redirigir según el rol del usuario que está editando
+            if ($_SESSION['rol'] == 4) { // Administrador
+                $this->redirectTo("usuario/view");
+            } else {
+                $this->redirectTo("usuario/perfil");
+            }
         }
     }
 

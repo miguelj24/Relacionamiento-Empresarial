@@ -1,3 +1,23 @@
+<?php
+// --- Obtener los datos desde el controlador o el modelo ---
+$solicitudModel = new \App\Models\SolicitudModel();
+$solicitudesPorMes = $solicitudModel->getSolicitudesPorMes(); 
+// Esta función debe devolver filas con los campos: mes, cantidad (o como los hayas llamado)
+
+// --- Preparar arrays para el gráfico ---
+$labels = [];
+$valores = [];
+
+foreach ($solicitudesPorMes as $fila) {
+    $labels[] = $fila['mes']; // ajusta si el campo se llama diferente
+    $valores[] = (int)$fila['cantidad']; // ajusta si el campo se llama diferente
+}
+
+// --- Convertir a JSON para pasar al JS ---
+$labelsJSON = json_encode($labels, JSON_UNESCAPED_UNICODE);
+$valoresJSON = json_encode($valores);
+?>
+
 <style>
     .container {
       display: flex;
@@ -368,7 +388,9 @@ body.dark-mode .img {
   <section>
     <main class="dashboard-container">
       <div class="metric-card">
-        <canvas id="myChart"  width="400px" height="90px"></canvas>
+        <div class="chart-placeholder">
+          <canvas id="myChart"  width="400px" height="90px"></canvas>
+    </div>
       </div>
       <div class="metric-card">
         <canvas id="requestinprocess" width="200px" height="90px"></canvas>

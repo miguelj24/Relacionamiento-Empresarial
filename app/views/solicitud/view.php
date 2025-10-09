@@ -861,6 +861,8 @@ $isArchivadas = (isset($esArchivadas) && $esArchivadas) ||
     (strpos($_SERVER['REQUEST_URI'], '/solicitud/archivadas') !== false);
 $isEnviadas = (isset($esEnviadas) && $esEnviadas) || 
     (strpos($_SERVER['REQUEST_URI'], '/solicitud/enviadas') !== false);
+
+    $rolUsuario = $_SESSION['rol'] ?? null;
 ?>
 
 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 18px;">
@@ -868,7 +870,7 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
         <a href="/solicitud/view" class="archivados-btn">
             <i class="fas fa-list"></i> Mis solicitudes
         </a>
-    <?php elseif ($isEnviadas): ?>
+    <?php elseif ($isEnviadas && $rolUsuario != 1): ?>
         <a href="/solicitud/view" class="archivados-btn">
             <i class="fas fa-list"></i> Mis solicitudes
         </a>
@@ -876,9 +878,12 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
         <a href="/solicitud/archivadas" class="archivados-btn">
             <i class="fas fa-archive"></i> Archivados
         </a>
+        <?php if ($rolUsuario != 1): ?>
             <a href="/solicitud/enviadas" class="archivados-btn">
                 <i class="fas fa-paper-plane"></i> Enviadas
             </a>
+        <?php endif; ?>
+        
     <?php endif; ?>
 </div>
 
@@ -915,11 +920,16 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                 } else {
                     $statusClass = "status-old"; // rojo
                 }
+
+                //Determinar si estamos en la vista de enviadas
+                $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
+                (strpos($_SERVER['REQUEST_URI'], '  /solicitudes/enviadas') !== false);
                 // Mostrar botón archivar solo si estado es Resuelto (6) o Cerrado (7)
                 $mostrarArchivar = in_array($solicitud->FKstates ?? $solicitud->id ?? null, [6, 7]);
-                // Mostrar botón eliminar solo si es administrador (rol 1)
-                $mostrarEliminar = isset($_SESSION['rol']) && $_SESSION['rol'] == 4;
+                // Mostrar botón eliminar solo si es administrador (rol 4)
+                $mostrarEliminar = isset($_SESSION['rol']) && $_SESSION['rol'] == 4 && !$isEnviadas;
 
+                $mostrarEditar = !$isEnviadas;
                 // Colores para servicio
                 $colorOriginalServicio = $solicitud->service_color;
                 $colorFondoServicio = adjustBrightness($colorOriginalServicio, 80);   // Más claro
@@ -969,11 +979,13 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                                     <i class="fas fa-eye" style="margin-right: 8px;"></i> Ver
                                 </a>
                             </li>
+                            <?php if ($mostrarEditar): ?>
                             <li>
                                 <a href="/solicitud/edit/<?php echo $solicitud->id; ?>">
                                     <i class="fas fa-edit" style="margin-right: 8px;"></i> Editar
                                 </a>
                             </li>
+                            <?php endif; ?>
                             <?php if ($mostrarEliminar): ?>
                                 <li>
                                     <a href="/solicitud/delete/<?php echo $solicitud->id; ?>" class="eliminar">

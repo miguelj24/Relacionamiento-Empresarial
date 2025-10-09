@@ -104,8 +104,43 @@
                 <?php endforeach; ?>
             </select>
         </div>
+
+        <div class="form-group" id="coordinador-group">
+                  <label for="Coordinador">Coordinador</label>
+                  <select name="Coordinador" class="form-control">
+                    <option value="0" <?php echo ($usuario->coordinator == false) ? 'selected' : '' ?>>No</option>
+                    <option value="1" <?php echo ($usuario->coordinator == true) ? 'selected' : '' ?>>Si</option>
+                    
+                  </select>
+        </div>
+
         <div class="form-group button-group">
             <button type="submit" class="btn btn-primary">Actualizar</button>
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const rolSelect = document.getElementById('FKidRol');
+    const coordinadorGroup = document.getElementById('coordinador-group');
+    
+    // Función para verificar si el rol es administrativo
+    function checkRol() {
+        const selectedRol = rolSelect.options[rolSelect.selectedIndex].text.toLowerCase();
+        
+        // Mostrar campo coordinador solo si el rol es "administrativo"
+        if (selectedRol.includes('administrativo')) {
+            coordinadorGroup.style.display = 'block';
+        } else {
+            coordinadorGroup.style.display = 'none';
+        }
+    }
+    
+    // Verificar al cargar la página
+    checkRol();
+    
+    // Verificar cuando cambie el select
+    rolSelect.addEventListener('change', checkRol);
+});
+</script>

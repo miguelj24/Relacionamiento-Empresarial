@@ -104,7 +104,7 @@
     <?php
     //Permisos para mostrar cosas segun el rol
     //Elementos que se le mostraran solo al admin
-    $esAdmin = (isset($_SESSION['rol']) && $_SESSION['rol'] == 1);
+    $esAdmin = (isset($_SESSION['rol']) && $_SESSION['rol'] == 4);
     ?>
     <h2 class="form-title">Editar Solicitud</h2>
     <form action="/solicitud/update" method="post">

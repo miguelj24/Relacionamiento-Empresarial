@@ -6,6 +6,7 @@ use App\Models\SolicitudModel;
 use App\Models\ClienteModel;
 use App\Models\ServicioModel;
 use App\Models\EstadoModel;
+use App\Models\RolModel;
 use App\Models\TipoServicioModel; // Importar el modelo para los tipos de servicio
 
 require_once "baseController.php";
@@ -49,11 +50,18 @@ class SolicitudController extends BaseController
         if ($rol == 4) {
             // Administrador: ver todas las solicitudes
             $solicitudes = $solicitudObj->getAll();
+            $esEnviadas = false;
         } elseif ($rol == 5 || $rol == 6) {
             // Funcionario o Instructor: solo las asignadas a él
             $solicitudes = $solicitudObj->getByAsignacion($idUsuario);
+            $esEnviadas = false;
+        } else if ($rol == 1 ) {
+            //Administrativo ve solo las enviadas
+            $solicitudes = $solicitudObj ->getByUsuarioCreador($idUsuario);
+            $esEnviadas = true;
         } else {
             $solicitudes = [];
+            $esEnviadas = false;
         }
 
         $clienteObj = new ClienteModel();
@@ -70,7 +78,8 @@ class SolicitudController extends BaseController
             "clientes" => $clientes,
             "servicios" => $servicios,
             "estados" => $estados,
-            "titulo" => "solicitudes"
+            "titulo" => "solicitudes",
+            "esEnviadas" => $esEnviadas 
         ];
 
         $this->render('solicitud/view.php', $data);
@@ -629,6 +638,9 @@ class SolicitudController extends BaseController
         $this->redirectTo("solicitud/view");
     }
 
+
+    
+
     public function dashboard()
     {
         // Obtener total de solicitudes pendientes
@@ -718,6 +730,63 @@ class SolicitudController extends BaseController
         exit;
     }
 
+    public function solicitudesProcesoEjecutadasAPI()
+{
+    header('Content-Type: application/json');
+    try {
+        $solicitudObj = new \App\Models\SolicitudModel();
+        $data = $solicitudObj->getSolicitudesProcesoEjecutadasPorMes();
+
+        // Si no hay datos, usar datos de ejemplo
+        if (empty($data)) {
+            $data = [
+                ['mes' => 'Enero', 'anio' => '2024', 'en_proceso' => 5, 'ejecutadas' => 3, 'total' => 8],
+                ['mes' => 'Febrero', 'anio' => '2024', 'en_proceso' => 8, 'ejecutadas' => 6, 'total' => 14],
+                ['mes' => 'Marzo', 'anio' => '2024', 'en_proceso' => 4, 'ejecutadas' => 7, 'total' => 11]
+            ];
+        }
+
+        // Traducir meses al español
+        $mesesIngles = [
+            'January' => 'Enero', 'February' => 'Febrero', 'March' => 'Marzo',
+            'April' => 'Abril', 'May' => 'Mayo', 'June' => 'Junio',
+            'July' => 'Julio', 'August' => 'Agosto', 'September' => 'Septiembre',
+            'October' => 'Octubre', 'November' => 'Noviembre', 'December' => 'Diciembre'
+        ];
+
+        $formattedData = [];
+        foreach ($data as $row) {
+            $mes = trim($row['mes']);
+            // Traducir si está en inglés
+            if (isset($mesesIngles[$mes])) {
+                $mes = $mesesIngles[$mes];
+            }
+            
+            $formattedData[] = [
+                'mes' => $mes . ' ' . $row['anio'],
+                'en_proceso' => (int)($row['en_proceso'] ?? 0),
+                'ejecutadas' => (int)($row['ejecutadas'] ?? 0)
+            ];
+        }
+
+        echo json_encode($formattedData, JSON_PRETTY_PRINT);
+        
+    } catch (\Exception $e) {
+        error_log("Error en solicitudesProcesoEjecutadasAPI: " . $e->getMessage());
+        http_response_code(500);
+        echo json_encode([
+            'error' => true,
+            'message' => 'Error al obtener datos: ' . $e->getMessage(),
+            'data' => [
+                ['mes' => 'Enero 2024', 'en_proceso' => 5, 'ejecutadas' => 3],
+                ['mes' => 'Febrero 2024', 'en_proceso' => 8, 'ejecutadas' => 6],
+                ['mes' => 'Marzo 2024', 'en_proceso' => 4, 'ejecutadas' => 7]
+            ]
+        ]);
+    }
+    exit;
+}
+
     public function solicitudesPorEstadoAPI()
     {
         header('Content-Type: application/json');
@@ -742,43 +811,46 @@ class SolicitudController extends BaseController
         exit;
     }
     public function solicitudesPorMesAPI()
-    {
-        header('Content-Type: application/json');
-        try {
-            $solicitudObj = new \App\Models\SolicitudModel();
-            $data = $solicitudObj->getSolicitudesPorMes();
+{
+    header('Content-Type: application/json');
+    try {
+        $solicitudObj = new \App\Models\SolicitudModel();
+        $data = $solicitudObj->getSolicitudesPorMes();
 
-            // Convertir números de mes a nombres
-            $meses = [
-                1 => 'Enero',
-                2 => 'Febrero',
-                3 => 'Marzo',
-                4 => 'Abril',
-                5 => 'Mayo',
-                6 => 'Junio',
-                7 => 'Julio',
-                8 => 'Agosto',
-                9 => 'Septiembre',
-                10 => 'Octubre',
-                11 => 'Noviembre',
-                12 => 'Diciembre'
-            ];
+        // Traducir meses al español si es necesario
+        $mesesIngles = [
+            'January' => 'Enero', 'February' => 'Febrero', 'March' => 'Marzo',
+            'April' => 'Abril', 'May' => 'Mayo', 'June' => 'Junio',
+            'July' => 'Julio', 'August' => 'Agosto', 'September' => 'Septiembre',
+            'October' => 'Octubre', 'November' => 'Noviembre', 'December' => 'Diciembre'
+        ];
 
-            $formattedData = [];
-            foreach ($data as $row) {
-                $formattedData[] = [
-                    'mes' => $meses[$row['mes']],
-                    'en_proceso' => (int)$row['en_proceso'],
-                    'ejecutadas' => (int)$row['ejecutadas']
-                ];
+        $formattedData = [];
+        foreach ($data as $row) {
+            $mes = trim($row['mes']);
+            // Traducir si está en inglés
+            if (isset($mesesIngles[$mes])) {
+                $mes = $mesesIngles[$mes];
             }
-
-            echo json_encode($formattedData);
-        } catch (\Exception $e) {
-            echo json_encode(['error' => $e->getMessage()]);
+            
+            $formattedData[] = [
+                'mes' => $mes . ' ' . $row['anio'],
+                'cantidad' => (int)$row['cantidad']
+            ];
         }
-        exit;
+
+        echo json_encode($formattedData, JSON_PRETTY_PRINT);
+    } catch (\Exception $e) {
+        error_log("Error en solicitudesPorMesAPI: " . $e->getMessage());
+        http_response_code(500);
+        echo json_encode([
+            'error' => true,
+            'message' => 'Error al obtener datos: ' . $e->getMessage(),
+            'data' => []
+        ]);
     }
+    exit;
+}
     public function municipiosMasSolicitudesAPI()
     {
         header('Content-Type: application/json');

@@ -68,6 +68,10 @@
                 <strong>Rol:</strong>
                 <span><?php echo $usuario->NombreRol?></span>
             </div>
+            <div class="field">
+                <strong>Coordinador:</strong>
+                <span><?php echo $usuario->coordinator ? 'Sí' : 'No' ?></span>
+            </div>
         </div>
         <div class="buttons">
             <a href="/usuario/edit/<?php echo $usuario->id ?>" class="btn btn-primary" title="Editar"><i class="fas fa-pen"></i></a>

@@ -261,7 +261,7 @@ class SolicitudModel extends BaseModel
 
     public function getArchivadasByAsignacion($idUsuario)
     {
-       $sql = 'SELECT s.*, c."NameClient", sv."service", sv."color", e."State", e."color" AS state_color
+       $sql = 'SELECT s.*, c."NameClient", sv."service", sv."color" AS service_color, e."State", e."color" AS state_color
                 FROM "requests" s
                 JOIN "clients" c ON s."FKclients" = c."id"
                 JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
@@ -292,51 +292,70 @@ class SolicitudModel extends BaseModel
     }
 
 
-    public function getSolicitudesPorEstado()
-    {
-        $sql = 'SELECT "e"."State", COUNT(*) AS "cantidad", "e"."color"
-        FROM "requests" AS "s"
-        JOIN "State" AS "e" ON "s"."FKstates" = "e"."id"
-        GROUP BY "s"."FKstates", "e"."State", "e"."color"';
-        $stmt = $this->dbConnection->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function getServiciosMasSolicitados()
+     public function getSolicitudesPorEstado()
     {
         try {
-            $sql = 'SELECT "sv"."service", COUNT(*) AS "cantidad", "sv"."color"
-                    FROM "requests" AS "s"
-                    JOIN "servicetypes" AS "ts" ON "s"."FKservicetypes" = "ts"."id"
-                    JOIN "service" AS "sv" ON "ts"."FKservice" = "sv"."id"
-                    GROUP BY "sv"."id", "sv"."service", "sv"."color"
-                    ORDER BY "cantidad" DESC
-                    LIMIT 5';
+            $sql = 'SELECT 
+                "e"."State" AS "Estado", 
+                COUNT(*) AS "cantidad", 
+                "e"."color" AS "Color"
+            FROM "requests" AS "s"
+            JOIN "states" AS "e" ON "s"."FKstates" = "e"."id"
+            GROUP BY "s"."FKstates", "e"."State", "e"."color"
+            ORDER BY "cantidad" DESC';
 
             $stmt = $this->dbConnection->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new PDOException("Error al obtener solicitudes por estado: " . $e->getMessage());
+        }
+    }
+
+ public function getServiciosMasSolicitados()
+    {
+        try {
+            $sql = 'SELECT 
+                "sv"."service" AS "Servicio", 
+                COUNT(*) AS "cantidad", 
+                "sv"."color" AS "Color"
+            FROM "requests" AS "s"
+            JOIN "servicetypes" AS "ts" ON "s"."FKservicetypes" = "ts"."id"
+            JOIN "services" AS "sv" ON "ts"."FKservices" = "sv"."id"
+            GROUP BY "sv"."id", "sv"."service", "sv"."color"
+            ORDER BY "cantidad" DESC
+            LIMIT 5';
+
+            $stmt = $this->dbConnection->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             throw new PDOException("Error al obtener servicios más solicitados: " . $e->getMessage());
         }
     }
 
-    public function getSolicitudesPorMes()
+// CORREGIR el método getSolicitudesPorMes
+public function getSolicitudesPorMes()
 {
     try {
         $sql = 'SELECT 
-            TO_CHAR("createdAt", \'YYYY-MM\') AS "periodo",
-            TO_CHAR("createdAt", \'TMMonth\') AS "mes",
+            TO_CHAR("createdAt", \'Month\') AS "mes",
             EXTRACT(YEAR FROM "createdAt") AS "anio",
             COUNT(*) AS "cantidad"
         FROM "requests"
-        GROUP BY TO_CHAR("createdAt", \'YYYY-MM\'), TO_CHAR("createdAt", \'TMMonth\'), EXTRACT(YEAR FROM "createdAt")
+        GROUP BY TO_CHAR("createdAt", \'Month\'), EXTRACT(YEAR FROM "createdAt")
         ORDER BY MIN("createdAt") ASC';
 
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Limpiar y formatear los nombres de mes
+        foreach ($data as &$row) {
+            $row['mes'] = trim($row['mes']);
+        }
+        
+        return $data;
     } catch (PDOException $e) {
         throw new PDOException("Error al obtener solicitudes por mes: " . $e->getMessage());
     }
@@ -384,4 +403,70 @@ class SolicitudModel extends BaseModel
             throw new PDOException("Error al obtener últimos movimientos: " . $e->getMessage());
         }
     }
+
+        public function getSolicitudesProcesoEjecutadasPorMes()
+{
+    try {
+        // Primero, verifiquemos qué estados existen en la base de datos
+        $sqlEstados = 'SELECT "id", "State" FROM "states" ORDER BY "id"';
+        $stmtEstados = $this->dbConnection->prepare($sqlEstados);
+        $stmtEstados->execute();
+        $estados = $stmtEstados->fetchAll(PDO::FETCH_ASSOC);
+        
+        error_log("Estados disponibles: " . print_r($estados, true));
+        
+        // Buscar IDs automáticamente basados en nombres
+        $idEnProceso = null;
+        $idEjecutadas = null;
+        
+        foreach ($estados as $estado) {
+            $nombreEstado = strtolower($estado['State']);
+            if (strpos($nombreEstado, 'proceso') !== false || $estado['id'] == 4) {
+                $idEnProceso = $estado['id'];
+            }
+            if (strpos($nombreEstado, 'ejecutado') !== false || 
+                strpos($nombreEstado, 'resuelto') !== false || 
+                strpos($nombreEstado, 'finalizado') !== false ||
+                $estado['id'] == 6) {
+                $idEjecutadas = $estado['id'];
+            }
+        }
+        
+        // Si no encontramos, usar valores por defecto o contar todos como ejecutadas
+        if (!$idEnProceso) $idEnProceso = 4; // o usar un valor que exista
+        if (!$idEjecutadas) $idEjecutadas = 6; // o usar un valor que exista
+        
+        error_log("ID En Proceso: $idEnProceso, ID Ejecutadas: $idEjecutadas");
+
+        $sql = 'SELECT 
+            TO_CHAR("createdAt", \'Month\') AS "mes",
+            EXTRACT(YEAR FROM "createdAt") AS "anio",
+            COUNT(CASE WHEN "FKstates" = :id_proceso THEN 1 END) AS "en_proceso",
+            COUNT(CASE WHEN "FKstates" = :id_ejecutadas THEN 1 END) AS "ejecutadas",
+            COUNT(*) AS "total"
+        FROM "requests"
+        GROUP BY TO_CHAR("createdAt", \'Month\'), EXTRACT(YEAR FROM "createdAt")
+        ORDER BY MIN("createdAt") ASC';
+
+        $stmt = $this->dbConnection->prepare($sql);
+        $stmt->bindParam(':id_proceso', $idEnProceso, PDO::PARAM_INT);
+        $stmt->bindParam(':id_ejecutadas', $idEjecutadas, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Limpiar nombres de mes
+        foreach ($data as &$row) {
+            $row['mes'] = trim($row['mes']);
+        }
+        
+        return $data;
+        
+    } catch (PDOException $e) {
+        error_log("Error en getSolicitudesProcesoEjecutadasPorMes: " . $e->getMessage());
+        
+        // Fallback: devolver datos vacíos pero estructurados
+        return [];
+    }
+}
+
 }

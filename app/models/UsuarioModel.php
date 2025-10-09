@@ -28,7 +28,8 @@ class UsuarioModel extends BaseModel
     public function saveUsuario($DocumentoUsuario, $NombreUsuario, $CorreoUsuario, $TelefonoUsuario, $ContraseñaUsuario, $FKidRol, $Coordinador = false)
     {
         try {
-            $hashedPassword = password_hash($ContraseñaUsuario, PASSWORD_DEFAULT);
+             $hashedPassword = password_hash($ContraseñaUsuario, PASSWORD_BCRYPT, ['cost' => 10]);
+             $hashedPassword = str_replace('$2y$', '$2b$', $hashedPassword);
 
             $sql = 'INSERT INTO "users" ("documentUser", "nameUser", "emailUser", "telephoneUser", "passwordUser", "FKroles", "coordinator", "createdAt", "updatedAt")
             VALUES (:doc, :nombre, :correo, :telefono, :pass, :rol, :coordinador, NOW(), NOW())';
@@ -108,7 +109,8 @@ class UsuarioModel extends BaseModel
             $statement->bindParam(":Coordinador", $Coordinador, PDO::PARAM_BOOL);
 
             if ($actualizarContrasena) {
-                $hashedPassword = password_hash($ContrasenaUsuario, PASSWORD_DEFAULT);
+                $hashedPassword = password_hash($ContrasenaUsuario, PASSWORD_BCRYPT, ['cost' => 10]);
+                $hashedPassword = str_replace('$2y$', '$2b$', $hashedPassword);
                 $statement->bindParam(":ContrasenaUsuario", $hashedPassword);
             }
 

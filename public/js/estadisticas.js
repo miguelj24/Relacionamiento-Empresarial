@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var canvasLine = document.getElementById('requestinprocess');
 if (canvasLine) {
+    // Aquí llamaremos al endpoint que devuelva el JSON preparado
     fetch('/solicitud/solicitudesPorMesAPI')
         .then(response => {
             if (!response.ok) throw new Error('No se pudo obtener los datos');
@@ -62,12 +63,13 @@ if (canvasLine) {
                 return;
             }
 
+            // Extraemos los valores
             const meses = data.map(item => item.mes);
             const enProceso = data.map(item => item.en_proceso);
             const ejecutadas = data.map(item => item.ejecutadas);
 
             var ctxLine = canvasLine.getContext('2d');
-            var lineChart = new Chart(ctxLine, {
+            new Chart(ctxLine, {
                 type: 'line',
                 data: {
                     labels: meses,
@@ -93,24 +95,12 @@ if (canvasLine) {
                 options: {
                     responsive: true,
                     plugins: {
-                        legend: {
-                            labels: {
-                                color: '#333'
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Solicitudes En Proceso y Ejecutadas por Mes'
-                        }
+                        legend: { labels: { color: '#333' } },
+                        title: { display: true, text: 'Solicitudes En Proceso y Ejecutadas por Mes' }
                     },
                     scales: {
-                        x: {
-                            ticks: { color: '#333' }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: { color: '#333' }
-                        }
+                        x: { ticks: { color: '#333' } },
+                        y: { beginAtZero: true, ticks: { color: '#333' } }
                     }
                 }
             });
@@ -120,6 +110,7 @@ if (canvasLine) {
             console.error(error);
         });
 }
+
 
 /* SERVICIOS MÁS PEDIDOS - Pie/Doughnut Chart */
 const serviciosLabels = [
