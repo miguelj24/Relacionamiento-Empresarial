@@ -100,6 +100,63 @@
     body.dark-mode .btn-modificar:hover {
         background-color: #04324D;
     }
+    /* === 📱 Responsive: Pantallas pequeñas (≤ 480px) === */
+@media (max-width: 480px) {
+
+    .data-container {
+        padding: 20px 10px;
+    }
+
+    .profile-container {
+        width: 100%;
+        max-width: 330px; /* asegura que no se estire demasiado */
+        padding: 20px 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .profile-container img {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 15px;
+        border: 3px solid #39A900;
+    }
+
+    .profile-container h2 {
+        font-size: 16px;
+        margin-bottom: 16px;
+        line-height: 1.3em;
+        padding: 0 5px;
+    }
+
+
+    .info-item i {
+        margin-right: 0;
+        margin-bottom: 4px;
+        font-size: 15px;
+        color: #09669C;
+    }
+
+    .info-item strong {
+        display: inline-block;
+        margin-bottom: 2px;
+        font-size: 13px;
+    }
+
+    .info-item span {
+        font-size: 13px;
+        word-wrap: break-word;
+    }
+
+    .btn-modificar {
+        width: 100%;
+        padding: 9px 0;
+        font-size: 14px;
+        border-radius: 10px;
+        margin-top: 18px;
+    }
+}
+
 </style>
 
 <!-- Contenido del perfil -->

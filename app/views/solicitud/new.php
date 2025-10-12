@@ -201,6 +201,163 @@ $estados = $estadoModel->getAll();
         body.dark-mode .logo {
             background-color: #39a900 !important;
         }
+
+        /* === Responsive para formulario de nueva solicitud === */
+
+/* Tablets y pantallas medianas (481px - 768px) */
+@media (max-width: 768px) {
+    main.content {
+        padding: 20px 15px 80px;
+        min-height: calc(100vh - 100px);
+    }
+
+    .form-container {
+        max-width: 90%;
+        padding: 20px 15px;
+    }
+
+    .logo {
+        width: 80px;
+        margin-bottom: 15px;
+    }
+
+    .title {
+        font-size: 14px;
+    }
+
+    h4 {
+        font-size: 15px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .continue-btn,
+    .submit-btn {
+        width: 80%;
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .back-btn {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+}
+
+/* Móviles (≤ 480px) */
+@media (max-width: 480px) {
+   
+
+
+    .logo {
+        width: 70px;
+        margin-bottom: 12px;
+    }
+
+    .title {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    h4 {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .form-container p {
+        font-size: 13px;
+        margin: 8px 0;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 8px;
+        font-size: 13px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .form-group textarea {
+        min-height: 80px;
+    }
+
+    .continue-btn,
+    .submit-btn {
+        width: 85%;
+        padding: 10px;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+
+    .back-btn {
+        font-size: 20px;
+        margin-bottom: 10px;
+        padding: 5px;
+    }
+}
+
+/* Móviles muy pequeños (≤ 360px) */
+@media (max-width: 360px) {
+  
+    .logo {
+        width: 60px;
+        margin-bottom: 10px;
+    }
+
+    .title {
+        font-size: 12px;
+    }
+
+    h4 {
+        font-size: 13px;
+    }
+
+    .form-container p {
+        font-size: 12px;
+    }
+
+    .form-group label {
+        font-size: 11px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 7px;
+        font-size: 12px;
+    }
+
+    .continue-btn,
+    .submit-btn {
+        width: 90%;
+        padding: 9px;
+        font-size: 12px;
+    }
+
+    .back-btn {
+        font-size: 18px;
+    }
+}
     </style>
 </head>
 

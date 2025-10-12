@@ -168,33 +168,288 @@
     .card2 { top: 30px; z-index: 2; }
     .card3 { top: 60px; z-index: 1; }
 
-    @media (max-width: 768px) {
-      .data-container {
+    /* === Responsive para página de bienvenida === */
+
+/* Tablets y pantallas medianas (769px - 1024px) */
+@media (max-width: 1024px) {
+    .data-container {
+        gap: 30px;
+        padding: 30px 20px;
+    }
+
+    .textWelcome {
+        width: 55%;
+    }
+
+    .textWelcome h1 {
+        font-size: 60px;
+    }
+
+    .textWelcome h4 {
+        font-size: 26px;
+    }
+
+    .textWelcome p {
+        font-size: 15px;
+        max-width: 600px;
+    }
+
+    .cards-stack {
+        width: 240px;
+        margin-top: 60px;
+    }
+
+    .card-styled {
+        width: 220px;
+        height: 150px;
+    }
+}
+
+/* Tablets pequeñas (481px - 768px) */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+
+    .data-container {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding: 30px 20px;
-      }
-
-      .textWelcome, .cards-stack {
-        width: 100%;
-      }
-
-      .cards-stack {
-        height: auto;
-        margin-top: 20px;
-      }
-
-      .card-styled {
-        position: static;
-        margin-bottom: 15px;
-        transform: translateY(20px);
-      }
-
-      .card-styled.visible {
-        transform: translateY(0);
-      }
+        padding: 25px 15px;
+        gap: 20px;
+        max-width: 100%;
+        box-sizing: border-box;
     }
+
+    .textWelcome {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .textWelcome h1 {
+        font-size: 48px;
+        margin-bottom: 8px;
+    }
+
+    body.dark-mode .textWelcome h1 {
+        color: #e0e0e0;
+    }
+
+    .textWelcome h4 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .textWelcome p {
+        font-size: 14px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    body.dark-mode .textWelcome p {
+        color: #b0b0b0;
+    }
+
+    .cards-stack {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+        margin-top: 30px;
+        position: relative;
+    }
+
+    .cards-stack img {
+        position: relative;
+        top: 0;
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        margin: 0 auto 20px;
+        display: block;
+    }
+
+    .card-styled {
+        position: static !important;
+        width: 100%;
+        max-width: 260px;
+        height: auto;
+        min-height: 140px;
+        margin: 0 auto 15px;
+        padding: 18px 14px;
+        transform: none !important;
+        opacity: 1 !important;
+        box-sizing: border-box;
+    }
+
+    .card-styled.visible {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+
+    .card-styled:hover {
+        transform: scale(1.03) !important;
+    }
+
+    body.dark-mode .card-styled {
+        background: #23272a !important;
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .card-title {
+        color: #39A900;
+    }
+
+    body.dark-mode .card-text {
+        color: #b0b0b0;
+    }
+
+    .card-styled .card-icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .card-styled .card-icon i {
+        font-size: 16px;
+    }
+
+    .card-title {
+        font-size: 15px;
+    }
+
+    .card-text {
+        font-size: 12px;
+    }
+}
+
+/* Móviles (≤ 480px) */
+@media (max-width: 480px) {
+    body {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+
+    .data-container {
+        padding: 20px 12px;
+        gap: 15px;
+    }
+
+    .textWelcome {
+        width: 100%;
+        padding: 0 8px;
+    }
+
+    .textWelcome h1 {
+        font-size: 36px;
+        margin-bottom: 6px;
+    }
+
+    .textWelcome h4 {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .textWelcome p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .cards-stack {
+        max-width: 100%;
+        padding: 0 10px;
+        margin-top: 20px;
+        box-sizing: border-box;
+    }
+
+    .cards-stack img {
+        max-width: 200px;
+        margin-bottom: 15px;
+    }
+
+    .card-styled {
+        max-width: 100%;
+        width: calc(100vw - 40px);
+        min-height: 130px;
+        padding: 15px 12px;
+        margin-bottom: 12px;
+    }
+
+    .card-styled .card-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .card-styled .card-icon i {
+        font-size: 15px;
+    }
+
+    .card-title {
+        font-size: 14px;
+    }
+
+    .card-text {
+        font-size: 11.5px;
+        line-height: 1.4;
+    }
+}
+
+/* Móviles muy pequeños (≤ 360px) */
+@media (max-width: 360px) {
+    .data-container {
+        padding: 15px 8px;
+    }
+
+    .textWelcome {
+        padding: 0 5px;
+    }
+
+    .textWelcome h1 {
+        font-size: 32px;
+    }
+
+    .textWelcome h4 {
+        font-size: 18px;
+    }
+
+    .textWelcome p {
+        font-size: 12px;
+    }
+
+    .cards-stack {
+        padding: 0 5px;
+    }
+
+    .cards-stack img {
+        max-width: 180px;
+    }
+
+    .card-styled {
+        width: calc(100vw - 30px);
+        min-height: 120px;
+        padding: 12px 10px;
+        margin-bottom: 10px;
+    }
+
+    .card-styled .card-icon {
+        width: 34px;
+        height: 34px;
+    }
+
+    .card-styled .card-icon i {
+        font-size: 14px;
+    }
+
+    .card-title {
+        font-size: 13px;
+    }
+
+    .card-text {
+        font-size: 11px;
+    }
+}
+    
   </style>
 </head>
 <body>

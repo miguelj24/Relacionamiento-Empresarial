@@ -256,10 +256,65 @@
 </div>
 
 <script>
+// Agregar este script al final de tu archivo edit.php, reemplazando el script existente
+
 document.addEventListener('DOMContentLoaded', () => {
     const servicioSelect = document.getElementById('servicio');
     const tipoServicioSelect = document.getElementById('tipoServicio');
+    const estadoSelect = document.getElementById('estado');
+    const asignacionSelect = document.getElementById('asignacion');
+    const asignacionGroup = asignacionSelect ? asignacionSelect.closest('.form-group') : null;
 
+    // ID del estado "Asignado" - AJUSTA ESTE VALOR según tu base de datos
+    const ESTADO_ASIGNADO_ID = 3; // Cambiar según tu BD
+
+    // Función para habilitar/deshabilitar el campo de asignación
+    function toggleAsignacion() {
+        if (!asignacionSelect || !asignacionGroup) return;
+
+        const estadoSeleccionado = parseInt(estadoSelect.value);
+
+        if (estadoSeleccionado === ESTADO_ASIGNADO_ID) {
+            // Habilitar y hacer obligatorio
+            asignacionSelect.disabled = false;
+            asignacionSelect.required = true;
+            asignacionGroup.style.opacity = '1';
+            asignacionGroup.style.pointerEvents = 'auto';
+            
+            // Agregar indicador visual de requerido
+            const label = asignacionGroup.querySelector('label');
+            if (label && !label.querySelector('.required-indicator')) {
+                const span = document.createElement('span');
+                span.className = 'required-indicator';
+                span.textContent = ' *';
+                span.style.color = '#dc2626';
+                label.appendChild(span);
+            }
+        } else {
+            // Deshabilitar y no requerido
+            asignacionSelect.disabled = true;
+            asignacionSelect.required = false;
+            asignacionGroup.style.opacity = '0.5';
+            asignacionGroup.style.pointerEvents = 'none';
+            
+            // Remover indicador de requerido
+            const requiredIndicator = asignacionGroup.querySelector('.required-indicator');
+            if (requiredIndicator) {
+                requiredIndicator.remove();
+            }
+            
+            // Limpiar selección si no es estado asignado
+            asignacionSelect.value = '';
+        }
+    }
+
+    // Inicializar estado al cargar la página
+    if (estadoSelect && asignacionSelect) {
+        toggleAsignacion();
+        estadoSelect.addEventListener('change', toggleAsignacion);
+    }
+
+    // Cargar tipos de servicio
     servicioSelect.addEventListener('change', async () => {
         const servicioId = servicioSelect.value;
         tipoServicioSelect.innerHTML = '<option value="">Seleccione un tipo de servicio</option>';
@@ -292,6 +347,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     submitBtn.addEventListener('click', function(e) {
         e.preventDefault();
+
+        // Validación especial para estado "Asignado"
+        const estadoSeleccionado = parseInt(estadoSelect.value);
+        
+        if (estadoSeleccionado === ESTADO_ASIGNADO_ID) {
+            if (!asignacionSelect.value) {
+                // Mostrar error personalizado
+                mostrarError('Para cambiar al estado "Asignado", debe seleccionar un responsable.');
+                asignacionSelect.focus();
+                asignacionGroup.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    asignacionGroup.style.animation = '';
+                }, 500);
+                return;
+            }
+        }
+
+        // Validar otros campos requeridos
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        // Si todo está bien, mostrar modal de confirmación
         updateModal.classList.add('show');
     });
 
@@ -303,6 +382,41 @@ document.addEventListener('DOMContentLoaded', () => {
         updateModal.classList.remove('show');
         form.submit();
     });
+
+    // Función para mostrar mensajes de error personalizados
+    function mostrarError(mensaje) {
+        // Crear o actualizar el mensaje de error
+        let errorDiv = document.getElementById('error-asignacion');
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.id = 'error-asignacion';
+            errorDiv.style.cssText = `
+                background: #fee2e2;
+                color: #dc2626;
+                padding: 12px 16px;
+                border-radius: 8px;
+                margin: 10px 0;
+                border-left: 4px solid #dc2626;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideIn 0.3s ease;
+            `;
+            asignacionGroup.appendChild(errorDiv);
+        }
+        
+        errorDiv.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <span>${mensaje}</span>
+        `;
+
+        // Auto-ocultar después de 5 segundos
+        setTimeout(() => {
+            errorDiv.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => errorDiv.remove(), 300);
+        }, 5000);
+    }
 });
 </script>
 

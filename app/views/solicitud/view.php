@@ -57,26 +57,102 @@
         font-size: 0.95rem;
     }
 
+    /* ------------------------------ AQUI SE ENCUENTRA  LOS COLORES PARA EL SEMAFORO INDICADOR  ---------------------*/
     .status-indicator {
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
         border-radius: 50%;
         display: inline-block;
         margin: 0 auto;
         border: 2px solid #e0e0e0;
     }
 
-    .status-recent {
-        background-color: #2ecc71;
-    }
+        /* --- Verdes --- */
+    .status-green-soft { background-color: #8BC34A; }      /* verde suave (pendiente reciente) */
+    .status-green { background-color: #4CAF50; }           /* verde normal (en proceso) */
+    .status-green-strong { background-color: #2E7D32; }    /* verde intenso (ejecutado o cerrado) */
 
-    .status-medium {
-        background-color: #f1c40f;
-    }
+    /* --- Amarillos/Naranjas --- */
+    .status-yellow-light { background-color: #FFF176; }    /* amarillo claro (ejecutado a tiempo) */
+    .status-yellow { background-color: #FDD835; }          /* amarillo estándar */
+    .status-yellow-dark { background-color: #FBC02D; }     /* amarillo más oscuro */
+    .status-orange-dark { background-color: #E65100; }     /* naranja muy oscuro (pendiente con retraso) */
 
-    .status-old {
-        background-color: #e74c3c;
-    }
+    /* --- Rojos --- */
+    .status-red { background-color: #E53935; }             /* rojo normal */
+    .status-red-dark { background-color: #B71C1C; }        /* rojo intenso/crítico */
+
+    /* === Mensaje flotante semaforización === */
+#semaforizacion-alert-container {
+  position: absolute;
+  z-index: 1000;
+}
+
+.alert-semaforizacion {
+  position: fixed;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  font-size: 14px;
+  min-width: 180px;
+  max-width: 240px;
+  border-left: 6px solid;
+  animation: fadeInSemaforizacion 0.25s ease;
+}
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+/* === Título y descripción === */
+.alert-content h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+.alert-content p {
+  margin: 0;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.3em;
+}
+
+
+/* === VERDES === */
+.alert-semaforizacion.success-green-soft { border-color: #8BC34A; }
+.alert-semaforizacion.success-green { border-color: #4CAF50; }
+.alert-semaforizacion.success-green-strong { border-color: #2E7D32; }
+
+/* === AMARILLOS === */
+.alert-semaforizacion.warning-yellow-light { border-color: #FFF176; }
+.alert-semaforizacion.warning-yellow { border-color: #FDD835; }
+.alert-semaforizacion.warning-yellow-dark { border-color: #FBC02D; }
+
+/* === NARANJA === */
+.alert-semaforizacion.warning-orange-dark { border-color: #E65100; }
+
+/* === ROJOS === */
+.alert-semaforizacion.danger-red { border-color: #E53935; }
+.alert-semaforizacion.danger-red-dark { border-color: #B71C1C; }
+
+/* === INFO / DEFAULT === */
+.alert-semaforizacion.info { border-color: #9E9E9E; }
+
+
+/* Animación */
+@keyframes fadeInSemaforizacion {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Íconos según tipo */
+.alert-semaforizacion.success::before { content: "✅ "; }
+.alert-semaforizacion.warning::before { content: "⚠️ "; }
+.alert-semaforizacion.danger::before  { content: "❌ "; }
+.alert-semaforizacion.info::before  { content: "📌 "; }
 
     .service-badge {
         padding: 3px 8px;
@@ -95,28 +171,7 @@
         color: #fff;
     }
 
-    /*    .buttons a {
-        margin: 0 1px;
-        color: #fff;
-        font-size: 0.92rem;
-        padding: 1px 7px; */
-    /* Reduce el padding vertical (height) */
-    /*   border-radius: 18px;
-        background: #04324D;
-        display: inline-flex;
-        align-items: center;
-        transition: background 0.2s, color 0.2s;
-    } */
-
-    /* .buttons a:hover {
-        color: #09669C;
-        color: #fff;
-    }
-
-    .buttons a i {
-        font-size: 0.8rem;
-    } */
-
+    
     /* Estilo para la barra de búsqueda */
     .search-bar {
         position: relative;
@@ -127,7 +182,7 @@
     }
 
     .search-bar input[type="text"] {
-        width: 100%;
+        width: 90%;
         padding: 10px 15px 10px 35px;
         font-size: 16px;
         border: none;
@@ -359,36 +414,11 @@
         cursor: pointer;
     }
 
-    /* Responsive */
-    @media (max-width: 900px) {
+   
 
-        .titulos,
-        .solicitud-row {
-            grid-template-columns: 20px 1fr 1fr 0.7fr 1fr 1.2fr;
-            font-size: 0.8rem;
-        }
+   
 
-        .titulos>div,
-        .solicitud-row>div {
-            padding: 4px 1px;
-            font-size: 0.8rem;
-        }
-
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-        }
-
-        .filters {
-            width: 95%;
-            flex-direction: column;
-            padding: 15px;
-        }
-
-        .search-container {
-            width: 100%;
-        }
-    }
+    
 
     .archivados-btn {
         display: inline-flex;
@@ -685,22 +715,7 @@
     body.dark-mode .delete-modal-btn-confirm {
         background: linear-gradient(135deg, #dc2626, #b91c1c);
     }
-
-    /* Responsive */
-    @media (max-width: 480px) {
-        .delete-modal-content {
-            padding: 20px;
-            margin: 20px;
-        }
-
-        .delete-modal-buttons {
-            flex-direction: column;
-        }
-
-        .delete-modal-btn {
-            width: 100%;
-        }
-    }
+   
 
     /* Botón de tres puntos */
     .action-dropdown {
@@ -795,6 +810,264 @@
         background: #2d3238;
         color: #4fc3f7;
     }
+
+    /* =======================  RESPONSIVE DESIGN ======================= */
+
+/* Pantallas medianas: tablets, laptops pequeñas */
+@media (max-width: 900px) {
+
+    .titulos,
+    .solicitud-row {
+        grid-template-columns: 20px 1fr 1fr 0.7fr 1fr 1.2fr;
+        font-size: 0.85rem;
+    }
+
+    .titulos > div,
+    .solicitud-row > div {
+        padding: 4px 2px;
+        font-size: 0.82rem;
+    }
+
+    .status-indicator {
+        width: 14px;
+        height: 14px;
+    }
+
+    .filters {
+        width: 95%;
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .search-bar {
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-control {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    .archivados-btn {
+        font-size: 0.9rem;
+        padding: 6px 14px;
+    }
+
+    .alert-semaforizacion {
+        font-size: 13px;
+        min-width: 150px;
+        max-width: 200px;
+        padding: 6px 10px;
+    }
+
+    .alert-content h4 {
+        font-size: 14px;
+    }
+
+    .alert-content p {
+        font-size: 12px;
+    }
+
+}
+
+/* === Pantallas pequeñas: móviles (≤ 480px) === */
+@media (max-width: 480px) {
+
+* {
+    box-sizing: border-box;
+}
+
+
+main {
+    padding: 0 8px;
+    max-width: 100%;
+}
+.titulos {
+    display: none;
+}
+.solicitud-row {
+    display: grid;
+    grid-template-columns: 18px 100px 100px 20px; /* semáforo | nombre/estado | fecha/servicio | menú */
+    grid-template-rows: auto auto; /* dos filas: arriba (cliente, fecha) / abajo (estado, servicio) */
+    align-items: center;
+    gap: 4px 6px; /* espacio entre filas y columnas */
+    padding: 6px 8px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 0.8rem;
+    width: 100%;
+}
+
+/* 🔹 Semáforo: ocupa ambas filas */
+.solicitud-row > div:nth-child(1) {
+    grid-row: 1 / span 2;
+    grid-column: 1;
+    align-self: center;
+}
+
+/* 🔹 Nombre del cliente (arriba a la izquierda) */
+.solicitud-row > div:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1;
+    font-weight: 600;
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* 🔹 Fecha (arriba a la derecha) */
+.solicitud-row > div:nth-child(4) {
+    grid-column: 3;
+    grid-row: 1;
+    text-align: right;
+    font-size: 0.78rem;
+    color: #555;
+}
+
+/* 🔹 Estado (debajo del nombre) */
+.solicitud-row > div:nth-child(5) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* 🔹 Servicio (debajo de la fecha) */
+.solicitud-row > div:nth-child(2) {
+    grid-column: 3;
+    grid-row: 2;
+    text-align: right;
+}
+
+/* 🔹 Menú de acciones (ocupa toda la altura, columna 4) */
+.solicitud-row > .action-dropdown {
+    grid-column: 4;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    align-self: center;
+}
+
+/* 🔹 Badges (estado/servicio) más compactos */
+.service-badge {
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    display: inline-block;
+}
+
+
+/* 🔹 Badges compactos */
+.service-badge {
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    display: inline-block;
+    margin-top: 2px;
+}
+
+
+    /* 🔹 Dropdown reducido */
+    .action-dropdown {
+        justify-self: end;
+        position: relative;
+        margin-left: auto;
+    }
+
+    .action-dropdown .dropdown-toggle {
+        font-size: 13px;
+        padding: 2px 5px;
+    }
+
+    /* 🔹 Filtros compactos */
+    .filters {
+        flex-direction: column;
+        width: 90%;
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-control {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+
+    /* 🔹 Barra de búsqueda */
+    .search-bar {
+        margin-left: 0;
+    }
+
+    .search-bar input[type="text"] {
+        width: 90%;
+        font-size: 13px;
+        padding: 7px 10px 7px 26px;
+    }
+
+    .search-icon {
+        left: 7px;
+        font-size: 12.5px;
+    }
+
+    /* 🔹 Botón archivados */
+    .archivados-btn {
+        font-size: 0.8rem;
+        padding: 5px 9px;
+    }
+
+    /* 🔹 Alertas pequeñas */
+    .alert-semaforizacion {
+        font-size: 12px;
+        min-width: 120px;
+        max-width: 170px;
+        padding: 5px 7px;
+        border-radius: 6px;
+        z-index: 9999;
+    }
+
+    .alert-content h4 {
+        font-size: 13px;
+    }
+
+    .alert-content p {
+        font-size: 11.5px;
+    }
+
+
+    .solicitud-row > div {
+        min-width: 0;
+    }
+
+    /* 🔹 Modales */
+    .delete-modal-content,
+    .logout-modal-content {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .delete-modal-buttons,
+    .logout-modal-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .delete-modal-btn,
+    .logout-modal-btn {
+        width: 100%;
+    }
+
+}
+
 </style>
 
 
@@ -901,24 +1174,83 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
         <?php if (empty($solicitudes)): ?>
             <?php if (in_array($_SESSION['rol'], [3, 4])): ?>
                 <div class="solicitud-row">
-                    <div colspan="6" style="text-align:center; width:100%;">Aún no tienes solicitudes asignadas.</div>
+                    <div colspan="6" style="text-align:center; width:80%;">Aún no tienes solicitudes asignadas.</div>
                 </div>
             <?php else: ?>
                 <div class="solicitud-row">
-                    <div colspan="6" style="text-align:center; width:100%;">No se encuentran solicitudes en la base de datos</div>
+                    <div colspan="6" style="text-align:center; width:80%;">No se encuentran solicitudes </div>
                 </div>
             <?php endif; ?>
         <?php else: ?>
             <?php foreach ($solicitudes as $solicitud): ?>
                 <?php
-                // Semaforización: verde < 7 días, amarillo 7-15, rojo > 15
                 $dias = (new DateTime())->diff(new DateTime($solicitud->createdAt))->days;
+                $estado = strtolower($solicitud->FKstates);
+                // === ID'S de los ESTADOS 
+                // Pendiente == 1
+                //Asignado == 3
+                //En proceso == 4
+                // Ejecutado == 5
+                // Resuelto == 6
+                //Ceerrado == 7
+                $statusClass = "";
+                // ----- Lógica combinada (tiempo + estado) ---
                 if ($dias < 7) {
-                    $statusClass = "status-recent"; // verde
+                    switch ($estado) {
+                        case 1:
+                            $statusClass = "status-green-soft"; // verde pero tenue
+                            break;
+                        case 3:
+                        case 4:
+                            $statusClass = "status-green"; // verde normal (va avanzando)
+                            break;
+                        case 5:
+                        case 6:
+                        case 7:
+                            $statusClass = "status-green-strong"; // verde intenso (va muy bien)
+                            break;
+                        default:
+                            $statusClass = "status-green-soft";
+                    }
                 } elseif ($dias <= 15) {
-                    $statusClass = "status-medium"; // amarillo
+                    switch ($estado) {
+                        case 1:
+                            $statusClass = "status-orange-dark"; // naranja oscuro (atención)
+                            break;
+                        case 3:
+                        case 4:
+                            $statusClass = "status-yellow"; // amarillo intermedio
+                            break;
+                        case 5:
+                            $statusClass = "status-yellow-light"; // amarillo claro (a punto de cerrar)
+                            break;
+                        case 6:
+                        case 7:
+                            $statusClass = "status-green-strong"; // sigue bien
+                            break;
+                        default:
+                            $statusClass = "status-yellow";
+                    }
                 } else {
-                    $statusClass = "status-old"; // rojo
+                    // más de 15 días
+                    switch ($estado) {
+                        case 1:
+                            $statusClass = "status-red-dark"; // rojo muy oscuro (crítico)
+                            break;
+                        case 3:
+                        case 4:
+                            $statusClass = "status-orange-dark"; // naranja fuerte (demorado)
+                            break;
+                        case 5:
+                            $statusClass = "status-yellow-dark"; // amarillo más oscuro
+                            break;
+                        case 6:
+                        case 7:
+                            $statusClass = "status-green-strong"; // ya finalizado, se mantiene verde
+                            break;
+                        default:
+                            $statusClass = "status-red";
+                    }
                 }
 
                 //Determinar si estamos en la vista de enviadas
@@ -942,13 +1274,16 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                 ?>
                 <div class="solicitud-row">
                     <div>
-                        <span class="status-indicator <?php echo $statusClass; ?>"></span>
+                        <span class="status-indicator <?= $statusClass ?>" onclick="mostrarMensajeSemaforizacion(this, '<?= $statusClass ?>')"></span>
                     </div>
+                      <!-- Contenedor general de mensajes -->
+                        <div id="semaforizacion-alert-container"></div>
+                   
                     <div><?php echo htmlspecialchars($solicitud->NameClient); ?></div>
                     <div>
                     <?php echo htmlspecialchars(date('d/m/Y', strtotime($solicitud->createdAt))); ?>
                     </div>
-
+                  
                     <div>
                         <span class="service-badge"
                             style="
@@ -1213,6 +1548,105 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+function mostrarMensajeSemaforizacion(element, statusClass) {
+  const container = document.getElementById('semaforizacion-alert-container');
+  container.innerHTML = ''; // elimina mensajes anteriores
+
+  const mensaje = document.createElement('div');
+  mensaje.classList.add('alert-semaforizacion');
+  let title = '';
+  let description = '';
+
+  // Define el contenido según el color (semaforización)
+  switch (statusClass) {
+    case 'status-green-soft':
+         title = '¡Buen comienzo!';
+        description = 'Esta solicitud está iniciando correctamente. Mantén el ritmo.';
+        mensaje.classList.add('success','success-green-soft');
+        break;
+    case 'status-green':
+        title = '¡Vas muy bien!';
+        description = 'La solicitud avanza según lo esperado. Buen progreso.';
+        mensaje.classList.add('success','success-green');
+        break;
+    case 'status-green-strong':
+       title = '¡Excelente progreso!';
+        description = 'La solicitud está en muy buen estado y casi finalizada. ¡Felicitaciones!';
+        mensaje.classList.add('success','success-green-strong');
+      break;
+    case 'status-yellow-light':
+        title = 'Casi listo';
+        description = 'La solicitud está por completarse, pero aún requiere seguimiento.';
+        mensaje.classList.add('info','warning-yellow-light');
+    break;
+    case 'status-yellow':
+        title = 'Atención moderada';
+        description = 'Tu solicitud lleva algunos días. Revisa su avance para evitar demoras.';
+        mensaje.classList.add('warning','warning-yellow');
+    break;
+    case 'status-yellow-dark':
+        title = 'Advertencia';
+        description = 'Esta solicitud está tomando más tiempo de lo esperado. Verifica su estado.';
+        mensaje.classList.add('warning','warning-yellow-dark');
+    break;
+    case 'status-orange-dark':
+        title = 'Precaución';
+        description = 'Tu solicitud podría estar retrasándose. Considera hacer seguimiento.';
+        mensaje.classList.add('warning', 'warning-orange-dark');
+    break;
+    case 'status-red':
+        title = 'Demora detectada';
+        description = 'Esta solicitud ha superado el tiempo recomendado. Requiere atención.';
+        mensaje.classList.add('danger', 'danger-red');
+    break;
+    case 'status-red-dark':
+        title = '¡Atención urgente!';
+        description = 'La solicitud lleva demasiado tiempo pendiente. Actúa cuanto antes.';
+        mensaje.classList.add('danger','danger-red-dark');
+    break;
+    default:
+        title = 'Información';
+        description = 'No se pudo determinar el estado exacto de esta solicitud.';
+        mensaje.classList.add('info');
+  }
+   mensaje.innerHTML = `
+    <div class="alert-content">
+      <h4>${title}</h4>
+      <p>${description}</p>
+    </div>
+  `;
+
+  // Calcula la posición al lado derecho del punto
+  const rect = element.getBoundingClientRect();
+  mensaje.style.top = (rect.top + window.scrollY - 2) + 'px';
+  mensaje.style.left = (rect.right + 10 + window.scrollX) + 'px';
+
+  // Agrega al contenedor
+  container.appendChild(mensaje);
+
+  // --- Ocultar la alerta si el usuario hace scroll ---
+window.addEventListener('scroll', () => {
+  const alerta = document.querySelector('.alert-semaforizacion');
+  if (alerta) alerta.remove();
+});
+
+// --- Si tu tabla tiene un contenedor con scroll interno ---
+const tabla = document.querySelector('.table');
+if (tabla) {
+  tabla.addEventListener('scroll', () => {
+    const alerta = document.querySelector('.alert-semaforizacion');
+    if (alerta) alerta.remove();
+  });
+}
+
+
+  // Se elimina automáticamente a los 3 segundos
+  setTimeout(() => mensaje.remove(), 3000);
+}
+
+
+
 
 </script>
 

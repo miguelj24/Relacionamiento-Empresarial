@@ -334,7 +334,7 @@ class SolicitudModel extends BaseModel
         }
     }
 
-// CORREGIR el método getSolicitudesPorMes
+
 public function getSolicitudesPorMes()
 {
     try {
