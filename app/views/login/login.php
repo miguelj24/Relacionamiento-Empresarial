@@ -1,14 +1,25 @@
+<style>
+    .forgot-password {
+        text-align: center;
+    }
+
+    .forgot-password a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
 <div class="login-container">
-        <?php 
-        if (isset($_GET['timeout'])) {
-            echo "<div class='errors'>La sesión ha expirado por inactividad. Por favor, inicia sesión de nuevo.</div>";
-        }
-        if(isset($errors)){
-            echo "<div class='errors'>";
-            echo $errors;
-            echo "</div>";
-        }
-        ?>
+    <?php 
+    if (isset($_GET['timeout'])) {
+        echo "<div class='errors'>La sesión ha expirado por inactividad. Por favor, inicia sesión de nuevo.</div>";
+    }
+    if (isset($errors)) {
+        echo "<div class='errors'>";
+        echo $errors;
+        echo "</div>";
+    }
+    ?>
+    
     <h2>Iniciar sesión</h2>
     
     <form action="/login/init" method="post">
@@ -25,4 +36,7 @@
         </div>
     </form>
 
+    <div class="forgot-password">
+        <a href="/password/forgot">¿Olvidaste tu contraseña?</a>
+    </div>
 </div>

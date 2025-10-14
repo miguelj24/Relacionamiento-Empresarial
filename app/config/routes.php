@@ -356,7 +356,18 @@ return [
         'controller' => 'App\Controllers\LoginController',
         'action' => 'status'
     ],
-    
+    '/password/forgot' => [
+        "controller" => "App\\Controllers\\PasswordController",
+        "action" => 'showForgotForm'
+    ],
+    '/password/request-reset' => [
+        "controller" => "App\\Controllers\\PasswordController",
+        "action" => 'requestReset'
+    ],
+    '/password/reset' => [
+        "controller" => "App\\Controllers\\PasswordController",
+        "action" => 'resetPassword'
+    ]
 
 
 ];

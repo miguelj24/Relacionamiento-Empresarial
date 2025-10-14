@@ -10,6 +10,7 @@ require_once '../app/controllers/servicioController.php';
 require_once '../app/controllers/tipoEventoController.php';
 require_once '../app/controllers/estadoController.php';
 require_once '../app/controllers/solicitudController.php';
+require_once '../app/controllers/PasswordController.php'; // Añade esta línea
 require_once __DIR__ . '/../vendor/autoload.php';
 
 

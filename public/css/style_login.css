@@ -42,7 +42,6 @@ body {
     justify-content: center;
     gap: 30px;
     width: 100%;
-    flex-wrap: wrap;
 }
 
 .login-elements img {
