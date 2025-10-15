@@ -7,9 +7,9 @@ use App\Models\RolModel;
 use PDO;
 
 require_once "baseController.php";
-require_once __DIR__ . '/../models/UsuarioModel.php';
-require_once __DIR__ . '/../models/RolModel.php';
-require_once __DIR__ . '/../models/SolicitudModel.php';
+require_once MAIN_APP_ROUTE . "../models/UsuarioModel.php";
+require_once MAIN_APP_ROUTE . "../models/RolModel.php";
+require_once MAIN_APP_ROUTE . "../models/SolicitudModel.php";
 
 class UsuarioController extends BaseController
 {
