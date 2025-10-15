@@ -3,7 +3,7 @@ namespace App\Controllers;
 use App\Models\TipoEventoModel;
 
 require_once "baseController.php";
-require_once MAIN_APP_ROUTE."../models/TipoEventoModel.php";
+require_once MAIN_APP_ROUTE."../models/tipoEventoModel.php";
 
 class TipoEventoController extends BaseController {
     public function __construct(){

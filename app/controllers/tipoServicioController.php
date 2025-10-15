@@ -4,7 +4,7 @@ use App\Models\TipoServicioModel;
 use App\Models\ServicioModel;
 
 require_once "baseController.php";
-require_once MAIN_APP_ROUTE."../models/TipoServicioModel.php";
+require_once MAIN_APP_ROUTE."../models/tipoServicioModel.php";
 require_once MAIN_APP_ROUTE."../models/ServicioModel.php";
 
 class TipoServicioController extends BaseController {

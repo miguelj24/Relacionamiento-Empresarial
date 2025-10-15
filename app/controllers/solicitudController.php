@@ -10,11 +10,11 @@ use App\Models\RolModel;
 use App\Models\TipoServicioModel; // Importar el modelo para los tipos de servicio
 
 require_once "baseController.php";
-require_once MAIN_APP_ROUTE . "../models/SolicitudModel.php";
+require_once MAIN_APP_ROUTE . "../models/solicitudModel.php";
 require_once MAIN_APP_ROUTE . "../models/ClienteModel.php";
 require_once MAIN_APP_ROUTE . "../models/ServicioModel.php";
 require_once MAIN_APP_ROUTE . "../models/EstadoModel.php";
-require_once MAIN_APP_ROUTE . "../models/TipoServicioModel.php"; // Requerir el modelo para los tipos de servicio
+require_once MAIN_APP_ROUTE . "../models/tipoServicioModel.php"; // Requerir el modelo para los tipos de servicio
 
 class SolicitudController extends BaseController
 {
