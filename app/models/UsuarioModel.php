@@ -69,7 +69,7 @@ class UsuarioModel extends BaseModel
         }
     }
 
-    public function editUsuario($id, $DocumentoUsuario, $NombreUsuario, $CorreoUsuario, $TelefonoUsuario, $ContrasenaUsuario = null, $FKidRol, $Coordinador = false)
+    public function editUsuario($id, $DocumentoUsuario, $NombreUsuario, $CorreoUsuario, $TelefonoUsuario, $FKidRol, $ContrasenaUsuario = null,  $Coordinador = false)
     {
         try {
             $actualizarContrasena = ($ContrasenaUsuario !== null && !empty(trim($ContrasenaUsuario)));
