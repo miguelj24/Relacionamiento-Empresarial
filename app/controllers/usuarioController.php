@@ -9,7 +9,7 @@ use PDO;
 require_once "baseController.php";
 require_once MAIN_APP_ROUTE . "../models/UsuarioModel.php";
 require_once MAIN_APP_ROUTE . "../models/RolModel.php";
-require_once MAIN_APP_ROUTE . "../models/SolicitudModel.php";
+require_once MAIN_APP_ROUTE . "../models/solicitudModel.php";
 
 class UsuarioController extends BaseController
 {
