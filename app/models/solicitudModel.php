@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use Exception;
 
 use PDO;
 use PDOException;
@@ -200,18 +201,101 @@ class SolicitudModel extends BaseModel
     }
 }
 
-    public function getSolicitudesPendientes()
-    {
-        try {
-            // Asumiendo que el estado "Pendiente" tiene idEstado = 1
-            $sql = 'SELECT COUNT(*) AS total FROM "' . $this->table . '" WHERE "FKstates" = 1';
+public function getSolicitudesPendientes()
+{
+    $ch = null;
+    $ch2 = null;
+    
+    try {
+        // 1️⃣ Llamar a la API de estados
+        $urlStates = 'https://sena-sisrel-prod-backend.rboojy.easypanel.host/api/v1/states/';
+        $ch = curl_init($urlStates);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-            $result = $this->dbConnection->query($sql)->fetch(PDO::FETCH_OBJ);
-            return $result->total;
-        } catch (PDOException $e) {
-            throw new PDOException("Error al obtener solicitudes pendientes: " . $e->getMessage());
+        $response = curl_exec($ch);
+        
+        if ($response === false) {
+            throw new Exception('Error al conectar con la API de estados: ' . curl_error($ch));
+        }
+        
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($httpCode !== 200) {
+            throw new Exception('Error HTTP ' . $httpCode . ' al obtener estados');
+        }
+        
+        curl_close($ch);
+        $ch = null;
+
+        $states = json_decode($response, true);
+
+        if (!is_array($states)) {
+            throw new Exception('La respuesta de la API de estados no es válida');
+        }
+
+        // 2️⃣ Buscar el estado "Pendiente"
+        $idPendiente = null;
+        foreach ($states as $state) {
+            if (isset($state['State']) && strtolower(trim($state['State'])) === 'pendiente') {
+                $idPendiente = $state['id'];
+                break;
+            }
+        }
+
+        if (!$idPendiente) {
+            throw new Exception('No se encontró el estado "Pendiente" en la API');
+        }
+
+        // 3️⃣ Consultar la API de solicitudes filtradas por ese estado
+        $urlRequests = 'https://sena-sisrel-prod-backend.rboojy.easypanel.host/api/v1/requests?FKstates=' . urlencode($idPendiente);
+        $ch2 = curl_init($urlRequests);
+        curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch2, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
+
+        $response2 = curl_exec($ch2);
+        
+        if ($response2 === false) {
+            throw new Exception('Error al conectar con la API de solicitudes: ' . curl_error($ch2));
+        }
+        
+        $httpCode2 = curl_getinfo($ch2, CURLINFO_HTTP_CODE);
+        if ($httpCode2 !== 200) {
+            throw new Exception('Error HTTP ' . $httpCode2 . ' al obtener solicitudes');
+        }
+        
+        curl_close($ch2);
+        $ch2 = null;
+
+        $requests = json_decode($response2, true);
+
+        if (!is_array($requests)) {
+            throw new Exception('La respuesta de la API de solicitudes no es válida');
+        }
+
+        // Manejar si la respuesta tiene estructura {"data": [...]}
+        if (isset($requests['data']) && is_array($requests['data'])) {
+            $requests = $requests['data'];
+        }
+
+        // 4️⃣ Devolver el número de solicitudes pendientes
+        return count($requests);
+
+    } catch (Exception $e) {
+        throw new Exception("Error al obtener solicitudes pendientes desde API: " . $e->getMessage());
+    } finally {
+        // Asegurar que se cierren los recursos
+        if ($ch) {
+            curl_close($ch);
+        }
+        if ($ch2) {
+            curl_close($ch2);
         }
     }
+}
+
+
 
     public function getSolicitudesResueltas()
     {

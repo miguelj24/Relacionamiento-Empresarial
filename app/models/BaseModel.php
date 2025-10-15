@@ -14,7 +14,7 @@ abstract class BaseModel {
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
             ];
-          $dsn = DRIVER . ':host=' . HOST . ';port=' . PORT . ';dbname=' . DATABASE . ';sslmode=require;options=\'--client_encoding=UTF8\'';
+          $dsn = DRIVER . ':host=' . HOST . ';port=' . PORT . ';dbname=' . DATABASE . ';sslmode=disable;options=\'--client_encoding=UTF8\'';
             $this->dbConnection = new PDO($dsn, USERNAME_DB, PASSWORD_DB, $options);
         } catch (PDOException $ex) {
             echo 'Error en la conexión: '.$ex->getMessage();
