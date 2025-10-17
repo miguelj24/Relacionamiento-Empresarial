@@ -751,6 +751,40 @@ class SolicitudController extends BaseController
         exit;
     }
 
+public function fullscreen()
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    $rol = $_SESSION['rol'] ?? null;
+    $idUsuario = $_SESSION['idUsuario'] ?? null;
+
+    $solicitudObj = new SolicitudModel();
+
+    if ($rol == 4) {
+        $solicitudes = $solicitudObj->getAll();
+    } elseif ($rol == 5 || $rol == 6) {
+        $solicitudes = $solicitudObj->getByAsignacion($idUsuario);
+    } else if ($rol == 1) {
+        $solicitudes = $solicitudObj->getByUsuarioCreador($idUsuario);
+    } else {
+        $solicitudes = [];
+    }
+
+    // Deshabilitar layout
+    $this->layout = null;
+    
+    // Preparar datos
+    extract([
+        'solicitudes' => $solicitudes,
+        'titulo' => 'Vista Pantalla Completa'
+    ]);
+    
+    // Incluir directamente la vista completa
+    include MAIN_APP_ROUTE . "../views/solicitud/fullscreen_view.php";
+}
+
     public function solicitudesProcesoEjecutadasAPI()
 {
     header('Content-Type: application/json');

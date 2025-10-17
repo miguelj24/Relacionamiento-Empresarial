@@ -282,6 +282,10 @@ return [
         "controller" => 'App\Controllers\SolicitudController',
         "action" => 'deleteSolicitud'
     ],
+    '/solicitud/fullscreen' => [
+        "controller" => 'App\Controllers\SolicitudController',
+        "action" => 'fullscreen'
+    ],
     '/solicitud/archivadas' => [
         "controller" => 'App\Controllers\SolicitudController',
         "action" => 'archivadas'

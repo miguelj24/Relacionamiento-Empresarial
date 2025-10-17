@@ -1,5 +1,28 @@
 /* ESTADISTICAS PARA ADMINISTRADOR */
 
+// Función para detectar el modo oscuro
+function isDarkMode() {
+    return document.body.classList.contains('dark-mode') || 
+           document.documentElement.classList.contains('dark-mode') ||
+           document.body.getAttribute('data-theme') === 'dark' ||
+           document.documentElement.getAttribute('data-theme') === 'dark';
+}
+
+// Función para obtener el color de texto según el tema
+function getChartTextColor() {
+    return isDarkMode() ? '#ffffff' : '#666';
+}
+
+// Función para obtener el color de borde según el tema
+function getChartBorderColor() {
+    return isDarkMode() ? '#444' : '#fff';
+}
+
+// Función para obtener configuración de grid
+function getChartGridColor() {
+    return isDarkMode() ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+}
+
 /* EJEMPLO  # SOLICITUD POR MES*/
 var canvas = document.getElementById('myChart');
 // Solo crea la gráfica si el canvas existe en la página
@@ -17,13 +40,16 @@ document.addEventListener('DOMContentLoaded', function () {
     window.myChart.destroy();
   }
 
+  const textColor = getChartTextColor();
+  const gridColor = getChartGridColor();
+
   window.myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: labelsData,    // vienen desde PHP
+      labels: labelsData,
       datasets: [{
         label: 'Solicitudes',
-        data: valuesData,     // vienen desde PHP
+        data: valuesData,
         backgroundColor: 'rgba(57,169,0,0.35)',
         borderColor: 'rgba(57,169,0,1)',
         borderWidth: 1,
@@ -34,7 +60,15 @@ document.addEventListener('DOMContentLoaded', function () {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        y: { beginAtZero: true }
+        y: { 
+          beginAtZero: true,
+          ticks: { color: textColor },
+          grid: { color: gridColor }
+        },
+        x: {
+          ticks: { color: textColor },
+          grid: { color: gridColor }
+        }
       },
       plugins: {
         legend: { display: false },
@@ -51,7 +85,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var canvasLine = document.getElementById('requestinprocess');
 if (canvasLine) {
-    // Aquí llamaremos al endpoint que devuelva el JSON preparado
     fetch('/solicitud/solicitudesPorMesAPI')
         .then(response => {
             if (!response.ok) throw new Error('No se pudo obtener los datos');
@@ -63,10 +96,12 @@ if (canvasLine) {
                 return;
             }
 
-            // Extraemos los valores
             const meses = data.map(item => item.mes);
             const enProceso = data.map(item => item.en_proceso);
             const ejecutadas = data.map(item => item.ejecutadas);
+
+            const textColor = getChartTextColor();
+            const gridColor = getChartGridColor();
 
             var ctxLine = canvasLine.getContext('2d');
             new Chart(ctxLine, {
@@ -95,12 +130,23 @@ if (canvasLine) {
                 options: {
                     responsive: true,
                     plugins: {
-                        legend: { labels: { color: '#333' } },
-                        title: { display: true, text: 'Solicitudes En Proceso y Ejecutadas por Mes' }
+                        legend: { labels: { color: textColor } },
+                        title: { 
+                            display: true, 
+                            text: 'Solicitudes En Proceso y Ejecutadas por Mes',
+                            color: textColor
+                        }
                     },
                     scales: {
-                        x: { ticks: { color: '#333' } },
-                        y: { beginAtZero: true, ticks: { color: '#333' } }
+                        x: { 
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        },
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        }
                     }
                 }
             });
@@ -121,7 +167,6 @@ const serviciosLabels = [
     'Emprendimiento'
 ];
 
-// Simulación de cantidades por servicio (ajusta según tus datos reales)
 const serviciosData = [25, 40, 15, 10, 20];
 
 const serviciosColors = [
@@ -149,6 +194,9 @@ if (canvasServicios) {
             const cantidades = data.map(item => parseInt(item.cantidad));
             const colors = data.map(item => item.Color || '#cccccc');
 
+            const textColor = getChartTextColor();
+            const borderColor = getChartBorderColor();
+
             var ctxServicios = canvasServicios.getContext('2d');
             new Chart(ctxServicios, {
                 type: 'doughnut',
@@ -157,7 +205,7 @@ if (canvasServicios) {
                     datasets: [{
                         data: cantidades,
                         backgroundColor: colors,
-                        borderColor: '#fff',
+                        borderColor: borderColor,
                         borderWidth: 2
                     }]
                 },
@@ -167,12 +215,13 @@ if (canvasServicios) {
                         legend: {
                             position: 'bottom',
                             labels: {
-                                color: '#333'
+                                color: textColor
                             }
                         },
                         title: {
                             display: true,
-                            text: 'Servicios más Solicitados'
+                            text: 'Servicios más Solicitados',
+                            color: textColor
                         }
                     }
                 }
@@ -196,15 +245,12 @@ if (canvasMunicipios) {
         return colors;
     }
 
-    // Obtener solo los municipios con solicitudes
     async function loadMunicipiosData() {
         try {
-            // Obtener datos de solicitudes
             const statsResponse = await fetch('/solicitud/municipiosMasSolicitudesAPI');
             if (!statsResponse.ok) throw new Error('Error obteniendo estadísticas');
             const solicitudesData = await statsResponse.json();
 
-            // Filtrar solo municipios con solicitudes y ordenar
             const datasetFinal = solicitudesData
                 .filter(item => item.cantidad > 0)
                 .sort((a, b) => b.cantidad - a.cantidad);
@@ -217,7 +263,6 @@ if (canvasMunicipios) {
         }
     }
 
-    // Crear la gráfica con los datos
     loadMunicipiosData().then(data => {
         if (data.length === 0) {
             canvasMunicipios.parentNode.innerHTML = "<p style='text-align:center;color:#888;'>No hay solicitudes registradas en ningún municipio.</p>";
@@ -228,8 +273,11 @@ if (canvasMunicipios) {
         const municipiosData = data.map(item => item.cantidad);
         const municipiosColors = generateColors(data.length);
 
-        // Ajustar alto del canvas
         canvasMunicipios.height = Math.max(300, municipiosLabels.length * 25);
+
+        const textColor = getChartTextColor();
+        const borderColor = getChartBorderColor();
+        const gridColor = getChartGridColor();
 
         var ctxMunicipios = canvasMunicipios.getContext('2d');
         var municipiosChart = new Chart(ctxMunicipios, {
@@ -240,7 +288,7 @@ if (canvasMunicipios) {
                     label: 'Solicitudes',
                     data: municipiosData,
                     backgroundColor: municipiosColors,
-                    borderColor: '#fff',
+                    borderColor: borderColor,
                     borderWidth: 2
                 }]
             },
@@ -252,22 +300,25 @@ if (canvasMunicipios) {
                     legend: { display: false },
                     title: {
                         display: true,
-                        text: 'Solicitudes por Municipio'
+                        text: 'Solicitudes por Municipio',
+                        color: textColor
                     }
                 },
                 scales: {
                     x: {
                         beginAtZero: true,
-                        ticks: { color: '#333' }
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
                     },
                     y: {
                         ticks: { 
-                            color: '#333',
+                            color: textColor,
                             callback: function(value) {
                                 const label = this.getLabelForValue(value);
                                 return label.length > 15 ? label.substr(0, 12) + '...' : label;
                             }
-                        }
+                        },
+                        grid: { color: gridColor }
                     }
                 }
             }
@@ -280,7 +331,6 @@ if (canvasMunicipios) {
 
 // Estadística: Solicitudes por Estado (Gráfica de Torta/Pie Chart)
 
-// Nombres de los estados 
 const estadosLabels = [
     'Pendiente',
     'Resuelto',
@@ -290,34 +340,35 @@ const estadosLabels = [
     'Cerrado'
 ];
 
-// Simulación de cantidades por estado (ajusta según tus datos reales)
 const estadosData = [12, 8, 15, 10, 7, 5];
 
 const estadosColors = [
-    'rgba(255, 206, 86, 0.7)',   // Pendiente
-    'rgba(39, 169, 0, 0.7)',     // Resuelto
-    'rgba(54, 162, 235, 0.7)',   // En proceso
-    'rgba(153, 102, 255, 0.7)',  // Ejecutado
-    'rgba(255, 99, 132, 0.7)',   // Asignado
-    'rgba(100, 100, 100, 0.7)'   // Cerrado
+    'rgba(255, 206, 86, 0.7)',
+    'rgba(39, 169, 0, 0.7)',
+    'rgba(54, 162, 235, 0.7)',
+    'rgba(153, 102, 255, 0.7)',
+    'rgba(255, 99, 132, 0.7)',
+    'rgba(100, 100, 100, 0.7)'
 ];
 
 var canvasEstados = document.getElementById('solicitudesPorEstado');
 if (canvasEstados) {
-    fetch('/solicitud/solicitudesPorEstadoAPI') // Ajusta la ruta si tu framework usa otra
+    fetch('/solicitud/solicitudesPorEstadoAPI')
         .then(response => {
             if (!response.ok) throw new Error('No se pudo obtener los datos');
             return response.json();
         })
         .then(data => {
             if (!Array.isArray(data) || data.length === 0) {
-                // Si no hay datos, muestra un mensaje o una gráfica vacía
                 canvasEstados.parentNode.innerHTML = "<p style='text-align:center;color:#888;'>No hay datos para mostrar.</p>";
                 return;
             }
             const labels = data.map(item => item.Estado);
             const cantidades = data.map(item => parseInt(item.cantidad));
             const colors = data.map(item => item.Color || '#ccc');
+
+            const textColor = getChartTextColor();
+            const borderColor = getChartBorderColor();
 
             var ctxEstados = canvasEstados.getContext('2d');
             new Chart(ctxEstados, {
@@ -327,7 +378,7 @@ if (canvasEstados) {
                     datasets: [{
                         data: cantidades,
                         backgroundColor: colors,
-                        borderColor: '#fff',
+                        borderColor: borderColor,
                         borderWidth: 2
                     }]
                 },
@@ -337,12 +388,13 @@ if (canvasEstados) {
                         legend: {
                             position: 'bottom',
                             labels: {
-                                color: '#333'
+                                color: textColor
                             }
                         },
                         title: {
                             display: true,
-                            text: 'Solicitudes por Estado'
+                            text: 'Solicitudes por Estado',
+                            color: textColor
                         }
                     }
                 }

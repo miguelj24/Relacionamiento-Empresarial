@@ -28,18 +28,25 @@
     <form id="forgotPasswordForm" action="/password/request-reset" method="post">
         <div class="input-group">
             <label for="email">Correo Electrónico</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email" required 
+                   placeholder="Ingresa tu correo electrónico">
         </div>
         <div class="input-group">
-            <button type="submit">Enviar Instrucciones</button>
+            <button type="submit">
+                <i class="fas fa-paper-plane"></i> Enviar Instrucciones
+            </button>
         </div>
     </form>
 
     <div class="back-to-login">
-        <a href="/login/init">Volver al inicio de sesión</a>
+        <a href="/login/init">
+            <i class="fas fa-arrow-left"></i> Volver al inicio de sesión
+        </a>
     </div>
 </div>
 
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

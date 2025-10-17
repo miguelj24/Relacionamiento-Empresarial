@@ -67,92 +67,173 @@
         border: 2px solid #e0e0e0;
     }
 
-        /* --- Verdes --- */
-    .status-green-soft { background-color: #8BC34A; }      /* verde suave (pendiente reciente) */
-    .status-green { background-color: #4CAF50; }           /* verde normal (en proceso) */
-    .status-green-strong { background-color: #2E7D32; }    /* verde intenso (ejecutado o cerrado) */
+    /* --- Verdes --- */
+    .status-green-soft {
+        background-color: #8BC34A;
+    }
+
+    /* verde suave (pendiente reciente) */
+    .status-green {
+        background-color: #4CAF50;
+    }
+
+    /* verde normal (en proceso) */
+    .status-green-strong {
+        background-color: #2E7D32;
+    }
+
+    /* verde intenso (ejecutado o cerrado) */
 
     /* --- Amarillos/Naranjas --- */
-    .status-yellow-light { background-color: #FFF176; }    /* amarillo claro (ejecutado a tiempo) */
-    .status-yellow { background-color: #FDD835; }          /* amarillo estándar */
-    .status-yellow-dark { background-color: #FBC02D; }     /* amarillo más oscuro */
-    .status-orange-dark { background-color: #E65100; }     /* naranja muy oscuro (pendiente con retraso) */
+    .status-yellow-light {
+        background-color: #FFF176;
+    }
+
+    /* amarillo claro (ejecutado a tiempo) */
+    .status-yellow {
+        background-color: #FDD835;
+    }
+
+    /* amarillo estándar */
+    .status-yellow-dark {
+        background-color: #FBC02D;
+    }
+
+    /* amarillo más oscuro */
+    .status-orange-dark {
+        background-color: #E65100;
+    }
+
+    /* naranja muy oscuro (pendiente con retraso) */
 
     /* --- Rojos --- */
-    .status-red { background-color: #E53935; }             /* rojo normal */
-    .status-red-dark { background-color: #B71C1C; }        /* rojo intenso/crítico */
+    .status-red {
+        background-color: #E53935;
+    }
+
+    /* rojo normal */
+    .status-red-dark {
+        background-color: #B71C1C;
+    }
+
+    /* rojo intenso/crítico */
 
     /* === Mensaje flotante semaforización === */
-#semaforizacion-alert-container {
-  position: absolute;
-  z-index: 1000;
-}
+    #semaforizacion-alert-container {
+        position: absolute;
+        z-index: 1000;
+    }
 
-.alert-semaforizacion {
-  position: fixed;
-  background: #fff;
-  border-radius: 8px;
-  padding: 8px 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  font-size: 14px;
-  min-width: 180px;
-  max-width: 240px;
-  border-left: 6px solid;
-  animation: fadeInSemaforizacion 0.25s ease;
-}
-.alert-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-/* === Título y descripción === */
-.alert-content h4 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: bold;
-  color: #333;
-}
+    .alert-semaforizacion {
+        position: fixed;
+        background: #fff;
+        border-radius: 8px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        font-size: 14px;
+        min-width: 180px;
+        max-width: 240px;
+        border-left: 6px solid;
+        animation: fadeInSemaforizacion 0.25s ease;
+    }
 
-.alert-content p {
-  margin: 0;
-  color: #666;
-  font-size: 13px;
-  line-height: 1.3em;
-}
+    .alert-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
 
+    /* === Título y descripción === */
+    .alert-content h4 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: bold;
+        color: #333;
+    }
 
-/* === VERDES === */
-.alert-semaforizacion.success-green-soft { border-color: #8BC34A; }
-.alert-semaforizacion.success-green { border-color: #4CAF50; }
-.alert-semaforizacion.success-green-strong { border-color: #2E7D32; }
-
-/* === AMARILLOS === */
-.alert-semaforizacion.warning-yellow-light { border-color: #FFF176; }
-.alert-semaforizacion.warning-yellow { border-color: #FDD835; }
-.alert-semaforizacion.warning-yellow-dark { border-color: #FBC02D; }
-
-/* === NARANJA === */
-.alert-semaforizacion.warning-orange-dark { border-color: #E65100; }
-
-/* === ROJOS === */
-.alert-semaforizacion.danger-red { border-color: #E53935; }
-.alert-semaforizacion.danger-red-dark { border-color: #B71C1C; }
-
-/* === INFO / DEFAULT === */
-.alert-semaforizacion.info { border-color: #9E9E9E; }
+    .alert-content p {
+        margin: 0;
+        color: #666;
+        font-size: 13px;
+        line-height: 1.3em;
+    }
 
 
-/* Animación */
-@keyframes fadeInSemaforizacion {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    /* === VERDES === */
+    .alert-semaforizacion.success-green-soft {
+        border-color: #8BC34A;
+    }
 
-/* Íconos según tipo */
-.alert-semaforizacion.success::before { content: "✅ "; }
-.alert-semaforizacion.warning::before { content: "⚠️ "; }
-.alert-semaforizacion.danger::before  { content: "❌ "; }
-.alert-semaforizacion.info::before  { content: "📌 "; }
+    .alert-semaforizacion.success-green {
+        border-color: #4CAF50;
+    }
+
+    .alert-semaforizacion.success-green-strong {
+        border-color: #2E7D32;
+    }
+
+    /* === AMARILLOS === */
+    .alert-semaforizacion.warning-yellow-light {
+        border-color: #FFF176;
+    }
+
+    .alert-semaforizacion.warning-yellow {
+        border-color: #FDD835;
+    }
+
+    .alert-semaforizacion.warning-yellow-dark {
+        border-color: #FBC02D;
+    }
+
+    /* === NARANJA === */
+    .alert-semaforizacion.warning-orange-dark {
+        border-color: #E65100;
+    }
+
+    /* === ROJOS === */
+    .alert-semaforizacion.danger-red {
+        border-color: #E53935;
+    }
+
+    .alert-semaforizacion.danger-red-dark {
+        border-color: #B71C1C;
+    }
+
+    /* === INFO / DEFAULT === */
+    .alert-semaforizacion.info {
+        border-color: #9E9E9E;
+    }
+
+
+    /* Animación */
+    @keyframes fadeInSemaforizacion {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Íconos según tipo */
+    .alert-semaforizacion.success::before {
+        content: "✅ ";
+    }
+
+    .alert-semaforizacion.warning::before {
+        content: "⚠️ ";
+    }
+
+    .alert-semaforizacion.danger::before {
+        content: "❌ ";
+    }
+
+    .alert-semaforizacion.info::before {
+        content: "📌 ";
+    }
 
     .service-badge {
         padding: 3px 8px;
@@ -171,12 +252,12 @@
         color: #fff;
     }
 
-    
+
     /* Estilo para la barra de búsqueda */
     .search-bar {
         position: relative;
         flex-grow: 1;
-        max-width: 300px;
+        max-width: 500px;
         margin-left: 50px;
         border-bottom: 1px solid #e0e0e0;
     }
@@ -226,6 +307,7 @@
         font-size: 14px;
         color: #444;
         font-weight: 700;
+        text-align: center;
     }
 
     .form-control {
@@ -414,11 +496,11 @@
         cursor: pointer;
     }
 
-   
 
-   
 
-    
+
+
+
 
     .archivados-btn {
         display: inline-flex;
@@ -715,7 +797,7 @@
     body.dark-mode .delete-modal-btn-confirm {
         background: linear-gradient(135deg, #dc2626, #b91c1c);
     }
-   
+
 
     /* Botón de tres puntos */
     .action-dropdown {
@@ -813,261 +895,265 @@
 
     /* =======================  RESPONSIVE DESIGN ======================= */
 
-/* Pantallas medianas: tablets, laptops pequeñas */
-@media (max-width: 900px) {
+    /* Pantallas medianas: tablets, laptops pequeñas */
+    @media (max-width: 900px) {
 
-    .titulos,
-    .solicitud-row {
-        grid-template-columns: 20px 1fr 1fr 0.7fr 1fr 1.2fr;
-        font-size: 0.85rem;
+        .titulos,
+        .solicitud-row {
+            grid-template-columns: 20px 1fr 1fr 0.7fr 1fr 1.2fr;
+            font-size: 0.85rem;
+        }
+
+        .titulos>div,
+        .solicitud-row>div {
+            padding: 4px 2px;
+            font-size: 0.82rem;
+        }
+
+        .status-indicator {
+            width: 14px;
+            height: 14px;
+        }
+
+        .filters {
+            width: 95%;
+            flex-direction: column;
+            padding: 15px;
+            gap: 15px;
+        }
+
+        .search-container {
+            width: 100%;
+        }
+
+        .search-bar {
+            margin-left: 0;
+            max-width: 100%;
+        }
+
+        .form-group label {
+            font-size: 13px;
+        }
+
+        .form-control {
+            font-size: 13px;
+            padding: 8px 12px;
+        }
+
+        .archivados-btn {
+            font-size: 0.9rem;
+            padding: 6px 14px;
+        }
+
+        .alert-semaforizacion {
+            font-size: 13px;
+            min-width: 150px;
+            max-width: 200px;
+            padding: 6px 10px;
+        }
+
+        .alert-content h4 {
+            font-size: 14px;
+        }
+
+        .alert-content p {
+            font-size: 12px;
+        }
+
     }
 
-    .titulos > div,
-    .solicitud-row > div {
-        padding: 4px 2px;
-        font-size: 0.82rem;
+    /* === Pantallas pequeñas: móviles (≤ 480px) === */
+    @media (max-width: 480px) {
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        main {
+            padding: 0 8px;
+            max-width: 100%;
+        }
+
+        .titulos {
+            display: none;
+        }
+
+        .solicitud-row {
+            display: grid;
+            grid-template-columns: 18px 100px 100px 20px;
+            /* semáforo | nombre/estado | fecha/servicio | menú */
+            grid-template-rows: auto auto;
+            /* dos filas: arriba (cliente, fecha) / abajo (estado, servicio) */
+            align-items: center;
+            gap: 4px 6px;
+            /* espacio entre filas y columnas */
+            padding: 6px 8px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            font-size: 0.8rem;
+            width: 100%;
+        }
+
+        /* 🔹 Semáforo: ocupa ambas filas */
+        .solicitud-row>div:nth-child(1) {
+            grid-row: 1 / span 2;
+            grid-column: 1;
+            align-self: center;
+        }
+
+        /* 🔹 Nombre del cliente (arriba a la izquierda) */
+        .solicitud-row>div:nth-child(3) {
+            grid-column: 2;
+            grid-row: 1;
+            font-weight: 600;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        /* 🔹 Fecha (arriba a la derecha) */
+        .solicitud-row>div:nth-child(4) {
+            grid-column: 3;
+            grid-row: 1;
+            text-align: right;
+            font-size: 0.78rem;
+            color: #555;
+        }
+
+        /* 🔹 Estado (debajo del nombre) */
+        .solicitud-row>div:nth-child(5) {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        /* 🔹 Servicio (debajo de la fecha) */
+        .solicitud-row>div:nth-child(2) {
+            grid-column: 3;
+            grid-row: 2;
+            text-align: right;
+        }
+
+        /* 🔹 Menú de acciones (ocupa toda la altura, columna 4) */
+        .solicitud-row>.action-dropdown {
+            grid-column: 4;
+            grid-row: 1 / span 2;
+            justify-self: end;
+            align-self: center;
+        }
+
+        /* 🔹 Badges (estado/servicio) más compactos */
+        .service-badge {
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            display: inline-block;
+        }
+
+
+        /* 🔹 Badges compactos */
+        .service-badge {
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+
+        /* 🔹 Dropdown reducido */
+        .action-dropdown {
+            justify-self: end;
+            position: relative;
+            margin-left: auto;
+        }
+
+        .action-dropdown .dropdown-toggle {
+            font-size: 13px;
+            padding: 2px 5px;
+        }
+
+        /* 🔹 Filtros compactos */
+        .filters {
+            flex-direction: column;
+            width: 90%;
+            padding: 8px;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+        }
+
+        .form-control {
+            font-size: 12px;
+            padding: 6px 8px;
+        }
+
+        /* 🔹 Barra de búsqueda */
+        .search-bar {
+            margin-left: 0;
+        }
+
+        .search-bar input[type="text"] {
+            width: 90%;
+            font-size: 13px;
+            padding: 7px 10px 7px 26px;
+        }
+
+        .search-icon {
+            left: 7px;
+            font-size: 12.5px;
+        }
+
+        /* 🔹 Botón archivados */
+        .archivados-btn {
+            font-size: 0.8rem;
+            padding: 5px 9px;
+        }
+
+        /* 🔹 Alertas pequeñas */
+        .alert-semaforizacion {
+            font-size: 12px;
+            min-width: 120px;
+            max-width: 170px;
+            padding: 5px 7px;
+            border-radius: 6px;
+            z-index: 9999;
+        }
+
+        .alert-content h4 {
+            font-size: 13px;
+        }
+
+        .alert-content p {
+            font-size: 11.5px;
+        }
+
+
+        .solicitud-row>div {
+            min-width: 0;
+        }
+
+        /* 🔹 Modales */
+        .delete-modal-content,
+        .logout-modal-content {
+            padding: 15px;
+            margin: 10px;
+        }
+
+        .delete-modal-buttons,
+        .logout-modal-buttons {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .delete-modal-btn,
+        .logout-modal-btn {
+            width: 100%;
+        }
+
     }
-
-    .status-indicator {
-        width: 14px;
-        height: 14px;
-    }
-
-    .filters {
-        width: 95%;
-        flex-direction: column;
-        padding: 15px;
-        gap: 15px;
-    }
-
-    .search-container {
-        width: 100%;
-    }
-
-    .search-bar {
-        margin-left: 0;
-        max-width: 100%;
-    }
-
-    .form-group label {
-        font-size: 13px;
-    }
-
-    .form-control {
-        font-size: 13px;
-        padding: 8px 12px;
-    }
-
-    .archivados-btn {
-        font-size: 0.9rem;
-        padding: 6px 14px;
-    }
-
-    .alert-semaforizacion {
-        font-size: 13px;
-        min-width: 150px;
-        max-width: 200px;
-        padding: 6px 10px;
-    }
-
-    .alert-content h4 {
-        font-size: 14px;
-    }
-
-    .alert-content p {
-        font-size: 12px;
-    }
-
-}
-
-/* === Pantallas pequeñas: móviles (≤ 480px) === */
-@media (max-width: 480px) {
-
-* {
-    box-sizing: border-box;
-}
-
-
-main {
-    padding: 0 8px;
-    max-width: 100%;
-}
-.titulos {
-    display: none;
-}
-.solicitud-row {
-    display: grid;
-    grid-template-columns: 18px 100px 100px 20px; /* semáforo | nombre/estado | fecha/servicio | menú */
-    grid-template-rows: auto auto; /* dos filas: arriba (cliente, fecha) / abajo (estado, servicio) */
-    align-items: center;
-    gap: 4px 6px; /* espacio entre filas y columnas */
-    padding: 6px 8px;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    font-size: 0.8rem;
-    width: 100%;
-}
-
-/* 🔹 Semáforo: ocupa ambas filas */
-.solicitud-row > div:nth-child(1) {
-    grid-row: 1 / span 2;
-    grid-column: 1;
-    align-self: center;
-}
-
-/* 🔹 Nombre del cliente (arriba a la izquierda) */
-.solicitud-row > div:nth-child(3) {
-    grid-column: 2;
-    grid-row: 1;
-    font-weight: 600;
-    white-space: normal;
-    word-break: break-word;
-}
-
-/* 🔹 Fecha (arriba a la derecha) */
-.solicitud-row > div:nth-child(4) {
-    grid-column: 3;
-    grid-row: 1;
-    text-align: right;
-    font-size: 0.78rem;
-    color: #555;
-}
-
-/* 🔹 Estado (debajo del nombre) */
-.solicitud-row > div:nth-child(5) {
-    grid-column: 2;
-    grid-row: 2;
-}
-
-/* 🔹 Servicio (debajo de la fecha) */
-.solicitud-row > div:nth-child(2) {
-    grid-column: 3;
-    grid-row: 2;
-    text-align: right;
-}
-
-/* 🔹 Menú de acciones (ocupa toda la altura, columna 4) */
-.solicitud-row > .action-dropdown {
-    grid-column: 4;
-    grid-row: 1 / span 2;
-    justify-self: end;
-    align-self: center;
-}
-
-/* 🔹 Badges (estado/servicio) más compactos */
-.service-badge {
-    padding: 2px 6px;
-    border-radius: 5px;
-    font-size: 0.7rem;
-    display: inline-block;
-}
-
-
-/* 🔹 Badges compactos */
-.service-badge {
-    padding: 2px 6px;
-    border-radius: 5px;
-    font-size: 0.7rem;
-    display: inline-block;
-    margin-top: 2px;
-}
-
-
-    /* 🔹 Dropdown reducido */
-    .action-dropdown {
-        justify-self: end;
-        position: relative;
-        margin-left: auto;
-    }
-
-    .action-dropdown .dropdown-toggle {
-        font-size: 13px;
-        padding: 2px 5px;
-    }
-
-    /* 🔹 Filtros compactos */
-    .filters {
-        flex-direction: column;
-        width: 90%;
-        padding: 8px;
-        gap: 6px;
-    }
-
-    .form-group label {
-        font-size: 12px;
-    }
-
-    .form-control {
-        font-size: 12px;
-        padding: 6px 8px;
-    }
-
-    /* 🔹 Barra de búsqueda */
-    .search-bar {
-        margin-left: 0;
-    }
-
-    .search-bar input[type="text"] {
-        width: 90%;
-        font-size: 13px;
-        padding: 7px 10px 7px 26px;
-    }
-
-    .search-icon {
-        left: 7px;
-        font-size: 12.5px;
-    }
-
-    /* 🔹 Botón archivados */
-    .archivados-btn {
-        font-size: 0.8rem;
-        padding: 5px 9px;
-    }
-
-    /* 🔹 Alertas pequeñas */
-    .alert-semaforizacion {
-        font-size: 12px;
-        min-width: 120px;
-        max-width: 170px;
-        padding: 5px 7px;
-        border-radius: 6px;
-        z-index: 9999;
-    }
-
-    .alert-content h4 {
-        font-size: 13px;
-    }
-
-    .alert-content p {
-        font-size: 11.5px;
-    }
-
-
-    .solicitud-row > div {
-        min-width: 0;
-    }
-
-    /* 🔹 Modales */
-    .delete-modal-content,
-    .logout-modal-content {
-        padding: 15px;
-        margin: 10px;
-    }
-
-    .delete-modal-buttons,
-    .logout-modal-buttons {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .delete-modal-btn,
-    .logout-modal-btn {
-        width: 100%;
-    }
-
-}
-
 </style>
 
 
@@ -1130,12 +1216,12 @@ function adjustBrightness($hex, $steps)
 
 <?php
 // Detectar si estamos en la sección de enviadas o archivadas
-$isArchivadas = (isset($esArchivadas) && $esArchivadas) || 
+$isArchivadas = (isset($esArchivadas) && $esArchivadas) ||
     (strpos($_SERVER['REQUEST_URI'], '/solicitud/archivadas') !== false);
-$isEnviadas = (isset($esEnviadas) && $esEnviadas) || 
+$isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
     (strpos($_SERVER['REQUEST_URI'], '/solicitud/enviadas') !== false);
 
-    $rolUsuario = $_SESSION['rol'] ?? null;
+$rolUsuario = $_SESSION['rol'] ?? null;
 ?>
 
 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 18px;">
@@ -1156,7 +1242,11 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                 <i class="fas fa-paper-plane"></i> Enviadas
             </a>
         <?php endif; ?>
-        
+
+        <a href="/solicitud/fullscreen" class="archivados-btn" title="Vista en Pantalla Completa">
+            <i class="fas fa-expand-arrows-alt"></i> Pantalla Grande
+        </a>
+
     <?php endif; ?>
 </div>
 
@@ -1255,7 +1345,7 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
 
                 //Determinar si estamos en la vista de enviadas
                 $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
-                (strpos($_SERVER['REQUEST_URI'], '  /solicitudes/enviadas') !== false);
+                    (strpos($_SERVER['REQUEST_URI'], '/solicitudes/enviadas') !== false);
                 // Mostrar botón archivar solo si estado es Resuelto (6) o Cerrado (7)
                 $mostrarArchivar = in_array($solicitud->FKstates ?? $solicitud->id ?? null, [6, 7]);
                 // Mostrar botón eliminar solo si es administrador (rol 4)
@@ -1275,17 +1365,19 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                 <div class="solicitud-row">
                     <div>
                         <span class="status-indicator <?= $statusClass ?>" onclick="mostrarMensajeSemaforizacion(this, '<?= $statusClass ?>')"></span>
-                    </div>
-                      <!-- Contenedor general de mensajes -->
                         <div id="semaforizacion-alert-container"></div>
-                   
+                    </div>
+                    <!-- Contenedor general de mensajes -->
+
                     <div><?php echo htmlspecialchars($solicitud->NameClient); ?></div>
                     <div>
-                    <?php echo htmlspecialchars(date('d/m/Y', strtotime($solicitud->createdAt))); ?>
+                        <?php echo htmlspecialchars(date('d/m/Y', strtotime($solicitud->createdAt))); ?>
                     </div>
-                  
+
+
                     <div>
                         <span class="service-badge"
+                            data-id="<?php echo $solicitud->FKstates; ?>"
                             style="
                                 background-color: <?php echo $colorFondoEstado; ?>;
                                 color: <?php echo $colorBordeYTextoEstado; ?>;
@@ -1296,6 +1388,7 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                     </div>
                     <div>
                         <span class="service-badge"
+                            data-id="<?php echo $solicitud->FKservices; ?>"
                             style="
                                 background-color: <?php echo $colorFondoServicio; ?>;
                                 color: <?php echo $colorBordeYTextoServicio; ?>;
@@ -1315,11 +1408,11 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
                                 </a>
                             </li>
                             <?php if ($mostrarEditar): ?>
-                            <li>
-                                <a href="/solicitud/edit/<?php echo $solicitud->id; ?>">
-                                    <i class="fas fa-edit" style="margin-right: 8px;"></i> Editar
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="/solicitud/edit/<?php echo $solicitud->id; ?>">
+                                        <i class="fas fa-edit" style="margin-right: 8px;"></i> Editar
+                                    </a>
+                                </li>
                             <?php endif; ?>
                             <?php if ($mostrarEliminar): ?>
                                 <li>
@@ -1348,54 +1441,74 @@ $isEnviadas = (isset($esEnviadas) && $esEnviadas) ||
         <?php endif; ?>
     </div>
 
-   
+
 
     <script>
-document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
 
-    // =======================
-    // FILTRO DE SOLICITUDES
-    // =======================
-    const searchInput = document.getElementById('searchInput');
-    const estadoSelect = document.getElementById('estado');
-    const servicioSelect = document.getElementById('servicio');
-    const solicitudRows = document.querySelectorAll('.solicitud-row');
-    const noResults = document.getElementById('noResults');
+            // =======================
+            // FILTRO DE SOLICITUDES
+            // =======================
+            const searchInput = document.getElementById('searchInput');
+            const estadoSelect = document.getElementById('estado');
+            const servicioSelect = document.getElementById('servicio');
+            const solicitudRows = document.querySelectorAll('.solicitud-row');
+            const noResults = document.getElementById('noResults');
 
-    function filterSolicitudes() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const estadoSelected = estadoSelect.value;
-        const servicioSelected = servicioSelect.value;
-        let visibleRows = 0;
+            function filterSolicitudes() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const estadoId = estadoSelect.value;
+                const servicioId = servicioSelect.value;
+                let visibleRows = 0;
+                let tieneSolicitudesReales = false;
 
-        solicitudRows.forEach(row => {
-            const nombreCliente = row.children[1].textContent.toLowerCase();
-            const estado = row.children[3].textContent.trim().toLowerCase();
-            const servicio = row.children[4].textContent.trim().toLowerCase();
+                solicitudRows.forEach(row => {
+                    // Identifica si es una fila de solicitud real o un mensaje
+                    const nombreClienteDiv = row.children[1]; // CORREGIDO: El nombre está en el índice 1
+                    if (!nombreClienteDiv || nombreClienteDiv.getAttribute('colspan') === '6') {
+                        row.style.display = 'none'; // Oculta mensajes de "no hay solicitudes" durante el filtro
+                        return;
+                    }
 
-            const matchesSearch = nombreCliente.includes(searchTerm);
-            const matchesEstado = !estadoSelected || estado === estadoSelect.options[estadoSelect.selectedIndex].text.toLowerCase();
-            const matchesServicio = !servicioSelected || servicio === servicioSelect.options[servicioSelect.selectedIndex].text.toLowerCase();
+                    tieneSolicitudesReales = true;
 
-            if (matchesSearch && matchesEstado && matchesServicio) {
-                row.style.display = '';
-                visibleRows++;
-            } else {
-                row.style.display = 'none';
+                    // Obtiene los datos de la fila con los índices correctos
+                    const nombreCliente = nombreClienteDiv.textContent.toLowerCase();
+                    const estadoBadge = row.children[3]?.querySelector('.service-badge');    // CORREGIDO: El estado está en el índice 3
+                    const servicioBadge = row.children[4]?.querySelector('.service-badge');  // CORREGIDO: El servicio está en el índice 4
+
+                    const idEstadoFila = estadoBadge?.getAttribute('data-id');
+                    const idServicioFila = servicioBadge?.getAttribute('data-id');
+
+                    // Comprobaciones de filtro
+                    const matchesSearch = nombreCliente.includes(searchTerm);
+                    const matchesEstado = (estadoId === "") || (estadoId === idEstadoFila);
+                    const matchesServicio = (servicioId === "") || (servicioId === idServicioFila);
+
+                    if (matchesSearch && matchesEstado && matchesServicio) {
+                        row.style.display = ''; // Usa el display por defecto (grid)
+                        visibleRows++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Muestra el mensaje "No se encontraron resultados" solo si hay solicitudes para filtrar pero ninguna coincide
+                if (tieneSolicitudesReales && visibleRows === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
             }
-        });
 
-        noResults.style.display = visibleRows === 0 ? 'block' : 'none';
-    }
+            searchInput.addEventListener('input', filterSolicitudes);
+            estadoSelect.addEventListener('change', filterSolicitudes);
+            servicioSelect.addEventListener('change', filterSolicitudes);
 
-    searchInput.addEventListener('input', filterSolicitudes);
-    estadoSelect.addEventListener('change', filterSolicitudes);
-    servicioSelect.addEventListener('change', filterSolicitudes);
-
-    // =======================
-    // MODALES DE ELIMINAR Y ARCHIVAR
-    // =======================
-    const modalHTML = `
+            // =======================
+            // MODALES DE ELIMINAR Y ARCHIVAR
+            // =======================
+            const modalHTML = `
         <!-- MODAL ELIMINAR -->
         <div id="deleteModal" class="delete-modal-overlay">
             <div class="delete-modal-content">
@@ -1430,225 +1543,233 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>
     `;
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // ===== ELIMINAR =====
-    const deleteModal = document.getElementById('deleteModal');
-    const cancelDeleteBtn = document.getElementById('cancelDelete');
-    const confirmDeleteBtn = document.getElementById('confirmDelete');
-    const clientNameSpan = document.getElementById('clientName');
-    let deleteUrl = '';
-    let currentRow = null;
+            // ===== ELIMINAR =====
+            const deleteModal = document.getElementById('deleteModal');
+            const cancelDeleteBtn = document.getElementById('cancelDelete');
+            const confirmDeleteBtn = document.getElementById('confirmDelete');
+            const clientNameSpan = document.getElementById('clientName');
+            let deleteUrl = '';
+            let currentRow = null;
 
-    function showDeleteModal(url, clientName, row) {
-        deleteUrl = url;
-        currentRow = row;
-        clientNameSpan.textContent = clientName;
-        deleteModal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
+            function showDeleteModal(url, clientName, row) {
+                deleteUrl = url;
+                currentRow = row;
+                clientNameSpan.textContent = clientName;
+                deleteModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
 
-    function hideDeleteModal() {
-        deleteModal.classList.remove('show');
-        document.body.style.overflow = '';
-        deleteUrl = '';
-        currentRow = null;
-    }
+            function hideDeleteModal() {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+                deleteUrl = '';
+                currentRow = null;
+            }
 
-    document.querySelectorAll('.eliminar').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            const url = btn.getAttribute('href');
-            const row = btn.closest('.solicitud-row');
-            const clientName = row.children[1].textContent.trim();
-            showDeleteModal(url, clientName, row);
-        });
-    });
-
-    cancelDeleteBtn.addEventListener('click', hideDeleteModal);
-    confirmDeleteBtn.addEventListener('click', () => {
-        if (deleteUrl) {
-            confirmDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
-            confirmDeleteBtn.disabled = true;
-            window.location.href = deleteUrl;
-        }
-    });
-
-    deleteModal.addEventListener('click', e => { if (e.target === deleteModal) hideDeleteModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && deleteModal.classList.contains('show')) hideDeleteModal(); });
-
-    // ===== ARCHIVAR =====
-    const archiveModal = document.getElementById('archiveModal');
-    const cancelArchiveBtn = document.getElementById('cancelArchive');
-    const confirmArchiveBtn = document.getElementById('confirmArchive');
-    const archiveClientNameSpan = document.getElementById('archiveClientName');
-    let archiveId = '';
-    let archiveRow = null;
-
-    function showArchiveModal(id, clientName, row) {
-        archiveId = id;
-        archiveRow = row;
-        archiveClientNameSpan.textContent = clientName;
-        archiveModal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function hideArchiveModal() {
-        archiveModal.classList.remove('show');
-        document.body.style.overflow = '';
-        archiveId = '';
-        archiveRow = null;
-    }
-
-    document.querySelectorAll('.archivar').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            const id = btn.getAttribute('data-id');
-            const row = btn.closest('.solicitud-row');
-            const clientName = row.children[1].textContent.trim();
-            showArchiveModal(id, clientName, row);
-        });
-    });
-
-    cancelArchiveBtn.addEventListener('click', hideArchiveModal);
-    confirmArchiveBtn.addEventListener('click', () => {
-        if (!archiveId) return;
-        confirmArchiveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Archivando...';
-        confirmArchiveBtn.disabled = true;
-
-        fetch(`/solicitud/archivar/${archiveId}`, { method: 'POST' })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && archiveRow) archiveRow.style.display = 'none';
-                hideArchiveModal();
-                confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
-                confirmArchiveBtn.disabled = false;
-            })
-            .catch(() => {
-                confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
-                confirmArchiveBtn.disabled = false;
-            });
-    });
-
-    archiveModal.addEventListener('click', e => { if (e.target === archiveModal) hideArchiveModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && archiveModal.classList.contains('show')) hideArchiveModal(); });
-
-    // ===== DESARCHIVAR =====
-    document.querySelectorAll('.desarchivar').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            const id = btn.dataset.id;
-            fetch(`/solicitud/desarchivarSolicitud/${id}`, { method: 'POST' })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) btn.closest('.solicitud-row').remove();
-                    else alert('No se pudo desarchivar');
+            document.querySelectorAll('.eliminar').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.preventDefault();
+                    const url = btn.getAttribute('href');
+                    const row = btn.closest('.solicitud-row');
+                    const clientName = row.children[1].textContent.trim();
+                    showDeleteModal(url, clientName, row);
                 });
+            });
+
+            cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+            confirmDeleteBtn.addEventListener('click', () => {
+                if (deleteUrl) {
+                    confirmDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
+                    confirmDeleteBtn.disabled = true;
+                    window.location.href = deleteUrl;
+                }
+            });
+
+            deleteModal.addEventListener('click', e => {
+                if (e.target === deleteModal) hideDeleteModal();
+            });
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && deleteModal.classList.contains('show')) hideDeleteModal();
+            });
+
+            // ===== ARCHIVAR =====
+            const archiveModal = document.getElementById('archiveModal');
+            const cancelArchiveBtn = document.getElementById('cancelArchive');
+            const confirmArchiveBtn = document.getElementById('confirmArchive');
+            const archiveClientNameSpan = document.getElementById('archiveClientName');
+            let archiveId = '';
+            let archiveRow = null;
+
+            function showArchiveModal(id, clientName, row) {
+                archiveId = id;
+                archiveRow = row;
+                archiveClientNameSpan.textContent = clientName;
+                archiveModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function hideArchiveModal() {
+                archiveModal.classList.remove('show');
+                document.body.style.overflow = '';
+                archiveId = '';
+                archiveRow = null;
+            }
+
+            document.querySelectorAll('.archivar').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.preventDefault();
+                    const id = btn.getAttribute('data-id');
+                    const row = btn.closest('.solicitud-row');
+                    const clientName = row.children[1].textContent.trim();
+                    showArchiveModal(id, clientName, row);
+                });
+            });
+
+            cancelArchiveBtn.addEventListener('click', hideArchiveModal);
+            confirmArchiveBtn.addEventListener('click', () => {
+                if (!archiveId) return;
+                confirmArchiveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Archivando...';
+                confirmArchiveBtn.disabled = true;
+
+                fetch(`/solicitud/archivar/${archiveId}`, {
+                        method: 'POST'
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success && archiveRow) archiveRow.style.display = 'none';
+                        hideArchiveModal();
+                        confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
+                        confirmArchiveBtn.disabled = false;
+                    })
+                    .catch(() => {
+                        confirmArchiveBtn.innerHTML = '<i class="fas fa-archive"></i> Archivar';
+                        confirmArchiveBtn.disabled = false;
+                    });
+            });
+
+            archiveModal.addEventListener('click', e => {
+                if (e.target === archiveModal) hideArchiveModal();
+            });
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && archiveModal.classList.contains('show')) hideArchiveModal();
+            });
+
+            // ===== DESARCHIVAR =====
+            document.querySelectorAll('.desarchivar').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.preventDefault();
+                    const id = btn.dataset.id;
+                    fetch(`/solicitud/desarchivarSolicitud/${id}`, {
+                            method: 'POST'
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) btn.closest('.solicitud-row').remove();
+                            else alert('No se pudo desarchivar');
+                        });
+                });
+            });
+
         });
-    });
 
-});
+        function mostrarMensajeSemaforizacion(element, statusClass) {
+            const container = document.getElementById('semaforizacion-alert-container');
+            container.innerHTML = ''; // elimina mensajes anteriores
 
-function mostrarMensajeSemaforizacion(element, statusClass) {
-  const container = document.getElementById('semaforizacion-alert-container');
-  container.innerHTML = ''; // elimina mensajes anteriores
+            const mensaje = document.createElement('div');
+            mensaje.classList.add('alert-semaforizacion');
+            let title = '';
+            let description = '';
 
-  const mensaje = document.createElement('div');
-  mensaje.classList.add('alert-semaforizacion');
-  let title = '';
-  let description = '';
-
-  // Define el contenido según el color (semaforización)
-  switch (statusClass) {
-    case 'status-green-soft':
-         title = '¡Buen comienzo!';
-        description = 'Esta solicitud está iniciando correctamente. Mantén el ritmo.';
-        mensaje.classList.add('success','success-green-soft');
-        break;
-    case 'status-green':
-        title = '¡Vas muy bien!';
-        description = 'La solicitud avanza según lo esperado. Buen progreso.';
-        mensaje.classList.add('success','success-green');
-        break;
-    case 'status-green-strong':
-       title = '¡Excelente progreso!';
-        description = 'La solicitud está en muy buen estado y casi finalizada. ¡Felicitaciones!';
-        mensaje.classList.add('success','success-green-strong');
-      break;
-    case 'status-yellow-light':
-        title = 'Casi listo';
-        description = 'La solicitud está por completarse, pero aún requiere seguimiento.';
-        mensaje.classList.add('info','warning-yellow-light');
-    break;
-    case 'status-yellow':
-        title = 'Atención moderada';
-        description = 'Tu solicitud lleva algunos días. Revisa su avance para evitar demoras.';
-        mensaje.classList.add('warning','warning-yellow');
-    break;
-    case 'status-yellow-dark':
-        title = 'Advertencia';
-        description = 'Esta solicitud está tomando más tiempo de lo esperado. Verifica su estado.';
-        mensaje.classList.add('warning','warning-yellow-dark');
-    break;
-    case 'status-orange-dark':
-        title = 'Precaución';
-        description = 'Tu solicitud podría estar retrasándose. Considera hacer seguimiento.';
-        mensaje.classList.add('warning', 'warning-orange-dark');
-    break;
-    case 'status-red':
-        title = 'Demora detectada';
-        description = 'Esta solicitud ha superado el tiempo recomendado. Requiere atención.';
-        mensaje.classList.add('danger', 'danger-red');
-    break;
-    case 'status-red-dark':
-        title = '¡Atención urgente!';
-        description = 'La solicitud lleva demasiado tiempo pendiente. Actúa cuanto antes.';
-        mensaje.classList.add('danger','danger-red-dark');
-    break;
-    default:
-        title = 'Información';
-        description = 'No se pudo determinar el estado exacto de esta solicitud.';
-        mensaje.classList.add('info');
-  }
-   mensaje.innerHTML = `
+            // Define el contenido según el color (semaforización)
+            switch (statusClass) {
+                case 'status-green-soft':
+                    title = '¡Buen comienzo!';
+                    description = 'Esta solicitud está iniciando correctamente. Mantén el ritmo.';
+                    mensaje.classList.add('success', 'success-green-soft');
+                    break;
+                case 'status-green':
+                    title = '¡Vas muy bien!';
+                    description = 'La solicitud avanza según lo esperado. Buen progreso.';
+                    mensaje.classList.add('success', 'success-green');
+                    break;
+                case 'status-green-strong':
+                    title = '¡Excelente progreso!';
+                    description = 'La solicitud está en muy buen estado y casi finalizada. ¡Felicitaciones!';
+                    mensaje.classList.add('success', 'success-green-strong');
+                    break;
+                case 'status-yellow-light':
+                    title = 'Casi listo';
+                    description = 'La solicitud está por completarse, pero aún requiere seguimiento.';
+                    mensaje.classList.add('info', 'warning-yellow-light');
+                    break;
+                case 'status-yellow':
+                    title = 'Atención moderada';
+                    description = 'Tu solicitud lleva algunos días. Revisa su avance para evitar demoras.';
+                    mensaje.classList.add('warning', 'warning-yellow');
+                    break;
+                case 'status-yellow-dark':
+                    title = 'Advertencia';
+                    description = 'Esta solicitud está tomando más tiempo de lo esperado. Verifica su estado.';
+                    mensaje.classList.add('warning', 'warning-yellow-dark');
+                    break;
+                case 'status-orange-dark':
+                    title = 'Precaución';
+                    description = 'Tu solicitud podría estar retrasándose. Considera hacer seguimiento.';
+                    mensaje.classList.add('warning', 'warning-orange-dark');
+                    break;
+                case 'status-red':
+                    title = 'Demora detectada';
+                    description = 'Esta solicitud ha superado el tiempo recomendado. Requiere atención.';
+                    mensaje.classList.add('danger', 'danger-red');
+                    break;
+                case 'status-red-dark':
+                    title = '¡Atención urgente!';
+                    description = 'La solicitud lleva demasiado tiempo pendiente. Actúa cuanto antes.';
+                    mensaje.classList.add('danger', 'danger-red-dark');
+                    break;
+                default:
+                    title = 'Información';
+                    description = 'No se pudo determinar el estado exacto de esta solicitud.';
+                    mensaje.classList.add('info');
+            }
+            mensaje.innerHTML = `
     <div class="alert-content">
       <h4>${title}</h4>
       <p>${description}</p>
     </div>
   `;
 
-  // Calcula la posición al lado derecho del punto
-  const rect = element.getBoundingClientRect();
-  mensaje.style.top = (rect.top + window.scrollY - 2) + 'px';
-  mensaje.style.left = (rect.right + 10 + window.scrollX) + 'px';
+            // Calcula la posición al lado derecho del punto
+            const rect = element.getBoundingClientRect();
+            mensaje.style.top = (rect.top + window.scrollY - 2) + 'px';
+            mensaje.style.left = (rect.right + 10 + window.scrollX) + 'px';
 
-  // Agrega al contenedor
-  container.appendChild(mensaje);
+            // Agrega al contenedor
+            container.appendChild(mensaje);
 
-  // --- Ocultar la alerta si el usuario hace scroll ---
-window.addEventListener('scroll', () => {
-  const alerta = document.querySelector('.alert-semaforizacion');
-  if (alerta) alerta.remove();
-});
+            // --- Ocultar la alerta si el usuario hace scroll ---
+            window.addEventListener('scroll', () => {
+                const alerta = document.querySelector('.alert-semaforizacion');
+                if (alerta) alerta.remove();
+            });
 
-// --- Si tu tabla tiene un contenedor con scroll interno ---
-const tabla = document.querySelector('.table');
-if (tabla) {
-  tabla.addEventListener('scroll', () => {
-    const alerta = document.querySelector('.alert-semaforizacion');
-    if (alerta) alerta.remove();
-  });
-}
-
-
-  // Se elimina automáticamente a los 3 segundos
-  setTimeout(() => mensaje.remove(), 3000);
-}
+            // --- Si tu tabla tiene un contenedor con scroll interno ---
+            const tabla = document.querySelector('.table');
+            if (tabla) {
+                tabla.addEventListener('scroll', () => {
+                    const alerta = document.querySelector('.alert-semaforizacion');
+                    if (alerta) alerta.remove();
+                });
+            }
 
 
-
-
-</script>
+            // Se elimina automáticamente a los 3 segundos
+            setTimeout(() => mensaje.remove(), 3000);
+        }
+    </script>
 
     <script src="/js/ActionsRequest.js"></script>
 

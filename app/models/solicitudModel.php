@@ -25,7 +25,7 @@ class SolicitudModel extends BaseModel
     public function getAll(): array
     {
         try {
-            $sql = 'SELECT s.*, c."NameClient", sv."service", sv."color" AS "service_color", e."State", e."color" AS "state_color"
+            $sql = 'SELECT s.*, c."NameClient", sv."service", sv."id" AS "FKservices",sv."color" AS "service_color", e."State", e."color" AS "state_color"
                 FROM "requests" s
                 JOIN "clients" c ON s."FKclients" = c."id"
                 JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
@@ -160,7 +160,7 @@ class SolicitudModel extends BaseModel
 
     public function getByAsignacion($idUsuario)
     {
-       $sql = 'SELECT s.*, c."NameClient", sv."service", sv."color" AS "service_color", e."State", e."color" AS "state_color"
+       $sql = 'SELECT s.*, c."NameClient", sv."service", sv."id" AS "FKservices",sv."color" AS "service_color", e."State", e."color" AS "state_color"
         FROM "requests" s
         JOIN "clients" c ON s."FKclients" = c."id"
         JOIN "servicetypes" ts ON s."FKservicetypes" = ts."id"
