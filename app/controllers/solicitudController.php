@@ -273,16 +273,27 @@ class SolicitudController extends BaseController
                     error_log("Valor Coordinator RAW: " . ($usuarioCreador ? var_export($usuarioCreador->Coordinator, true) : 'N/A'));
 
                     $esCoordinador = false;
-                    if ($usuarioCreador) {
-                        // Maneja diferentes tipos de valores: boolean, integer, string
+                    if (!empty($usuarioCreador)) {
+                        // Evitar warning por propiedad indefinida y evitar pasar null a strtolower
                         $coordValue = $usuarioCreador->Coordinator ?? null;
-                        $esCoordinador = (
-                            $coordValue === true || 
-                            $coordValue === 1 || 
-                            $coordValue === '1' || 
-                            $coordValue === 't' || // PostgreSQL boolean true
-                            strtolower($coordValue) === 'true'
-                        );
+
+                        // Normalizar valores de texto a minúsculas si es string
+                        if (is_string($coordValue)) {
+                            $coordValueNorm = strtolower(trim($coordValue));
+                        } else {
+                            $coordValueNorm = $coordValue;
+                        }
+
+                        // Valores que consideramos "verdadero"
+                        if ($coordValueNorm === true
+                            || $coordValueNorm === 1
+                            || $coordValueNorm === '1'
+                            || $coordValueNorm === 't'
+                            || $coordValueNorm === 'true') {
+                            $esCoordinador = true;
+                        } else {
+                            $esCoordinador = false;
+                        }
                     }
 
                     error_log("Es coordinador (después de verificación): " . ($esCoordinador ? 'SI' : 'NO'));

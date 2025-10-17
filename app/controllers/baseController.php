@@ -12,6 +12,26 @@ class BaseController
 
     public function __construct()
     {
+        // Evitar que warnings/notices impriman texto antes de headers
+        if (!headers_sent()) {
+            ob_start();
+        }
+
+        // Si tienes una constante APP_DEBUG, úsala para controlar display_errors
+        if (!defined('APP_DEBUG')) {
+            $envDebug = getenv('APP_DEBUG');
+            if ($envDebug !== false) {
+                define('APP_DEBUG', filter_var($envDebug, FILTER_VALIDATE_BOOLEAN));
+            } else {
+                define('APP_DEBUG', false); // cambiar a true en desarrollo si lo necesita
+            }
+        }
+
+        if (!defined('APP_DEBUG') || APP_DEBUG === false) {
+            @ini_set('display_errors', '0');
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
+        }
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
